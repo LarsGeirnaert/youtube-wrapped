@@ -1,0 +1,62 @@
+[
+  {
+    "datum": "2025-01-01",
+    "titel": "Black",
+    "artiest": "Pearl Jam",
+    "poster": "img/black.jpg"
+  },
+  {
+    "datum": "2025-01-01",
+    "titel": "Let It Happen",
+    "artiest": "Tame Impala",
+    "poster": "img/tame.png"
+  },
+  {
+    "datum": "2025-01-01",
+    "titel": "Where Is My Mind?",
+    "artiest": "Pixies",
+    "poster": "img/pixies.png"
+  },
+  {
+    "datum": "2025-01-01",
+    "titel": "Ben Je Klaar?",
+    "artiest": "Pommelien Thijs",
+    "poster": "img/pommelien.png"
+  },
+  {
+    "datum": "2025-01-01",
+    "titel": "All The Small Things",
+    "artiest": "Blink-182",
+    "poster": "img/blink.png"
+  },
+  {
+    "datum": "2025-01-02",
+    "titel": "Let It Happen",
+    "artiest": "Tame Impala",
+    "poster": "img/tame.png"
+  },
+  {
+    "datum": "2025-01-02",
+    "titel": "Running Up That Hill",
+    "artiest": "Kate Bush",
+    "poster": "img/kate_bush.png"
+  },
+  {
+    "datum": "2025-01-02",
+    "titel": "Wind Of Change",
+    "artiest": "Scorpions",
+    "poster": "img/wind-of-change.png"
+  },
+  {
+    "datum": "2025-01-02",
+    "titel": "Street Spirit",
+    "artiest": "Radiohead",
+    "poster": "img/radiohead.png"
+  },
+  {
+    "datum": "2025-01-02",
+    "titel": "Black",
+    "artiest": "Pearl Jam",
+    "poster": "img/black.jpg"
+  }
+]
