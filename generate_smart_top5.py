@@ -48,69 +48,72 @@ def generate_smart_top5():
     with open('kijkgeschiedenis.json', 'r', encoding='utf-8') as f:
         history = json.load(f)
 
-    # --- STAP 3: FILTEREN EN GROEPEREN ---
+    # --- STAP 3: FILTEREN EN ALLES TELLEN ---
     days_dict = {}
+    global_counter = Counter() # Voor de VOLLEDIGE statistieken
+
     for entry in history:
         is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
         if not is_music or 'title' not in entry:
             continue
         
         time_str = entry['time']
-        # Aangepast: We nemen nu ook 2024 mee in de check
         if not (time_str.startswith('2024') or time_str.startswith('2025') or time_str.startswith('2026')):
             continue
         
         datum = time_str[:10]
         raw_artiest = entry['subtitles'][0]['name'] if 'subtitles' in entry else "Onbekend"
-        raw_titel = entry['title']
-        
-        artiest, titel = clean_music_data(raw_artiest, raw_titel)
+        artiest, titel = clean_music_data(raw_artiest, entry['title'])
         if not titel or titel.startswith('http'): continue
 
+        # Voor de Kalender (Top 5 per dag)
         if datum not in days_dict:
             days_dict[datum] = []
         days_dict[datum].append((artiest, titel))
 
-    # --- STAP 4: TOP 5 BOUWEN MET MAX 2 PER ARTIEST ---
+        # Voor de Statistieken (Werkelijk alles)
+        global_counter[(artiest, titel)] += 1
+
+    # --- STAP 4: data.json BOUWEN (TOP 5 PER DAG) ---
     final_output = []
     for datum in sorted(days_dict.keys(), reverse=True):
         counts = Counter(days_dict[datum])
-        # Sorteer alle nummers van die dag op populariteit
         sorted_songs = counts.most_common()
         
         day_top_5 = []
-        artist_counts_per_day = {} # Om bij te houden: artist -> count
+        artist_counts_per_day = {}
         
         for (artiest, titel), count in sorted_songs:
-            if len(day_top_5) >= 5:
-                break
-                
-            # Check hoe vaak deze artiest al in de Top 5 van vandaag staat
+            if len(day_top_5) >= 5: break
             current_artist_count = artist_counts_per_day.get(artiest.lower(), 0)
-            
             if current_artist_count < 2:
-                # Toevoegen aan Top 5
                 key = (artiest.lower(), titel.lower())
                 poster = poster_cache.get(key, "img/placeholder.png")
-                
                 day_top_5.append({
-                    "datum": datum,
-                    "titel": titel,
-                    "artiest": artiest,
-                    "poster": poster
+                    "datum": datum, "titel": titel, "artiest": artiest, "poster": poster
                 })
-                
-                # Update de teller voor deze artiest
                 artist_counts_per_day[artiest.lower()] = current_artist_count + 1
-        
         final_output.extend(day_top_5)
 
-    # --- STAP 5: OPSLAAN ---
     with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(final_output, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Synchronisatie klaar! Maximaal 2 liedjes per artiest per dag voor 2024-2026.")
-    print(f"🖼️  Bestaande posters zijn veilig overgezet.")
+    # --- STAP 5: stats.json BOUWEN (TOTALE FREQUENTIE) ---
+    stats_output = []
+    for (artiest, titel), count in global_counter.items():
+        key = (artiest.lower(), titel.lower())
+        poster = poster_cache.get(key, "img/placeholder.png")
+        stats_output.append({
+            "artiest": artiest,
+            "titel": titel,
+            "count": count,
+            "poster": poster
+        })
+
+    with open('stats.json', 'w', encoding='utf-8') as f:
+        json.dump(stats_output, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Synchronisatie klaar! data.json (kalender) en stats.json (volledige counts) zijn bijgewerkt.")
 
 if __name__ == "__main__":
     generate_smart_top5()

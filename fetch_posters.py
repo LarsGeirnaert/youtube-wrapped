@@ -10,8 +10,7 @@ def clean_text_heavy(artist, title):
     title = re.sub(r'^(Bekeken|Watched)\s+naar\s+', '', title, flags=re.IGNORECASE)
     title = re.sub(r'^(Bekeken|Watched)\s+', '', title, flags=re.IGNORECASE)
 
-    # 2. Verwijder versie-ruis (Bass Boosted, Sped Up, etc.)
-    # Dit zorgt ervoor dat "Let it happen, Bass Boosted" gewoon "Let it happen" wordt.
+    # 2. Verwijder versie-ruis voor betere API-matches
     noise = [
         r'Bass Boosted', r'Sped Up', r'Nightcore', r'Remix', r'Edit', 
         r'Official Video', r'Lyrics', r'Audio', r'Central', r'Topic',
@@ -25,63 +24,13 @@ def clean_text_heavy(artist, title):
     title = re.sub(r'\[.*?\]', '', title)
     title = re.sub(r'\(.*?\)', '', title)
     
-    # 4. SPLIT-FIX: Als de titel "Artiest - Nummer" bevat
+    # 4. SPLIT-FIX: Voor "Goose - Synrise"
     if " - " in title:
         parts = title.split(" - ", 1)
         artist = parts[0].strip()
         title = parts[1].strip()
 
     return artist.strip(), title.strip()
-
-def fetch_album_covers():
-    file_path = 'data.json'
-    if not os.path.exists(file_path): return
-
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-
-    # Stap 1: Alleen unieke missende nummers zoeken
-    unique_missing = []
-    seen = set()
-    for entry in data:
-        if entry['poster'] == "img/placeholder.png":
-            a, t = clean_text_heavy(entry['artiest'], entry['titel'])
-            key = (a.lower(), t.lower())
-            if key not in seen:
-                unique_missing.append({'a': a, 't': t, 'orig_a': entry['artiest'], 'orig_t': entry['titel']})
-                seen.add(key)
-
-    if not unique_missing:
-        print("✨ Geen nieuwe posters nodig.")
-        return
-
-    print(f"🚀 Zoeken naar {len(unique_missing)} posters (met fallback-logica)...")
-    
-    for i, item in enumerate(unique_missing):
-        # Poging 1: Schone artiest + Schone titel
-        query = f"{item['a']} {item['t']}"
-        img = search_apple(query)
-
-        # Poging 2 (Fallback): Alleen de titel (werkt goed voor remixes/central kanalen)
-        if not img and len(item['t']) > 3:
-            print(f"  🔍 Fallback voor: {item['t']}...")
-            img = search_apple(item['t'])
-
-        if img:
-            # Update alle matching entries in de data
-            key_a = item['orig_a'].lower()
-            key_t = item['orig_t'].lower()
-            for e in data:
-                if e['artiest'].lower() == key_a and e['titel'].lower() == key_t:
-                    e['poster'] = img
-            print(f"✅ Gevonden: {query}")
-        else:
-            print(f"❌ Niet gevonden: {query}")
-        
-        time.sleep(1.2) # Apple is streng met limieten
-
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
 
 def search_apple(q):
     try:
@@ -93,5 +42,95 @@ def search_apple(q):
         pass
     return None
 
+def fetch_all_posters():
+    files = ['data.json', 'stats.json']
+    all_data = {}
+
+    # --- STAP 1: LAAD BESTANDEN EN BOUW POSTER-BIBLIOTHEEK ---
+    poster_library = {}
+    
+    for file_name in files:
+        if os.path.exists(file_name):
+            with open(file_name, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                all_data[file_name] = data
+                for entry in data:
+                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
+                    key = (a_clean.lower(), t_clean.lower())
+                    # Als we al een poster hebben, voeg toe aan bieb
+                    if entry.get('poster') and entry['poster'] != "img/placeholder.png":
+                        poster_library[key] = entry['poster']
+
+    # --- STAP 2: VUL ELKAAR AAN (SMART SYNC) ---
+    # Als een poster in data.json staat maar niet in stats.json (of andersom), vul aan.
+    for file_name in files:
+        if file_name in all_data:
+            for entry in all_data[file_name]:
+                if entry['poster'] == "img/placeholder.png":
+                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
+                    key = (a_clean.lower(), t_clean.lower())
+                    if key in poster_library:
+                        entry['poster'] = poster_library[key]
+
+    # --- STAP 3: ZOEKLIST MAKEN VOOR WAT ECHT NOG ONTBREEKT ---
+    unique_missing = []
+    seen_missing = set()
+    
+    for file_name in files:
+        if file_name in all_data:
+            for entry in all_data[file_name]:
+                if entry['poster'] == "img/placeholder.png":
+                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
+                    key = (a_clean.lower(), t_clean.lower())
+                    if key not in seen_missing:
+                        unique_missing.append({'a': a_clean, 't': t_clean, 'orig_a': entry['artiest'], 'orig_t': entry['titel']})
+                        seen_missing.add(key)
+
+    if not unique_missing:
+        print("✨ Beide bestanden zijn al volledig voorzien van posters!")
+        # Sla op voor de zekerheid (in geval van stap 2 updates)
+        save_files(all_data)
+        return
+
+    # --- STAP 4: API CALLS ---
+    print(f"🚀 Zoeken naar {len(unique_missing)} missende posters voor data.json & stats.json...")
+    
+    for i, item in enumerate(unique_missing):
+        query = f"{item['a']} {item['t']}"
+        img = search_apple(query)
+
+        # Fallback: Alleen titel
+        if not img and len(item['t']) > 3:
+            img = search_apple(item['t'])
+
+        if img:
+            # Update de poster in de interne lijsten van beide bestanden
+            for file_name in files:
+                if file_name in all_data:
+                    for e in all_data[file_name]:
+                        ea, et = clean_text_heavy(e['artiest'], e['titel'])
+                        if (ea.lower(), et.lower()) == (item['a'].lower(), item['t_clean'].lower() if 't_clean' in item else item['t'].lower()):
+                             e['poster'] = img
+                        # Extra check op originele namen voor de zekerheid
+                        elif e['artiest'] == item['orig_a'] and e['titel'] == item['orig_t']:
+                             e['poster'] = img
+            print(f"✅ Gevonden: {query}")
+        else:
+            print(f"❌ Niet gevonden: {query}")
+        
+        # Tussen tijds opslaan om dataverlies te voorkomen
+        if i % 5 == 0:
+            save_files(all_data)
+        
+        time.sleep(1.2)
+
+    save_files(all_data)
+    print("🏁 Alle bestanden zijn bijgewerkt en opgeslagen.")
+
+def save_files(all_data):
+    for file_name, content in all_data.items():
+        with open(file_name, 'w', encoding='utf-8') as f:
+            json.dump(content, f, indent=2, ensure_ascii=False)
+
 if __name__ == "__main__":
-    fetch_album_covers()
+    fetch_all_posters()

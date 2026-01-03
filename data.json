@@ -187,6 +187,12 @@
   },
   {
     "datum": "2025-12-26",
+    "titel": "Set Fire to the Rain",
+    "artiest": "Adele",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2025-12-26",
     "titel": "Mr. Brightside",
     "artiest": "The Killers",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/11/64/9c/11649c80-2066-dba8-77a9-df7eecae26c1/17UM1IM06937.rgb.jpg/600x600bb.jpg"
@@ -208,12 +214,6 @@
     "titel": "Eye of the Tiger",
     "artiest": "Survivor",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f9/02/8f/f9028f63-7a55-235e-f789-1e8946430fa2/614223201122.jpg/600x600bb.jpg"
-  },
-  {
-    "datum": "2025-12-26",
-    "titel": "Teenage Dirtbag",
-    "artiest": "Wheatus",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/f7/c3/33/f7c333e4-b2b5-b49d-1406-f51bdac6a8aa/mzi.bllmhdje.jpg/600x600bb.jpg"
   },
   {
     "datum": "2025-12-25",
@@ -11737,12 +11737,6 @@
   },
   {
     "datum": "2024-10-26",
-    "titel": "Set Fire To The Rain|| sped up",
-    "artiest": "moonchild",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/600x600bb.jpg"
-  },
-  {
-    "datum": "2024-10-26",
     "titel": "Last Friday Night  | Katy Perry",
     "artiest": "Nightcore",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c8/d3/42/c8d342af-26d9-3ec2-c511-e1eaf860e299/13UABIM57787.rgb.jpg/600x600bb.jpg"
@@ -11764,6 +11758,12 @@
     "titel": "Somewhere Only We Know",
     "artiest": "Keane",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/89/a6/f7/89a6f7be-a0e0-2524-a13b-6b5df7b7534a/06UMGIM24399.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2024-10-26",
+    "titel": "Lush Life",
+    "artiest": "Zara Larsson",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b2/82/69/b2826914-f524-4fed-dfeb-b6df63ea6cff/886446183473.jpg/600x600bb.jpg"
   },
   {
     "datum": "2024-10-25",

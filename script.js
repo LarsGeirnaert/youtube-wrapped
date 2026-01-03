@@ -1,125 +1,114 @@
 let currentViewDate = new Date();
 let musicData = [];
+let statsData = [];
 let activeFilter = null;
 
 // --- 1. TAB NAVIGATIE ---
 function switchTab(tabName) {
-    const calendarView = document.getElementById('view-calendar');
-    const statsView = document.getElementById('view-stats');
-    const btnCalendar = document.getElementById('btn-calendar');
-    const btnStats = document.getElementById('btn-stats');
-
-    if (tabName === 'calendar') {
-        calendarView.classList.remove('hidden');
-        statsView.classList.add('hidden');
-        btnCalendar.classList.add('active');
-        btnStats.classList.remove('active');
-        renderCalendar();
-    } else {
-        calendarView.classList.add('hidden');
-        statsView.classList.remove('hidden');
-        btnCalendar.classList.remove('active');
-        btnStats.classList.add('active');
-        renderDashboard();
-    }
+    document.getElementById('view-calendar').classList.toggle('hidden', tabName !== 'calendar');
+    document.getElementById('view-stats').classList.toggle('hidden', tabName !== 'stats');
+    document.getElementById('btn-calendar').classList.toggle('active', tabName === 'calendar');
+    document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats');
+    
+    if (tabName === 'calendar') renderCalendar();
+    else renderStatsDashboard();
 }
 
 // --- 2. DATA LADEN ---
 async function loadMusic() {
     try {
-        const response = await fetch('data.json');
-        musicData = await response.json();
+        const [dataRes, statsRes] = await Promise.all([
+            fetch('data.json'),
+            fetch('stats.json')
+        ]);
+        musicData = await dataRes.json();
+        statsData = await statsRes.json();
         
-        const uniqueSongs = new Set(musicData.map(s => `${s.titel}-${s.artiest}`)).size;
-        document.getElementById('unique-songs-count').innerText = uniqueSongs;
+        document.getElementById('unique-songs-count').innerText = statsData.length;
+        document.getElementById('total-days-count').innerText = new Set(musicData.map(s => s.datum)).size;
         
         calculateStreak();
-        renderDashboard();
         renderCalendar();
-    } catch (error) { 
-        console.error("Fout bij laden van data.json:", error); 
-    }
+    } catch (error) { console.error("Fout bij laden:", error); }
 }
 
-// --- 3. ZOEKFUNCTIE ---
-function handleSearch() {
-    const query = document.getElementById('musicSearch').value.toLowerCase();
-    const resultsContainer = document.getElementById('search-results');
+// --- 3. MAANDELIJKSE HIGHLIGHTS LOGICA ---
+function calculateMonthlyHighlights(year, month) {
+    const monthStr = `${year}-${String(month + 1).padStart(2, '0')}`;
+    const monthlySongs = musicData.filter(s => s.datum.startsWith(monthStr));
     
-    if (query.length < 2) {
-        resultsContainer.innerHTML = "";
-        return;
-    }
-
-    // Tel hoe vaak elk uniek liedje voorkomt
-    const matches = {};
-    musicData.forEach(item => {
-        const fullTitle = `${item.titel} - ${item.artiest}`;
-        if (fullTitle.toLowerCase().includes(query)) {
-            if (!matches[fullTitle]) {
-                matches[fullTitle] = { count: 0, poster: item.poster, artiest: item.artiest, titel: item.titel };
-            }
-            matches[fullTitle].count++;
-        }
+    const songCounts = {};
+    const artistCounts = {};
+    
+    monthlySongs.forEach(s => {
+        const songKey = `${s.titel} - ${s.artiest}`;
+        songCounts[songKey] = (songCounts[songKey] || 0) + 1;
+        artistCounts[s.artiest] = (artistCounts[s.artiest] || 0) + 1;
     });
 
-    const sortedMatches = Object.entries(matches)
-        .sort((a, b) => b[1].count - a[1].count)
-        .slice(0, 5);
+    const topSong = Object.entries(songCounts).sort((a,b) => b[1] - a[1])[0];
+    const topArtist = Object.entries(artistCounts).sort((a,b) => b[1] - a[1])[0];
 
-    if (sortedMatches.length === 0) {
-        resultsContainer.innerHTML = "<p style='padding:10px; color:#666;'>Geen resultaten gevonden...</p>";
-        return;
-    }
-
-    resultsContainer.innerHTML = sortedMatches.map(([name, data]) => `
-        <div class="search-item" onclick="showSongSpotlight('${name.replace(/'/g, "\\'")}')">
-            <img src="${data.poster}" onerror="this.src='img/placeholder.png'">
-            <div class="search-item-info">
-                <span class="search-item-title">${data.titel}</span>
-                <span class="search-item-artist">${data.artiest}</span>
-            </div>
-            <span class="search-item-count">${data.count}x</span>
-        </div>
-    `).join('');
+    document.getElementById('highlights-title').innerText = `Highlights van ${new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(currentViewDate)}`;
+    
+    document.getElementById('month-top-song').querySelector('.content').innerText = topSong ? topSong[0] : "Geen data";
+    document.getElementById('month-top-artist').querySelector('.content').innerText = topArtist ? topArtist[0] : "Geen data";
+    document.getElementById('month-total-listens').querySelector('.content').innerText = monthlySongs.length;
 }
 
-// --- 4. STATISTIEKEN BEREKENEN ---
-function renderDashboard() {
-    const songPoints = {};
-    const artistCounts = {};
-    const uniekeDagen = new Set(musicData.map(item => item.datum));
+// --- 4. ZOEKFUNCTIE ---
+function handleSearch() {
+    const query = document.getElementById('musicSearch').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('search-results');
+    if (query.length < 2) { resultsContainer.innerHTML = ""; return; }
 
-    // We groeperen data per dag om rangorde te bepalen
-    const dailyData = {};
-    musicData.forEach(item => {
-        if (!dailyData[item.datum]) dailyData[item.datum] = [];
-        dailyData[item.datum].push(item);
-    });
+    const matches = statsData.filter(s => 
+        s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query)
+    ).sort((a, b) => b.count - a.count).slice(0, 8);
 
-    Object.values(dailyData).forEach(daySongs => {
-        daySongs.forEach((song, index) => {
-            if (index < 5) {
-                const points = 5 - index;
-                const songKey = `${song.titel} - ${song.artiest}`;
-                songPoints[songKey] = (songPoints[songKey] || 0) + points;
-                artistCounts[song.artiest] = (artistCounts[song.artiest] || 0) + 1;
-            }
-        });
-    });
+    resultsContainer.innerHTML = matches.map(s => `
+        <div class="search-item" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${s.artiest.replace(/'/g, "\\'")}')">
+            <img src="${s.poster}" onerror="this.src='img/placeholder.png'">
+            <div class="search-item-info">
+                <span class="search-item-title">${s.titel}</span>
+                <span class="search-item-artist">${s.artiest}</span>
+            </div>
+            <span class="search-item-count">${s.count}x</span>
+        </div>`).join('');
+}
 
-    document.getElementById('total-days-count').innerText = uniekeDagen.size;
+// --- 5. STATISTIEKEN & INZICHTEN ---
+function renderStatsDashboard() {
+    const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
+    const artistMap = {};
+    statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
+    const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
 
-    const topSongs = Object.entries(songPoints).sort((a,b) => b[1] - a[1]).slice(0, 10);
-    const topArtists = Object.entries(artistCounts).sort((a,b) => b[1] - a[1]).slice(0, 10);
-
-    renderList('top-songs-list', topSongs, 'pt', 'song');
+    renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count]), 'x', 'song');
     renderList('top-artists-list', topArtists, 'x', 'artist');
+
+    const artistGroups = {};
+    statsData.forEach(s => {
+        if (!artistGroups[s.artiest]) artistGroups[s.artiest] = [];
+        artistGroups[s.artiest].push(s);
+    });
+
+    const obsessions = [];
+    const explorers = [];
+
+    Object.entries(artistGroups).forEach(([artist, songs]) => {
+        if (songs.length === 1 && songs[0].count > 100) obsessions.push([`${songs[0].titel} (${artist})`, songs[0].count]);
+        if (songs.length > 10 && songs.every(s => s.count < 100)) explorers.push([artist, songs.length]);
+    });
+
+    renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]), 'x', 'song');
+    renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]), ' songs', 'artist');
 }
 
 function renderList(id, items, unit, type) {
     const el = document.getElementById(id);
     if (!el) return;
+    if (items.length === 0) { el.innerHTML = "<li>Geen data...</li>"; return; }
     el.innerHTML = items.map(([name, val]) => {
         const escapedName = name.replace(/'/g, "\\'");
         const clickAction = type === 'artist' ? `showArtistDetails('${escapedName}')` : `showSongSpotlight('${escapedName}')`;
@@ -127,26 +116,30 @@ function renderList(id, items, unit, type) {
     }).join('');
 }
 
-// --- 5. STREAK & INTERACTIE ---
-function calculateStreak() {
-    const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse();
-    if (dates.length === 0) return;
-    let streak = 0;
-    let today = new Date();
-    today.setHours(0,0,0,0);
-    let checkDate = new Date(dates[0]);
-    if (Math.floor((today - checkDate) / 86400000) <= 1) {
-        streak = 1;
-        for (let i = 0; i < dates.length - 1; i++) {
-            let diff = Math.floor((new Date(dates[i]) - new Date(dates[i+1])) / 86400000);
-            if (diff === 1) streak++; else break;
-        }
-    }
-    document.getElementById('streak-count').innerText = streak;
+// --- 6. INTERACTIE (ARTIEST DETAILS) ---
+function showArtistDetails(artist) {
+    let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
+    const artistSongs = statsData.filter(s => s.artiest === cleanArtist).sort((a,b) => b.count - a.count);
+    const container = document.getElementById('day-top-three-container');
+    document.getElementById('modal-datum-titel').innerText = cleanArtist;
+    
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <button onclick="applyCalendarFilter('${cleanArtist.replace(/'/g, "\\'")}')" class="apply-btn">📅 Bekijk op kalender</button>
+        </div>
+        <div style="max-height: 400px; overflow-y: auto;">
+            ${artistSongs.map(s => `
+                <div class="search-item" style="background:rgba(255,255,255,0.05); margin-bottom:10px;" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${s.artiest.replace(/'/g, "\\'")}')">
+                    <img src="${s.poster}" style="width:45px; height:45px; border-radius:8px;">
+                    <div class="search-item-info"><b>${s.titel}</b><br><small>${s.count}x</small></div>
+                </div>`).join('')}
+        </div>`;
+    document.getElementById('modal').classList.remove('hidden');
 }
 
-function showArtistDetails(artist) {
+function applyCalendarFilter(artist) {
     activeFilter = artist;
+    document.getElementById('modal').classList.add('hidden');
     switchTab('calendar');
     document.getElementById('resetFilter').classList.remove('hidden');
     renderCalendar();
@@ -154,28 +147,31 @@ function showArtistDetails(artist) {
 
 function showSongSpotlight(songFull) {
     const parts = songFull.split(' - ');
-    const songData = musicData.find(s => s.titel === parts[0] && s.artiest === parts[1]) || { poster: 'img/placeholder.png' };
-    const container = document.getElementById('day-top-three-container');
-    container.innerHTML = `
-        <div class="vinyl-container"><div class="vinyl-record"></div><img src="${songData.poster}" class="vinyl-cover" onerror="this.src='img/placeholder.png'"></div>
+    const s = statsData.find(x => x.titel === parts[0] && x.artiest === parts[1]) || { poster: 'img/placeholder.png' };
+    document.getElementById('day-top-three-container').innerHTML = `
+        <div class="vinyl-container"><div class="vinyl-record"></div><img src="${s.poster}" class="vinyl-cover" onerror="this.src='img/placeholder.png'"></div>
         <h2 style="text-align:center; margin-top:20px;">${parts[0]}</h2>
         <p style="text-align:center; color:var(--spotify-green); font-weight:bold;">${parts[1]}</p>
-    `;
+        <p style="text-align:center; font-size: 0.8rem; color: var(--text-muted);">Totaal ${s.count}x</p>`;
     document.getElementById('modal-datum-titel').innerText = "Spotlight";
     document.getElementById('modal').classList.remove('hidden');
 }
 
-// --- 6. KALENDER ---
+// --- 7. KALENDER RENDERING ---
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
     const monthDisplay = document.getElementById('monthDisplay');
     grid.innerHTML = '';
     const year = currentViewDate.getFullYear(), month = currentViewDate.getMonth();
     monthDisplay.innerText = new Intl.DateTimeFormat('nl-NL', { month: 'long', year: 'numeric' }).format(currentViewDate);
+    
+    // Bereken Highlights voor de nieuwe maand
+    calculateMonthlyHighlights(year, month);
+
     const firstDay = new Date(year, month, 1).getDay();
     const startOffset = firstDay === 0 ? 6 : firstDay - 1;
-
     for (let i = 0; i < startOffset; i++) grid.appendChild(Object.assign(document.createElement('div'), {className: 'calendar-day empty'}));
+    
     for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const daySongs = musicData.filter(d => d.datum === dateStr);
@@ -201,6 +197,21 @@ function openDagDetails(date, songs) {
             <div class="search-item-info"><b>${s.titel}</b><br><small>${s.artiest}</small></div>
         </div>`).join('');
     document.getElementById('modal').classList.remove('hidden');
+}
+
+function calculateStreak() {
+    const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse();
+    if (dates.length === 0) return;
+    let streak = 0, today = new Date();
+    today.setHours(0,0,0,0);
+    let checkDate = new Date(dates[0]);
+    if (Math.floor((today - checkDate) / 86400000) <= 1) {
+        streak = 1;
+        for (let i = 0; i < dates.length - 1; i++) {
+            if (Math.floor((new Date(dates[i]) - new Date(dates[i+1])) / 86400000) === 1) streak++; else break;
+        }
+    }
+    document.getElementById('streak-count').innerText = streak;
 }
 
 document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };

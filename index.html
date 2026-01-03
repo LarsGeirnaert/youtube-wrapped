@@ -47,6 +47,24 @@
                 </div>
                 <div id="calendarGrid" class="calendar-grid"></div>
             </main>
+
+            <section id="monthly-highlights" class="stat-card" style="margin-top: 25px;">
+                <h3 id="highlights-title">Highlights van deze maand</h3>
+                <div class="highlights-grid">
+                    <div class="highlight-item" id="month-top-song">
+                        <span class="label">Top Song</span>
+                        <div class="content">Laden...</div>
+                    </div>
+                    <div class="highlight-item" id="month-top-artist">
+                        <span class="label">Top Artiest</span>
+                        <div class="content">Laden...</div>
+                    </div>
+                    <div class="highlight-item" id="month-total-listens">
+                        <span class="label">Luisterbeurten</span>
+                        <div class="content">0</div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <div id="view-stats" class="hidden">
@@ -58,12 +76,23 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>🏆 Top Songs (Punten)</h3>
-                    <ol id="top-songs-list" class="ranking-list"><li>Laden...</li></ol>
+                    <h3>🏆 Top Songs</h3>
+                    <ol id="top-songs-list" class="ranking-list"></ol>
                 </div>
                 <div class="stat-card">
-                    <h3>👥 Top Artiesten (Frequentie)</h3>
-                    <ol id="top-artists-list" class="ranking-list"><li>Laden...</li></ol>
+                    <h3>👥 Top Artiesten</h3>
+                    <ol id="top-artists-list" class="ranking-list"></ol>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-top: 25px;">
+                <div class="stat-card">
+                    <h3>💎 De Obsessies</h3>
+                    <ul id="obsessions-list" class="ranking-list"></ul>
+                </div>
+                <div class="stat-card">
+                    <h3>🧭 Ontdekkingsreizigers</h3>
+                    <ul id="variety-list" class="ranking-list"></ul>
                 </div>
             </div>
         </div>
