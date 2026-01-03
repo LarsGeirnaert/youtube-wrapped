@@ -16,8 +16,8 @@ def check_all_failures():
     missing_entries = 0
 
     for entry in data:
-        # We kijken naar alles in 2025 en 2026
-        if entry['datum'].startswith('2025') or entry['datum'].startswith('2026'):
+        # Aangepast: We kijken nu naar 2024, 2025 en 2026
+        if entry['datum'].startswith('2024') or entry['datum'].startswith('2025') or entry['datum'].startswith('2026'):
             total_entries += 1
             if entry['poster'] == "img/placeholder.png":
                 missing_songs.add(f"{entry['artiest']} - {entry['titel']}")
@@ -27,7 +27,7 @@ def check_all_failures():
     success_rate = 100 - (len(missing_songs) / (total_entries if total_entries > 0 else 1) * 100)
 
     print("=" * 40)
-    print(f"📊 MUZIEK DAGBOEK STATUS (2025 - 2026)")
+    print(f"📊 MUZIEK DAGBOEK STATUS (2024 - 2026)")
     print("=" * 40)
     print(f"✅ Totaal aantal geladen items: {total_entries}")
     print(f"❌ Aantal items zonder cover: {missing_entries}")
