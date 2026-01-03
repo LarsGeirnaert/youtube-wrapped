@@ -1,13 +1,14 @@
+/* --- BASIS & THEMA --- */
 :root {
-    --bg-color: #0b0b0b;
-    --card-bg: rgba(255, 255, 255, 0.03);
+    /* Achtergrond aangepast van #050505 naar een lichtere antraciet #141414 */
+    --bg-color: #141414; 
+    /* Kaarten iets lichter gemaakt voor beter contrast */
+    --card-bg: rgba(255, 255, 255, 0.07); 
     --spotify-green: #1db954;
-    --gold: #ffd700;
-    --silver: #c0c0c0;
-    --bronze: #cd7f32;
+    --accent-blue: #2196f3;
     --text-main: #ffffff;
-    --text-muted: #b3b3b3;
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-muted: #aaa; /* Iets lichter grijs voor leesbaarheid */
+    --glass-border: rgba(255, 255, 255, 0.15);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,112 +16,118 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
-    background-image: radial-gradient(circle at top right, rgba(29, 185, 84, 0.1), transparent);
+    /* Gradients versterkt (0.1 -> 0.18) voor een lichtere gloed in de hoeken */
+    background-image: 
+        radial-gradient(circle at 10% 10%, rgba(29, 185, 84, 0.18) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(33, 150, 243, 0.18) 0%, transparent 50%);
     color: var(--text-main);
     padding: 20px;
+    min-height: 100vh;
 }
 
-.container { max-width: 1200px; margin: 0 auto; }
-header { margin-bottom: 40px; text-align: center; }
-h1 { font-size: 2.5rem; font-weight: 800; }
-h1 span { color: var(--spotify-green); }
+.container { max-width: 1100px; margin: 0 auto; }
 
+/* --- HEADER & TABS --- */
+header { margin-bottom: 30px; text-align: center; }
+h1 span { color: var(--spotify-green); text-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
+
+.tab-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+.tab-nav button {
+    background: var(--card-bg); border: 1px solid var(--glass-border); color: white;
+    padding: 10px 25px; border-radius: 50px; cursor: pointer; transition: 0.3s;
+}
+.tab-nav button.active { 
+    background: var(--spotify-green); 
+    color: black; 
+    font-weight: 700; 
+    border-color: var(--spotify-green);
+}
+
+/* --- STAT CARDS --- */
 .stat-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    padding: 25px;
+    background: var(--card-bg); 
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); 
+    padding: 25px; 
     border-radius: 24px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
+.stat-card h3 { font-size: 0.7rem; text-transform: uppercase; color: var(--spotify-green); margin-bottom: 15px; letter-spacing: 1px; }
 
-.stat-card h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--spotify-green); margin-bottom: 15px; }
+#dashboard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.big-number { font-size: 2.8rem; font-weight: 800; line-height: 1; }
+.big-number.streak { color: #ff4500; text-shadow: 0 0 10px rgba(255, 69, 0, 0.4); }
 
-.chart-wrapper { height: 350px; width: 100%; position: relative; }
-
-#dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-
-.ranking-list { list-style: none; }
-.ranking-list li {
-    padding: 10px 15px;
-    margin-bottom: 8px;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    transition: 0.2s;
-    cursor: pointer;
-}
-.ranking-list li:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
-
-.ranking-list li:nth-child(1) { border-left: 4px solid var(--gold); }
-.ranking-list li:nth-child(2) { border-left: 4px solid var(--silver); }
-.ranking-list li:nth-child(3) { border-left: 4px solid var(--bronze); }
-
-.point-badge {
-    background: rgba(29, 185, 84, 0.15);
-    color: var(--spotify-green);
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin-left: auto;
-}
-
-.big-number { font-size: 3rem; font-weight: 800; color: var(--spotify-green); }
-
-/* Kalender */
+/* --- KALENDER --- */
 .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.calendar-nav button { background: rgba(255,255,255,0.05); border: none; color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
-.hidden { display: none !important; }
-#resetFilter { font-size: 0.7rem; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff5555; }
-.weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-bottom: 10px; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-.calendar-day { aspect-ratio: 1/1; background: rgba(255, 255, 255, 0.02); border-radius: 12px; position: relative; border: 1px solid var(--glass-border); overflow: hidden; }
-.day-number { position: absolute; top: 5px; left: 8px; font-size: 0.7rem; color: rgba(255,255,255,0.3); z-index: 2; }
-.calendar-day.has-data { cursor: pointer; border-color: rgba(29, 185, 84, 0.2); }
-.calendar-day.has-data:hover { border-color: var(--spotify-green); transform: scale(1.02); z-index: 5; }
-.calendar-day img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+.calendar-nav button { 
+    background: rgba(255,255,255,0.1); 
+    border: 1px solid var(--glass-border); 
+    color: white; 
+    padding: 8px 15px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+}
+
+.weekdays-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    text-align: center; color: var(--text-muted); font-size: 0.75rem; margin-bottom: 10px;
+}
+
+.calendar-grid { 
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; 
+}
+
+.calendar-day { 
+    aspect-ratio: 1/1; 
+    background: rgba(255, 255, 255, 0.05); /* Iets meer opvulling voor lege dagen */
+    border-radius: 12px; 
+    position: relative; 
+    border: 1px solid var(--glass-border); 
+    overflow: hidden; 
+    transition: 0.3s;
+}
+
+.calendar-day.empty { border: none; background: transparent; }
+
+.day-number { position: absolute; top: 6px; left: 8px; font-size: 0.65rem; color: rgba(255,255,255,0.4); z-index: 2; }
+
+.calendar-day.has-data { cursor: pointer; border-color: rgba(29, 185, 84, 0.4); }
+.calendar-day.has-data:hover { border-color: var(--spotify-green); transform: scale(1.05); z-index: 5; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+.calendar-day img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.4s; }
 .calendar-day.has-data:hover img { opacity: 1; }
 .calendar-day.dimmed { opacity: 0.1; filter: grayscale(1); }
 
-/* --- MODAL & COOL EFFECTS --- */
-#modal {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-    z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px);
+/* --- MODAL & STATS --- */
+#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); }
+.modal-content { 
+    background: #1e1e1e; /* Modal achtergrond ook iets lichter */
+    padding: 40px; 
+    border-radius: 30px; 
+    width: 90%; 
+    max-width: 450px; 
+    border: 1px solid var(--glass-border); 
+    position: relative; 
 }
-.modal-content {
-    background: #121212; padding: 40px; border-radius: 30px;
-    width: 90%; max-width: 500px; border: 1px solid var(--glass-border); position: relative;
-    box-shadow: 0 0 50px rgba(0,0,0,0.8);
-}
+#close-button { position: absolute; top: 20px; right: 25px; font-size: 30px; cursor: pointer; color: #888; }
 
-/* Spotlight Effect */
-.spotlight-img {
-    width: 200px; height: 200px; border-radius: 20px;
-    margin: 0 auto 20px; display: block;
-    box-shadow: 0 0 30px var(--spotify-green);
-    animation: pulseGlow 2s infinite;
+.ranking-list li {
+    padding: 12px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: 0.2s;
 }
+.ranking-list li:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(5px); }
 
-@keyframes pulseGlow {
-    0% { transform: scale(1); box-shadow: 0 0 20px var(--spotify-green); }
-    50% { transform: scale(1.05); box-shadow: 0 0 40px var(--spotify-green); }
-    100% { transform: scale(1); box-shadow: 0 0 20px var(--spotify-green); }
+.hidden { display: none !important; }
+
+/* Vinyl effect voor spotlight */
+.vinyl-container { position: relative; width: 200px; height: 200px; margin: 0 auto 20px; }
+.vinyl-record {
+    width: 100%; height: 100%; background: #111; border-radius: 50%;
+    background-image: repeating-radial-gradient(circle, #222 0, #111 2px, #222 4px);
+    animation: rotate 5s linear infinite;
 }
-
-/* Confetti Particle */
-.confetti {
-    position: absolute; width: 10px; height: 10px; background: var(--spotify-green);
-    top: -10px; z-index: 1001; animation: fall 3s linear forwards;
-}
-
-@keyframes fall {
-    to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-
-#day-top-three-container { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-.top-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 15px; }
-.top-item img { width: 55px; height: 55px; border-radius: 10px; }
-.rank-badge { background: var(--spotify-green); color: black; min-width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
-#close-button { position: absolute; top: 15px; right: 25px; font-size: 35px; cursor: pointer; color: #555; }
+.vinyl-cover { position: absolute; inset: 25%; width: 50%; height: 50%; border-radius: 50%; object-fit: cover; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

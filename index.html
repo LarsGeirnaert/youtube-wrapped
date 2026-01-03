@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muziek Agenda - Interactive Pro</title>
+    <title>Muziek Dagboek 2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,64 +12,67 @@
     <div class="container">
         <header>
             <h1>Mijn Muziek <span>Dagboek</span></h1>
+            <nav class="tab-nav">
+                <button onclick="switchTab('calendar')" id="btn-calendar" class="active">📅 Kalender</button>
+                <button onclick="switchTab('stats')" id="btn-stats">📊 Statistieken</button>
+            </nav>
         </header>
 
-        <section id="chart-section" class="stat-card">
-            <h3>📈 Puntenverloop Top Artiesten</h3>
-            <div class="chart-wrapper">
-                <canvas id="artistChart"></canvas>
-            </div>
-        </section>
-
         <section id="dashboard-stats">
-            <div class="stat-card">
-                <h3>🏆 Top Songs</h3>
-                <p style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">Klik op een song voor een spotlight</p>
-                <ol id="top-songs-list" class="ranking-list"><li>Laden...</li></ol>
+            <div class="stat-card tiny">
+                <div id="total-days-count" class="big-number">0</div>
+                <p style="font-size: 0.7rem; color: #888;">Dagen</p>
             </div>
-            <div class="stat-card">
-                <h3>👥 Top Artiesten</h3>
-                <p style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">Klik voor alle tracks van artiest</p>
-                <ol id="top-artists-list" class="ranking-list"><li>Laden...</li></ol>
+            <div class="stat-card tiny">
+                <div id="streak-count" class="big-number streak">0</div>
+                <p style="font-size: 0.7rem; color: #888;">🔥 Streak</p>
             </div>
-            <div class="stat-card">
-                <h3>📊 Totaal & Streak</h3>
-                <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 10px; text-align: center;">
-                    <div>
-                        <div id="total-days-count" class="big-number" style="font-size: 2.5rem;">0</div>
-                        <p style="font-size: 0.7rem; color: #888;">Dagen</p>
-                    </div>
-                    <div style="border-left: 1px solid rgba(255,255,255,0.1); height: 40px;"></div>
-                    <div>
-                        <div id="streak-count" class="big-number" style="font-size: 2.5rem; color: #1db954;">0</div>
-                        <p style="font-size: 0.7rem; color: #888;">🔥 Streak</p>
-                    </div>
-                </div>
+            <div class="stat-card tiny">
+                <div id="unique-songs-count" class="big-number" style="color: var(--accent-blue);">0</div>
+                <p style="font-size: 0.7rem; color: #888;">Unieke Songs</p>
             </div>
         </section>
 
-        <main class="stat-card">
-            <div class="calendar-header">
-                <h2 id="monthDisplay">Januari 2025</h2>
-                <div class="calendar-nav">
-                    <button id="prevMonth">←</button>
-                    <button id="resetFilter" class="hidden">Filter wissen</button>
-                    <button id="nextMonth">→</button>
+        <div id="view-calendar">
+            <main class="stat-card">
+                <div class="calendar-header">
+                    <h2 id="monthDisplay">Januari 2026</h2>
+                    <div class="calendar-nav">
+                        <button id="prevMonth">←</button>
+                        <button id="resetFilter" class="hidden">Wis Filter</button>
+                        <button id="nextMonth">→</button>
+                    </div>
+                </div>
+                <div class="weekdays-grid">
+                    <div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+            </main>
+        </div>
+
+        <div id="view-stats" class="hidden">
+            <div class="stats-grid">
+                <section class="stat-card wide">
+                    <h3>📈 Puntenverloop Top Artiesten</h3>
+                    <div class="chart-wrapper"><canvas id="artistChart"></canvas></div>
+                </section>
+                <div class="stat-card">
+                    <h3>🏆 Top Songs</h3>
+                    <ol id="top-songs-list" class="ranking-list"><li>Laden...</li></ol>
+                </div>
+                <div class="stat-card">
+                    <h3>👥 Top Artiesten</h3>
+                    <ol id="top-artists-list" class="ranking-list"><li>Laden...</li></ol>
                 </div>
             </div>
-            <div class="weekdays-grid">
-                <div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div>
-            </div>
-            <div id="calendarGrid" class="calendar-grid"></div>
-        </main>
+        </div>
     </div>
 
     <div id="modal" class="hidden">
-        <div id="confetti-container"></div>
         <div class="modal-content">
             <span id="close-button">&times;</span>
             <div id="modal-body-content">
-                <h2 id="modal-datum-titel">Details</h2>
+                <h2 id="modal-datum-titel" style="text-align: center; margin-bottom: 20px;">Details</h2>
                 <div id="day-top-three-container"></div>
             </div>
         </div>
