@@ -1,1 +1,26 @@
+# --- PRIVACY & BRONBESTANDEN ---
+# De ruwe export van Google bevat je hele kijkgeschiedenis. NIET PUSHEN!
+kijkgeschiedenis.json
+watch-history.json
+kijkgeschiedenis.json:Zone.Identifier
+
+# --- INTERMEDIAIRE BESTANDEN ---
+# Bestanden die door scripts worden gemaakt maar niet nodig zijn voor de website
+filtered_music.json
+
+# --- PYTHON NOISE ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# --- SYSTEM NOISE ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- NODE.JS (indien van toepassing) ---
 node_modules/

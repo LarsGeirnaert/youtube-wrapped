@@ -1,4 +1,4 @@
-let currentViewDate = new Date(); // Start op vandaag
+let currentViewDate = new Date(); 
 let musicData = [];
 let myChart = null;
 let activeFilter = null;
@@ -12,6 +12,7 @@ async function loadMusic() {
     } catch (error) { console.error("Fout bij laden:", error); }
 }
 
+// --- DASHBOARD RENDERING ---
 function renderDashboardAndChart() {
     const songPoints = {}, artistCounts = {}, uniekeDagen = new Set(musicData.map(item => item.datum));
     const grouped = {};
@@ -21,7 +22,8 @@ function renderDashboardAndChart() {
         grouped[item.datum].push(item);
     });
 
-    const sortedDates = Object.keys(grouped).sort(), artistPointsOverTime = {};
+    const sortedDates = Object.keys(grouped).sort();
+    const artistPointsOverTime = {};
     let runningPoints = {};
     
     sortedDates.forEach(date => {
@@ -45,6 +47,55 @@ function renderDashboardAndChart() {
     initChart(sortedDates, artistPointsOverTime, topArtists.map(a => a[0]));
 }
 
+// --- DE BELANGRIJKE LIJST-FUNCTIE ---
+function renderList(id, items, unit, type) {
+    const el = document.getElementById(id);
+    el.innerHTML = items.map(([name, val]) => {
+        // We ontsnappen aanhalingstekens zodat namen als "Don't You" de code niet breken
+        const escapedName = name.replace(/'/g, "\\'");
+        const clickAction = type === 'artist' 
+            ? `showArtistDetails('${escapedName}')` 
+            : `showSongSpotlight('${escapedName}')`;
+            
+        return `<li onclick="${clickAction}" style="cursor:pointer">
+            <span>${name}</span><span class="point-badge">${val}${unit}</span>
+        </li>`;
+    }).join('');
+}
+
+// --- KLIK ACTIES ---
+function showArtistDetails(artist) {
+    activeFilter = artist;
+    const resetBtn = document.getElementById('resetFilter');
+    if (resetBtn) resetBtn.classList.remove('hidden');
+    renderCalendar(); // Dit zorgt dat alleen dagen met deze artiest oplichten
+    console.log("Filteren op artiest:", artist);
+}
+
+function showSongSpotlight(songFull) { 
+    // Splits titel en artiest (gebaseerd op "Titel - Artiest")
+    const parts = songFull.split(' - ');
+    const titel = parts[0];
+    const artiest = parts[1];
+    
+    // Zoek de poster in onze data
+    const songData = musicData.find(s => s.titel === titel && s.artiest === artiest) || { poster: 'img/placeholder.png' };
+    
+    const container = document.getElementById('day-top-three-container');
+    container.innerHTML = `
+        <div class="vinyl-container">
+            <div class="vinyl-record"></div>
+            <img src="${songData.poster}" class="vinyl-cover" onerror="this.src='img/placeholder.png'">
+        </div>
+        <h2 style="text-align:center; margin-top:20px;">${titel}</h2>
+        <p style="text-align:center; color:var(--spotify-green); font-weight:bold;">${artiest}</p>
+    `;
+    
+    document.getElementById('modal-datum-titel').innerText = "Spotlight";
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+// --- KALENDER & NAVIGATIE ---
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
     const monthDisplay = document.getElementById('monthDisplay');
@@ -65,12 +116,19 @@ function renderCalendar() {
         const daySongs = musicData.filter(d => d.datum === dateStr);
         const cell = document.createElement('div');
         cell.className = 'calendar-day';
-        cell.innerHTML = `<span class="day-number">${day}</span>`;
+        
         if (daySongs.length > 0) {
             cell.classList.add('has-data');
-            if (activeFilter && !daySongs.some(s => s.artiest === activeFilter)) cell.classList.add('dimmed');
-            cell.innerHTML += `<img src="${daySongs[0].poster}" onerror="this.src='img/placeholder.png'">`;
+            
+            // Filter logica: als er een artiest is geselecteerd, dimmen we de rest
+            if (activeFilter && !daySongs.some(s => s.artiest === activeFilter)) {
+                cell.classList.add('dimmed');
+            }
+
+            cell.innerHTML = `<span class="day-number">${day}</span><img src="${daySongs[0].poster}" onerror="this.src='img/placeholder.png'">`;
             cell.onclick = () => openDagDetails(dateStr, daySongs);
+        } else {
+            cell.innerHTML = `<span class="day-number">${day}</span>`;
         }
         grid.appendChild(cell);
     }
@@ -79,50 +137,68 @@ function renderCalendar() {
 function openDagDetails(date, songs) {
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
+    
     container.innerHTML = songs.slice(0, 5).map((s, i) => `
-        <div class="top-item" style="display:flex; align-items:center; gap:15px; margin-bottom:10px; background:rgba(255,255,255,0.03); padding:10px; border-radius:12px;">
-            <b style="color:var(--spotify-green)">${i + 1}</b>
-            <img src="${s.poster}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;">
-            <div><b>${s.titel}</b><br><small style="color:#888;">${s.artiest}</small></div>
+        <div style="display:flex; align-items:center; gap:15px; margin-bottom:12px; background:rgba(255,255,255,0.05); padding:12px; border-radius:15px; border:1px solid rgba(255,255,255,0.1);">
+            <b style="color:var(--spotify-green); width:20px;">${i + 1}</b>
+            <img src="${s.poster}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;" onerror="this.src='img/placeholder.png'">
+            <div style="overflow:hidden;">
+                <b style="display:block; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${s.titel}</b>
+                <small style="color:#aaa;">${s.artiest}</small>
+            </div>
         </div>`).join('');
     document.getElementById('modal').classList.remove('hidden');
 }
 
-// Event Listeners voor de knoppen
-document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };
-document.getElementById('nextMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderCalendar(); };
-document.getElementById('close-button').onclick = () => document.getElementById('modal').classList.add('hidden');
-document.getElementById('resetFilter').onclick = function() { activeFilter = null; this.classList.add('hidden'); renderCalendar(); };
-
-// Helpers voor Chart en Lijsten
-function renderList(id, items, unit, type) {
-    const el = document.getElementById(id);
-    el.innerHTML = items.map(([name, val]) => `
-        <li onclick="${type === 'artist' ? `showArtistDetails('${name}')` : `showSongSpotlight('${name}')`}">
-            <span>${name}</span><span class="point-badge">${val}${unit}</span>
-        </li>`).join('');
-}
-
+// Chart Initialisatie
 function initChart(dates, history, names) {
-    const ctx = document.getElementById('artistChart').getContext('2d');
+    const canvas = document.getElementById('artistChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     const datasets = names.map((name, i) => ({
-        label: name, data: dates.map(d => history[d][name] || 0),
+        label: name, 
+        data: dates.map(d => history[d][name] || 0),
         borderColor: ['#1db954', '#9d50bb', '#2196f3', '#ff9800', '#e91e63'][i],
-        tension: 0.4, fill: false
+        backgroundColor: 'transparent',
+        tension: 0.4,
+        pointRadius: 2
     }));
+
     if (myChart) myChart.destroy();
     myChart = new Chart(ctx, {
-        type: 'line', data: { labels: dates.map(d => d.split('-').reverse().slice(0,2).join('/')), datasets },
-        options: { responsive: true, maintainAspectRatio: false }
+        type: 'line', 
+        data: { labels: dates.map(d => d.split('-').reverse().slice(0,2).join('/')), datasets },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#aaa', font: { size: 10 } } } },
+            scales: {
+                x: { ticks: { color: '#666', maxRotation: 0 } },
+                y: { ticks: { color: '#666' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            },
+            // Zorg dat we ook op de grafiek kunnen klikken!
+            onClick: (e, elements) => {
+                if (elements.length > 0) {
+                    const artistName = datasets[elements[0].datasetIndex].label;
+                    showArtistDetails(artistName);
+                }
+            }
+        }
     });
 }
 
-function showArtistDetails(artist) { activeFilter = artist; document.getElementById('resetFilter').classList.remove('hidden'); renderCalendar(); }
-function showSongSpotlight(songFull) { 
-    const [titel, artiest] = songFull.split(' - ');
-    const s = musicData.find(s => s.titel === titel) || { poster: 'img/placeholder.png' };
-    document.getElementById('day-top-three-container').innerHTML = `<div class="vinyl-container"><div class="vinyl-record"></div><img src="${s.poster}" class="vinyl-cover"></div><h2 style="text-align:center;">${titel}</h2><p style="text-align:center; color:var(--spotify-green);">${artiest}</p>`;
-    document.getElementById('modal').classList.remove('hidden');
+// Navigatie Listeners
+document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };
+document.getElementById('nextMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderCalendar(); };
+document.getElementById('close-button').onclick = () => document.getElementById('modal').classList.add('hidden');
+
+const resetBtn = document.getElementById('resetFilter');
+if (resetBtn) {
+    resetBtn.onclick = function() {
+        activeFilter = null;
+        this.classList.add('hidden');
+        renderCalendar();
+    };
 }
 
 loadMusic();
