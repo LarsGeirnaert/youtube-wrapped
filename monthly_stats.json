@@ -2,6 +2,11 @@
   "2026-01": {
     "top_songs": [
       [
+        "The Weeknd",
+        "I Feel It Coming",
+        4
+      ],
+      [
         "XXXTENTACION",
         "True Love",
         2
@@ -74,11 +79,6 @@
       [
         "Goose",
         "Synrise",
-        1
-      ],
-      [
-        "The Weeknd",
-        "I Feel It Coming",
         1
       ],
       [
@@ -504,16 +504,16 @@
     ],
     "top_artists": [
       [
+        "The Weeknd",
+        8
+      ],
+      [
         "Radiohead",
         8
       ],
       [
         "The War On Drugs",
         6
-      ],
-      [
-        "The Weeknd",
-        5
       ],
       [
         "Tame Impala",
@@ -916,7 +916,7 @@
       "The Weeknd": [
         [
           "I Feel It Coming",
-          1
+          4
         ],
         [
           "Timeless",
@@ -1582,7 +1582,7 @@
         ]
       ]
     },
-    "total_listens": 142
+    "total_listens": 145
   },
   "2025-12": {
     "top_songs": [
@@ -1992,6 +1992,11 @@
         12
       ],
       [
+        "The Weeknd",
+        "Starboy",
+        12
+      ],
+      [
         "24kGoldn",
         "Mood",
         12
@@ -2014,6 +2019,11 @@
       [
         "Survivor",
         "Eye of the Tiger",
+        12
+      ],
+      [
+        "Adele",
+        "Love In The Dark",
         12
       ],
       [
@@ -2075,16 +2085,6 @@
         "Kanye West",
         "Runaway",
         11
-      ],
-      [
-        "Olly Alexander (Years & Years)",
-        "King",
-        11
-      ],
-      [
-        "JAY-Z",
-        "Numb / Encore",
-        11
       ]
     ],
     "top_artists": [
@@ -2098,7 +2098,7 @@
       ],
       [
         "The Weeknd",
-        76
+        77
       ],
       [
         "Coldplay",
@@ -2118,7 +2118,7 @@
       ],
       [
         "Adele",
-        53
+        55
       ],
       [
         "Green Day",
@@ -2883,7 +2883,7 @@
         ],
         [
           "Love In The Dark",
-          10
+          12
         ],
         [
           "Skyfall",
@@ -2919,7 +2919,7 @@
         ],
         [
           "Starboy",
-          11
+          12
         ],
         [
           "Timeless",
@@ -4375,7 +4375,7 @@
         ]
       ]
     },
-    "total_listens": 2630
+    "total_listens": 2633
   },
   "2025-11": {
     "top_songs": [
@@ -7260,7 +7260,7 @@
       ],
       [
         "The Weeknd",
-        45
+        44
       ],
       [
         "Radiohead",
@@ -7419,6 +7419,10 @@
         11
       ],
       [
+        "Daft Punk",
+        11
+      ],
+      [
         "BaseBoost Central",
         11
       ],
@@ -7436,10 +7440,6 @@
       ],
       [
         "J. Cole",
-        10
-      ],
-      [
-        "Daft Punk",
         10
       ],
       [
@@ -8955,7 +8955,7 @@
         ],
         [
           "Get Lucky",
-          1
+          2
         ]
       ],
       "Nico & Vinz": [
@@ -9193,10 +9193,6 @@
         ],
         [
           "Blinding Lights",
-          1
-        ],
-        [
-          "Starboy ft. Daft Punk  ft. Daft Punk",
           1
         ],
         [
@@ -10108,6 +10104,11 @@
       ],
       [
         "The Weeknd",
+        "Starboy",
+        14
+      ],
+      [
+        "The Weeknd",
         "Save Your Tears",
         14
       ],
@@ -10125,11 +10126,6 @@
         "Lil Peep",
         "Falling Down",
         13
-      ],
-      [
-        "The Weeknd",
-        "Starboy",
-        11
       ],
       [
         "Future",
@@ -10696,10 +10692,6 @@
         12
       ],
       [
-        "Daft Punk",
-        11
-      ],
-      [
         "James Arthur",
         11
       ],
@@ -10718,6 +10710,10 @@
       [
         "Kanye West",
         10
+      ],
+      [
+        "Daft Punk",
+        9
       ],
       [
         "Lil Wayne",
@@ -11011,6 +11007,224 @@
           4
         ]
       ],
+      "The Weeknd": [
+        [
+          "Starboy",
+          14
+        ],
+        [
+          "Save Your Tears",
+          14
+        ],
+        [
+          "The Hills",
+          7
+        ],
+        [
+          "Blinding Lights",
+          5
+        ],
+        [
+          "High For This",
+          4
+        ],
+        [
+          "Timeless",
+          3
+        ],
+        [
+          "Can't Feel My Face",
+          3
+        ],
+        [
+          "What You Need",
+          3
+        ],
+        [
+          "Take Me Back",
+          3
+        ],
+        [
+          "Party Monster",
+          3
+        ],
+        [
+          "Coming Down",
+          3
+        ],
+        [
+          "Is There Someone Else?",
+          3
+        ],
+        [
+          "After Hours",
+          2
+        ],
+        [
+          "Call Out My Name",
+          2
+        ],
+        [
+          "House Of Balloons / Glass Table Girls",
+          2
+        ],
+        [
+          "Out of Time",
+          2
+        ],
+        [
+          "False Alarm",
+          2
+        ],
+        [
+          "In Your Eyes",
+          2
+        ],
+        [
+          "Double Fantasy",
+          2
+        ],
+        [
+          "The Morning",
+          2
+        ],
+        [
+          "Less Than Zero",
+          2
+        ],
+        [
+          "Stargirl Interlude",
+          2
+        ],
+        [
+          "Secrets",
+          2
+        ],
+        [
+          "Escape From LA",
+          2
+        ],
+        [
+          "The Zone",
+          2
+        ],
+        [
+          "King Of The Fall",
+          2
+        ],
+        [
+          "São Paulo",
+          2
+        ],
+        [
+          "Heartless",
+          1
+        ],
+        [
+          "Die For You",
+          1
+        ],
+        [
+          "Wasted Times",
+          1
+        ],
+        [
+          "Prisoner",
+          1
+        ],
+        [
+          "Tears In The Rain",
+          1
+        ],
+        [
+          "Missed You",
+          1
+        ],
+        [
+          "A Lesser Man",
+          1
+        ],
+        [
+          "Faith",
+          1
+        ],
+        [
+          "How Do I Make You Love Me?",
+          1
+        ],
+        [
+          "I Heard You’re Married",
+          1
+        ],
+        [
+          "Nothing Is Lost",
+          1
+        ],
+        [
+          "Alone Again",
+          1
+        ],
+        [
+          "Six Feet Under",
+          1
+        ],
+        [
+          "Gasoline",
+          1
+        ],
+        [
+          "Try Me",
+          1
+        ],
+        [
+          "Earned It",
+          1
+        ],
+        [
+          "In Your Eyes  ft. Doja Cat",
+          1
+        ],
+        [
+          "Cry For Me",
+          1
+        ],
+        [
+          "I Was Never There feat. Gesaffelstein",
+          1
+        ],
+        [
+          "Trust Issues",
+          1
+        ],
+        [
+          "One Of The Girls",
+          1
+        ],
+        [
+          "The Weeknd & Lily-Rose Depp – Dollhouse",
+          1
+        ],
+        [
+          "As You Are",
+          1
+        ],
+        [
+          "Acquainted",
+          1
+        ],
+        [
+          "Rockin’",
+          1
+        ],
+        [
+          "Like A God",
+          1
+        ],
+        [
+          "Save Your Tears  Bonus Track)",
+          1
+        ]
+      ],
       "Bart Peeters": [
         [
           "Brood voor Morgenvroeg",
@@ -11129,237 +11343,7 @@
           8
         ],
         [
-          "Instant Crush  ft. Julian Casablancas",
-          2
-        ],
-        [
           "One More Time",
-          1
-        ]
-      ],
-      "The Weeknd": [
-        [
-          "Save Your Tears",
-          14
-        ],
-        [
-          "Starboy",
-          11
-        ],
-        [
-          "The Hills",
-          7
-        ],
-        [
-          "Blinding Lights",
-          5
-        ],
-        [
-          "High For This",
-          4
-        ],
-        [
-          "Timeless",
-          3
-        ],
-        [
-          "Can't Feel My Face",
-          3
-        ],
-        [
-          "What You Need",
-          3
-        ],
-        [
-          "Take Me Back",
-          3
-        ],
-        [
-          "Party Monster",
-          3
-        ],
-        [
-          "Coming Down",
-          3
-        ],
-        [
-          "Is There Someone Else?",
-          3
-        ],
-        [
-          "After Hours",
-          2
-        ],
-        [
-          "Call Out My Name",
-          2
-        ],
-        [
-          "Starboy ft. Daft Punk  ft. Daft Punk",
-          2
-        ],
-        [
-          "House Of Balloons / Glass Table Girls",
-          2
-        ],
-        [
-          "Out of Time",
-          2
-        ],
-        [
-          "False Alarm",
-          2
-        ],
-        [
-          "In Your Eyes",
-          2
-        ],
-        [
-          "Double Fantasy",
-          2
-        ],
-        [
-          "The Morning",
-          2
-        ],
-        [
-          "Less Than Zero",
-          2
-        ],
-        [
-          "Stargirl Interlude",
-          2
-        ],
-        [
-          "Secrets",
-          2
-        ],
-        [
-          "Escape From LA",
-          2
-        ],
-        [
-          "The Zone",
-          2
-        ],
-        [
-          "King Of The Fall",
-          2
-        ],
-        [
-          "São Paulo",
-          2
-        ],
-        [
-          "I Feel It Coming ft. Daft Punk",
-          1
-        ],
-        [
-          "Heartless",
-          1
-        ],
-        [
-          "Die For You",
-          1
-        ],
-        [
-          "Wasted Times",
-          1
-        ],
-        [
-          "Prisoner",
-          1
-        ],
-        [
-          "Tears In The Rain",
-          1
-        ],
-        [
-          "Missed You",
-          1
-        ],
-        [
-          "A Lesser Man",
-          1
-        ],
-        [
-          "Faith",
-          1
-        ],
-        [
-          "How Do I Make You Love Me?",
-          1
-        ],
-        [
-          "I Heard You’re Married",
-          1
-        ],
-        [
-          "Nothing Is Lost",
-          1
-        ],
-        [
-          "Alone Again",
-          1
-        ],
-        [
-          "Six Feet Under",
-          1
-        ],
-        [
-          "Gasoline",
-          1
-        ],
-        [
-          "Try Me",
-          1
-        ],
-        [
-          "Earned It",
-          1
-        ],
-        [
-          "In Your Eyes  ft. Doja Cat",
-          1
-        ],
-        [
-          "Cry For Me",
-          1
-        ],
-        [
-          "I Was Never There feat. Gesaffelstein",
-          1
-        ],
-        [
-          "Trust Issues",
-          1
-        ],
-        [
-          "One Of The Girls",
-          1
-        ],
-        [
-          "The Weeknd & Lily-Rose Depp – Dollhouse",
-          1
-        ],
-        [
-          "As You Are",
-          1
-        ],
-        [
-          "Acquainted",
-          1
-        ],
-        [
-          "Rockin’",
-          1
-        ],
-        [
-          "Like A God",
-          1
-        ],
-        [
-          "Save Your Tears  Bonus Track)",
           1
         ]
       ],
@@ -13166,7 +13150,7 @@
       "New West": [
         [
           "Those Eyes",
-          1
+          2
         ]
       ],
       "Sam Smith": [
@@ -15364,7 +15348,7 @@
         ]
       ]
     },
-    "total_listens": 1752
+    "total_listens": 1751
   },
   "2025-09": {
     "top_songs": [
@@ -20059,12 +20043,6 @@
           7
         ]
       ],
-      "Daft Punk & Pharrell Williams": [
-        [
-          "Get Lucky",
-          1
-        ]
-      ],
       "RTTWLR": [
         [
           "Aggressive Hip Hop Motivation  #1",
@@ -20188,7 +20166,7 @@
         ]
       ]
     },
-    "total_listens": 2341
+    "total_listens": 2340
   },
   "2025-07": {
     "top_songs": [
@@ -20280,11 +20258,6 @@
       [
         "Florence + the Machine",
         "Spectrum",
-        10
-      ],
-      [
-        "The Weeknd",
-        "I Feel It Coming",
         10
       ],
       [
@@ -20425,6 +20398,11 @@
       [
         "Dua Lipa",
         "New Rules",
+        8
+      ],
+      [
+        "The Weeknd",
+        "I Feel It Coming",
         8
       ],
       [
@@ -20663,6 +20641,11 @@
         6
       ],
       [
+        "Tame Impala",
+        "Borderline",
+        6
+      ],
+      [
         "Green Day",
         "Boulevard of Broken Dreams",
         6
@@ -20686,11 +20669,6 @@
         "Glints",
         "Housewife",
         6
-      ],
-      [
-        "Adele",
-        "Set Fire to the Rain",
-        6
       ]
     ],
     "top_artists": [
@@ -20704,7 +20682,7 @@
       ],
       [
         "The Weeknd",
-        64
+        62
       ],
       [
         "Roxy Dekker",
@@ -20748,7 +20726,7 @@
       ],
       [
         "Tame Impala",
-        21
+        22
       ],
       [
         "Adele",
@@ -20863,10 +20841,6 @@
         10
       ],
       [
-        "Daft Punk",
-        10
-      ],
-      [
         "Dire Straits",
         10
       ],
@@ -20912,6 +20886,10 @@
       ],
       [
         "R.E.M.",
+        9
+      ],
+      [
+        "Daft Punk",
         9
       ],
       [
@@ -21190,12 +21168,12 @@
           13
         ],
         [
-          "I Feel It Coming",
-          10
-        ],
-        [
           "Can't Feel My Face",
           9
+        ],
+        [
+          "I Feel It Coming",
+          8
         ],
         [
           "Timeless",
@@ -21331,7 +21309,7 @@
         ],
         [
           "Borderline",
-          5
+          6
         ],
         [
           "The Less I Know The Better",
@@ -22253,10 +22231,6 @@
         ],
         [
           "Get Lucky",
-          1
-        ],
-        [
-          "Veridis Quo x The Weeknd - In Your Eyes",
           1
         ]
       ],
@@ -24303,7 +24277,7 @@
         ]
       ]
     },
-    "total_listens": 1874
+    "total_listens": 1872
   },
   "2025-01": {
     "top_songs": [
@@ -32679,12 +32653,6 @@
           1
         ]
       ],
-      "Hannibal Sebastian Cortes Ramirez": [
-        [
-          "Hope  ✖️✖️✖️TENTACION",
-          1
-        ]
-      ],
       "Dave": [
         [
           "Sprinter",
@@ -32818,7 +32786,7 @@
         ]
       ]
     },
-    "total_listens": 1119
+    "total_listens": 1118
   },
   "2025-05": {
     "top_songs": [
@@ -35705,11 +35673,6 @@
         9
       ],
       [
-        "The Weeknd",
-        "Starboy",
-        9
-      ],
-      [
         "Zara Larsson",
         "Lush Life",
         9
@@ -35807,6 +35770,11 @@
       [
         "The Cranberries",
         "Zombie",
+        8
+      ],
+      [
+        "The Weeknd",
+        "Starboy",
         8
       ],
       [
@@ -36050,11 +36018,11 @@
         34
       ],
       [
-        "The Weeknd",
-        33
+        "Arctic Monkeys",
+        32
       ],
       [
-        "Arctic Monkeys",
+        "The Weeknd",
         32
       ],
       [
@@ -36166,15 +36134,15 @@
         12
       ],
       [
-        "Daft Punk",
-        12
-      ],
-      [
         "Lost Frequencies",
         11
       ],
       [
         "MGMT",
+        11
+      ],
+      [
+        "Daft Punk",
         11
       ],
       [
@@ -36998,7 +36966,7 @@
         ],
         [
           "Starboy",
-          9
+          8
         ],
         [
           "São Paulo",
@@ -37959,10 +37927,6 @@
           3
         ],
         [
-          "Instant Crush  ft. Julian Casablancas",
-          1
-        ],
-        [
           "Veridis Quo",
           1
         ]
@@ -38756,12 +38720,6 @@
         ],
         [
           "DARE",
-          1
-        ]
-      ],
-      "tame impala": [
-        [
-          "borderline ﾉ slowed ﾉ",
           1
         ]
       ],
@@ -39844,7 +39802,7 @@
         ]
       ]
     },
-    "total_listens": 1879
+    "total_listens": 1876
   },
   "2025-02": {
     "top_songs": [
@@ -42009,6 +41967,11 @@
         13
       ],
       [
+        "XXXTENTACION",
+        "Hope",
+        12
+      ],
+      [
         "The Goo Goo Dolls",
         "Iris",
         12
@@ -42026,11 +41989,6 @@
       [
         "Katy Perry",
         "Firework",
-        11
-      ],
-      [
-        "XXXTENTACION",
-        "Hope",
         11
       ],
       [
@@ -42467,7 +42425,7 @@
     "top_artists": [
       [
         "XXXTENTACION",
-        47
+        48
       ],
       [
         "Green Day",
@@ -42867,6 +42825,28 @@
       ]
     ],
     "artist_details": {
+      "XXXTENTACION": [
+        [
+          "NUMB",
+          18
+        ],
+        [
+          "Hope",
+          12
+        ],
+        [
+          "Revenge",
+          8
+        ],
+        [
+          "SAD!",
+          8
+        ],
+        [
+          "changes",
+          2
+        ]
+      ],
       "Olly Alexander (Years & Years)": [
         [
           "King",
@@ -42905,28 +42885,6 @@
         [
           "Espresso",
           13
-        ]
-      ],
-      "XXXTENTACION": [
-        [
-          "NUMB",
-          18
-        ],
-        [
-          "Hope",
-          11
-        ],
-        [
-          "Revenge",
-          8
-        ],
-        [
-          "SAD!",
-          8
-        ],
-        [
-          "changes",
-          2
         ]
       ],
       "Zara Larsson": [
@@ -44286,7 +44244,7 @@
         ]
       ]
     },
-    "total_listens": 1182
+    "total_listens": 1183
   },
   "2024-10": {
     "top_songs": [
@@ -44333,6 +44291,11 @@
       [
         "24kGoldn",
         "Mood",
+        12
+      ],
+      [
+        "Adele",
+        "Set Fire to the Rain",
         12
       ],
       [
@@ -44591,11 +44554,6 @@
         8
       ],
       [
-        "Adele",
-        "Set Fire to the Rain",
-        8
-      ],
-      [
         "David Guetta",
         "This One's for You",
         8
@@ -44643,6 +44601,11 @@
       [
         "Red Hot Chili Peppers",
         "Can't Stop",
+        8
+      ],
+      [
+        "The Weeknd",
+        "Starboy",
         8
       ],
       [
@@ -44784,11 +44747,6 @@
         "GIGI D'AGOSTINO",
         "L'AMOUR TOUJOURS",
         6
-      ],
-      [
-        "Mumford and Sons",
-        "Little Lion Man",
-        6
       ]
     ],
     "top_artists": [
@@ -44801,16 +44759,16 @@
         40
       ],
       [
+        "Adele",
+        38
+      ],
+      [
         "Coldplay",
         37
       ],
       [
         "Green Day",
         36
-      ],
-      [
-        "Adele",
-        34
       ],
       [
         "Arctic Monkeys",
@@ -44853,6 +44811,10 @@
         16
       ],
       [
+        "The Weeknd",
+        16
+      ],
+      [
         "Post Malone",
         16
       ],
@@ -44874,10 +44836,6 @@
       ],
       [
         "Katy Perry",
-        14
-      ],
-      [
-        "The Weeknd",
         14
       ],
       [
@@ -45405,7 +45363,7 @@
       "The Weeknd": [
         [
           "Starboy",
-          6
+          8
         ],
         [
           "Save Your Tears",
@@ -45449,7 +45407,7 @@
       "Adele": [
         [
           "Set Fire to the Rain",
-          8
+          12
         ],
         [
           "Rolling in the Deep",
@@ -46028,12 +45986,6 @@
           11
         ]
       ],
-      "Set Fire To The Rain": [
-        [
-          "Sped up",
-          4
-        ]
-      ],
       "Akon": [
         [
           "Smack That",
@@ -46382,18 +46334,6 @@
           1
         ]
       ],
-      "Starboy": [
-        [
-          "The Weeknd  |tiktok version| lyrics",
-          1
-        ]
-      ],
-      "Ic3dHeart": [
-        [
-          "The Weeknd & Daft Punk  ~ Starboy  {TikTok Version}",
-          1
-        ]
-      ],
       "Usher": [
         [
           "Hey Daddy",
@@ -46409,18 +46349,6 @@
       "kenya grace": [
         [
           "strangers  lyrics",
-          1
-        ]
-      ],
-      "SAD BOY®": [
-        [
-          "those eyes  tiktok version",
-          1
-        ]
-      ],
-      "Love in the dark": [
-        [
-          "Adele Speed up TikTok Version",
           1
         ]
       ],
@@ -46622,12 +46550,6 @@
           1
         ]
       ],
-      "XxlTbh": [
-        [
-          "Adele • Love In The Dark",
-          1
-        ]
-      ],
       "Alec Benjamin": [
         [
           "Let Me Down Slowly",
@@ -46731,7 +46653,7 @@
         ]
       ]
     },
-    "total_listens": 1330
+    "total_listens": 1327
   },
   "2024-09": {
     "top_songs": [

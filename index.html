@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muziek Dagboek 2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -37,6 +39,11 @@
                 <div id="calendarGrid" class="calendar-grid"></div>
             </main>
             
+            <div class="section-title">📈 Luisteractiviteit</div>
+            <section class="stat-card" style="padding: 15px;">
+                <canvas id="listeningChart" height="100"></canvas>
+            </section>
+
             <div class="section-title">✨ Maandelijkse Highlights</div>
             <section id="monthly-highlights" class="stat-card">
                 <div class="highlights-grid">
@@ -63,6 +70,12 @@
                 <input type="text" id="musicSearch" placeholder="Zoek artiest of titel..." oninput="handleSearch()">
                 <div id="search-results" class="search-results-list"></div>
             </section>
+
+            <div class="section-title">🚀 Grootste Comebacks</div>
+            <div class="stat-card">
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">Liedjes die je minstens een half jaar niet luisterde.</p>
+                <ul id="comeback-list" class="ranking-list"></ul>
+            </div>
 
             <div class="section-title">🏆 Mijn Favorieten</div>
             <div class="stats-grid">
@@ -99,10 +112,7 @@
     <div id="modal" class="hidden">
         <div class="modal-content">
             <span id="close-button">&times;</span>
-            <div id="modal-body-content">
-                <h2 id="modal-datum-titel" style="text-align:center; margin-bottom:20px;">Details</h2>
-                <div id="day-top-three-container"></div>
-            </div>
+            <div id="modal-body-content"><h2 id="modal-datum-titel" style="text-align:center; margin-bottom:20px;">Details</h2><div id="day-top-three-container"></div></div>
         </div>
     </div>
     <script src="script.js"></script>
