@@ -5,32 +5,13 @@ import time
 import os
 import re
 
-def clean_text_heavy(artist, title):
-    # 1. Verwijder YouTube-specifieke tekst
+def clean_for_api(artist, title):
     title = re.sub(r'^(Bekeken|Watched)\s+naar\s+', '', title, flags=re.IGNORECASE)
     title = re.sub(r'^(Bekeken|Watched)\s+', '', title, flags=re.IGNORECASE)
-
-    # 2. Verwijder versie-ruis voor betere API-matches
-    noise = [
-        r'Bass Boosted', r'Sped Up', r'Nightcore', r'Remix', r'Edit', 
-        r'Official Video', r'Lyrics', r'Audio', r'Central', r'Topic',
-        r'and\s+', r',\s+', r'prod\..*', r'x\s.*'
-    ]
+    noise = [r'Official Video', r'Lyrics', r'Audio', r'ft\.', r'feat\.', r'//.*']
     for n in noise:
-        title = re.sub(n, '', title, flags=re.IGNORECASE).strip()
-        artist = re.sub(n, '', artist, flags=re.IGNORECASE).strip()
-
-    # 3. Haal tekst tussen haakjes/blokhaken weg
-    title = re.sub(r'\[.*?\]', '', title)
-    title = re.sub(r'\(.*?\)', '', title)
-    
-    # 4. SPLIT-FIX: Voor "Goose - Synrise"
-    if " - " in title:
-        parts = title.split(" - ", 1)
-        artist = parts[0].strip()
-        title = parts[1].strip()
-
-    return artist.strip(), title.strip()
+        title = re.sub(n, ' ', title, flags=re.IGNORECASE).strip()
+    return artist, title
 
 def search_apple(q):
     try:
@@ -38,15 +19,12 @@ def search_apple(q):
         res = requests.get(url, timeout=10).json()
         if res['resultCount'] > 0:
             return res['results'][0]['artworkUrl100'].replace('100x100bb', '600x600bb')
-    except:
-        pass
+    except: pass
     return None
 
 def fetch_all_posters():
     files = ['data.json', 'stats.json']
     all_data = {}
-
-    # --- STAP 1: LAAD BESTANDEN EN BOUW POSTER-BIBLIOTHEEK ---
     poster_library = {}
     
     for file_name in files:
@@ -55,82 +33,44 @@ def fetch_all_posters():
                 data = json.load(f)
                 all_data[file_name] = data
                 for entry in data:
-                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
-                    key = (a_clean.lower(), t_clean.lower())
-                    # Als we al een poster hebben, voeg toe aan bieb
                     if entry.get('poster') and entry['poster'] != "img/placeholder.png":
-                        poster_library[key] = entry['poster']
+                        poster_library[(entry['artiest'].lower(), entry['titel'].lower())] = entry['poster']
 
-    # --- STAP 2: VUL ELKAAR AAN (SMART SYNC) ---
-    # Als een poster in data.json staat maar niet in stats.json (of andersom), vul aan.
-    for file_name in files:
-        if file_name in all_data:
-            for entry in all_data[file_name]:
-                if entry['poster'] == "img/placeholder.png":
-                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
-                    key = (a_clean.lower(), t_clean.lower())
-                    if key in poster_library:
-                        entry['poster'] = poster_library[key]
-
-    # --- STAP 3: ZOEKLIST MAKEN VOOR WAT ECHT NOG ONTBREEKT ---
     unique_missing = []
-    seen_missing = set()
-    
-    for file_name in files:
-        if file_name in all_data:
-            for entry in all_data[file_name]:
-                if entry['poster'] == "img/placeholder.png":
-                    a_clean, t_clean = clean_text_heavy(entry['artiest'], entry['titel'])
-                    key = (a_clean.lower(), t_clean.lower())
-                    if key not in seen_missing:
-                        unique_missing.append({'a': a_clean, 't': t_clean, 'orig_a': entry['artiest'], 'orig_t': entry['titel']})
-                        seen_missing.add(key)
+    seen_keys = set()
+    for file_name, data in all_data.items():
+        for entry in data:
+            if entry.get('poster') == "img/placeholder.png":
+                key = (entry['artiest'].lower(), entry['titel'].lower())
+                if key in poster_library:
+                    entry['poster'] = poster_library[key]
+                elif key not in seen_keys:
+                    unique_missing.append({'a': entry['artiest'], 't': entry['titel']})
+                    seen_keys.add(key)
 
     if not unique_missing:
-        print("✨ Beide bestanden zijn al volledig voorzien van posters!")
-        # Sla op voor de zekerheid (in geval van stap 2 updates)
-        save_files(all_data)
+        print("✨ Geen nieuwe posters nodig.")
         return
 
-    # --- STAP 4: API CALLS ---
-    print(f"🚀 Zoeken naar {len(unique_missing)} missende posters voor data.json & stats.json...")
-    
-    for i, item in enumerate(unique_missing):
-        query = f"{item['a']} {item['t']}"
-        img = search_apple(query)
+    print(f"🚀 Zoeken naar {len(unique_missing)} unieke posters...")
+    try:
+        for i, item in enumerate(unique_missing):
+            ca, ct = clean_for_api(item['a'], item['t'])
+            img = search_apple(f"{ca} {ct}") or search_apple(ct)
 
-        # Fallback: Alleen titel
-        if not img and len(item['t']) > 3:
-            img = search_apple(item['t'])
-
-        if img:
-            # Update de poster in de interne lijsten van beide bestanden
-            for file_name in files:
-                if file_name in all_data:
-                    for e in all_data[file_name]:
-                        ea, et = clean_text_heavy(e['artiest'], e['titel'])
-                        if (ea.lower(), et.lower()) == (item['a'].lower(), item['t_clean'].lower() if 't_clean' in item else item['t'].lower()):
-                             e['poster'] = img
-                        # Extra check op originele namen voor de zekerheid
-                        elif e['artiest'] == item['orig_a'] and e['titel'] == item['orig_t']:
-                             e['poster'] = img
-            print(f"✅ Gevonden: {query}")
-        else:
-            print(f"❌ Niet gevonden: {query}")
-        
-        # Tussen tijds opslaan om dataverlies te voorkomen
-        if i % 5 == 0:
-            save_files(all_data)
-        
-        time.sleep(1.2)
-
-    save_files(all_data)
-    print("🏁 Alle bestanden zijn bijgewerkt en opgeslagen.")
-
-def save_files(all_data):
-    for file_name, content in all_data.items():
-        with open(file_name, 'w', encoding='utf-8') as f:
-            json.dump(content, f, indent=2, ensure_ascii=False)
+            if img:
+                for f_name, f_data in all_data.items():
+                    for e in f_data:
+                        if e['artiest'] == item['a'] and e['titel'] == item['t']:
+                            e['poster'] = img
+                print(f"✅ Gevonden ({i+1}/{len(unique_missing)}): {item['a']} - {item['t']}")
+                for f_n, f_c in all_data.items():
+                    with open(f_n, 'w', encoding='utf-8') as f: json.dump(f_c, f, indent=2, ensure_ascii=False)
+            else:
+                print(f"❌ Niet gevonden: {item['a']} - {item['t']}")
+            time.sleep(1.2)
+    except KeyboardInterrupt:
+        print("\n🛑 Gestopt door gebruiker.")
 
 if __name__ == "__main__":
     fetch_all_posters()

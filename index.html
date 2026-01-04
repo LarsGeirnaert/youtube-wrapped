@@ -18,18 +18,9 @@
         </header>
 
         <section id="dashboard-stats">
-            <div class="stat-card tiny">
-                <div id="total-days-count" class="big-number">0</div>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Dagen</p>
-            </div>
-            <div class="stat-card tiny">
-                <div id="streak-count" class="big-number streak">0</div>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">🔥 Streak</p>
-            </div>
-            <div class="stat-card tiny">
-                <div id="unique-songs-count" class="big-number" style="color: var(--accent-blue);">0</div>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Unieke Songs</p>
-            </div>
+            <div class="stat-card tiny"><div id="total-days-count" class="big-number">0</div><p>Dagen</p></div>
+            <div class="stat-card tiny"><div id="streak-count" class="big-number streak">0</div><p>🔥 Streak</p></div>
+            <div class="stat-card tiny"><div id="unique-songs-count" class="big-number" style="color: var(--accent-blue);">0</div><p>Songs</p></div>
         </section>
 
         <div id="view-calendar">
@@ -42,27 +33,15 @@
                         <button id="nextMonth">→</button>
                     </div>
                 </div>
-                <div class="weekdays-grid">
-                    <div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div>
-                </div>
+                <div class="weekdays-grid"><div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div></div>
                 <div id="calendarGrid" class="calendar-grid"></div>
             </main>
-
             <section id="monthly-highlights" class="stat-card" style="margin-top: 25px;">
-                <h3 id="highlights-title">Highlights van deze maand</h3>
+                <h3 id="highlights-title">Highlights</h3>
                 <div class="highlights-grid">
-                    <div class="highlight-item" id="month-top-song">
-                        <span class="label">Top Song</span>
-                        <div class="content">Laden...</div>
-                    </div>
-                    <div class="highlight-item" id="month-top-artist">
-                        <span class="label">Top Artiest</span>
-                        <div class="content">Laden...</div>
-                    </div>
-                    <div class="highlight-item" id="month-total-listens">
-                        <span class="label">Luisterbeurten</span>
-                        <div class="content">0</div>
-                    </div>
+                    <div class="highlight-item" id="month-top-song"><span class="label">Top Song</span><div class="content">...</div></div>
+                    <div class="highlight-item" id="month-top-artist"><span class="label">Top Artiest</span><div class="content">...</div></div>
+                    <div class="highlight-item" id="month-total-listens"><span class="label">Luisterbeurten</span><div class="content">0</div></div>
                 </div>
             </section>
         </div>
@@ -70,30 +49,23 @@
         <div id="view-stats" class="hidden">
             <section class="stat-card search-section" style="margin-bottom: 25px;">
                 <h3>🔍 Zoek in je geschiedenis</h3>
-                <input type="text" id="musicSearch" placeholder="Zoek op titel of artiest..." oninput="handleSearch()">
+                <input type="text" id="musicSearch" placeholder="Typ een artiest of liedje..." oninput="handleSearch()">
                 <div id="search-results" class="search-results-list"></div>
             </section>
 
             <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>🏆 Top Songs</h3>
-                    <ol id="top-songs-list" class="ranking-list"></ol>
-                </div>
-                <div class="stat-card">
-                    <h3>👥 Top Artiesten</h3>
-                    <ol id="top-artists-list" class="ranking-list"></ol>
-                </div>
+                <div class="stat-card"><h3>🏆 Top Songs</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3>👥 Top Artiesten</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
             </div>
 
             <div class="stats-grid" style="margin-top: 25px;">
-                <div class="stat-card">
-                    <h3>💎 De Obsessies</h3>
-                    <ul id="obsessions-list" class="ranking-list"></ul>
-                </div>
-                <div class="stat-card">
-                    <h3>🧭 Ontdekkingsreizigers</h3>
-                    <ul id="variety-list" class="ranking-list"></ul>
-                </div>
+                <div class="stat-card"><h3>💿 Top Albums (Luisterbeurten)</h3><ol id="top-albums-listens" class="ranking-list album-style-list"></ol></div>
+                <div class="stat-card"><h3>🎨 Top Albums (Meeste Liedjes)</h3><ol id="top-albums-variety" class="ranking-list album-style-list"></ol></div>
+            </div>
+
+            <div class="stats-grid" style="margin-top: 25px;">
+                <div class="stat-card"><h3>💎 De Obsessies</h3><ul id="obsessions-list" class="ranking-list"></ul></div>
+                <div class="stat-card"><h3>🧭 Ontdekkingsreizigers</h3><ul id="variety-list" class="ranking-list"></ul></div>
             </div>
         </div>
     </div>
@@ -101,13 +73,9 @@
     <div id="modal" class="hidden">
         <div class="modal-content">
             <span id="close-button">&times;</span>
-            <div id="modal-body-content">
-                <h2 id="modal-datum-titel" style="text-align: center; margin-bottom: 20px;">Details</h2>
-                <div id="day-top-three-container"></div>
-            </div>
+            <div id="modal-body-content"><h2 id="modal-datum-titel" style="text-align:center; margin-bottom:20px;">Details</h2><div id="day-top-three-container"></div></div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
