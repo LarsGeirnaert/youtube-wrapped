@@ -19,7 +19,7 @@
 
         <section id="dashboard-stats">
             <div class="stat-card tiny"><div id="total-days-count" class="big-number">0</div><p>Dagen</p></div>
-            <div class="stat-card tiny"><div id="streak-count" class="big-number streak">0</div><p>🔥 Streak</p></div>
+            <div class="stat-card tiny"><div id="streak-count" class="big-number streak">0</div><p>🔥 Actieve Streak</p></div>
             <div class="stat-card tiny"><div id="unique-songs-count" class="big-number" style="color: var(--accent-blue);">0</div><p>Songs</p></div>
         </section>
 
@@ -36,36 +36,62 @@
                 <div class="weekdays-grid"><div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div></div>
                 <div id="calendarGrid" class="calendar-grid"></div>
             </main>
-            <section id="monthly-highlights" class="stat-card" style="margin-top: 25px;">
-                <h3 id="highlights-title">Highlights</h3>
+            
+            <div class="section-title">✨ Maandelijkse Highlights</div>
+            <section id="monthly-highlights" class="stat-card">
                 <div class="highlights-grid">
-                    <div class="highlight-item" id="month-top-song"><span class="label">Top Song</span><div class="content">...</div></div>
-                    <div class="highlight-item" id="month-top-artist"><span class="label">Top Artiest</span><div class="content">...</div></div>
-                    <div class="highlight-item" id="month-total-listens"><span class="label">Luisterbeurten</span><div class="content">0</div></div>
+                    <div class="highlight-item">
+                        <span class="label clickable-header" onclick="showTop100('month-songs')">Top Songs ➔</span>
+                        <ul id="month-songs-list" class="ranking-list small-list"></ul>
+                    </div>
+                    <div class="highlight-item">
+                        <span class="label clickable-header" onclick="showTop100('month-artists')">Top Artiesten ➔</span>
+                        <ul id="month-artists-list" class="ranking-list small-list"></ul>
+                    </div>
+                    <div class="highlight-item total-circle">
+                        <span class="label">Totaal</span>
+                        <div id="month-total-listens-count" class="big-number">0</div>
+                        <p>beurten</p>
+                    </div>
                 </div>
             </section>
         </div>
 
         <div id="view-stats" class="hidden">
-            <section class="stat-card search-section" style="margin-bottom: 25px;">
-                <h3>🔍 Zoek in je geschiedenis</h3>
-                <input type="text" id="musicSearch" placeholder="Typ een artiest of liedje..." oninput="handleSearch()">
+            <section class="stat-card search-section">
+                <h3>🔍 Snel Zoeken</h3>
+                <input type="text" id="musicSearch" placeholder="Zoek artiest of titel..." oninput="handleSearch()">
                 <div id="search-results" class="search-results-list"></div>
             </section>
 
+            <div class="section-title">🏆 Mijn Favorieten</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3>🏆 Top Songs</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3>👥 Top Artiesten</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('songs')">Meest Beluisterde Songs ➔</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('artists')">Grootste Artiesten ➔</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
             </div>
 
-            <div class="stats-grid" style="margin-top: 25px;">
-                <div class="stat-card"><h3>💿 Top Albums (Luisterbeurten)</h3><ol id="top-albums-listens" class="ranking-list album-style-list"></ol></div>
-                <div class="stat-card"><h3>🎨 Top Albums (Meeste Liedjes)</h3><ol id="top-albums-variety" class="ranking-list album-style-list"></ol></div>
+            <div class="section-title">💿 Album Collectie</div>
+            <div class="stats-grid">
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-listens')">Top Albums (Beurten) ➔</h3><ol id="top-albums-listens" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-variety')">Meest Diverse Albums ➔</h3><ol id="top-albums-variety" class="ranking-list"></ol></div>
             </div>
 
-            <div class="stats-grid" style="margin-top: 25px;">
-                <div class="stat-card"><h3>💎 De Obsessies</h3><ul id="obsessions-list" class="ranking-list"></ul></div>
-                <div class="stat-card"><h3>🧭 Ontdekkingsreizigers</h3><ul id="variety-list" class="ranking-list"></ul></div>
+            <div class="section-title">🔥 Song Streaks</div>
+            <div class="stats-grid">
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-current')">Nu Actief (Liedjes) ➔</h3><ol id="current-song-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-top')">All-time Records ➔</h3><ol id="top-song-streaks" class="ranking-list"></ol></div>
+            </div>
+
+            <div class="section-title">🌟 Artiest Streaks</div>
+            <div class="stats-grid">
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-current')">Nu Actief (Artiest) ➔</h3><ol id="current-artist-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-top')">All-time Records ➔</h3><ol id="top-artist-streaks" class="ranking-list"></ol></div>
+            </div>
+
+            <div class="section-title">🧭 Slimme Inzichten</div>
+            <div class="stats-grid">
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('obsessions')">💎 De Obsessies ➔</h3><ul id="obsessions-list" class="ranking-list"></ul></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('explorers')">🧭 Ontdekkingsreizigers ➔</h3><ul id="variety-list" class="ranking-list"></ul></div>
             </div>
         </div>
     </div>
@@ -73,7 +99,10 @@
     <div id="modal" class="hidden">
         <div class="modal-content">
             <span id="close-button">&times;</span>
-            <div id="modal-body-content"><h2 id="modal-datum-titel" style="text-align:center; margin-bottom:20px;">Details</h2><div id="day-top-three-container"></div></div>
+            <div id="modal-body-content">
+                <h2 id="modal-datum-titel" style="text-align:center; margin-bottom:20px;">Details</h2>
+                <div id="day-top-three-container"></div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
