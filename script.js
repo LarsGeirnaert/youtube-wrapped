@@ -2,6 +2,9 @@ let currentViewDate = new Date();
 let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
 let myChart = null;
 
+// --- NAVIGATIE GESCHIEDENIS ---
+let historyStack = []; // Houdt bij waar we zijn geweest in de modal
+
 // --- MERGE MODE STATE ---
 let mergeMode = false;
 let selectedForMerge = []; 
@@ -269,6 +272,51 @@ async function confirmMerge() {
     toggleMergeMode(); 
 }
 
+// --- HISTORY NAVIGATION ---
+
+function addToHistory(viewType, args) {
+    // Als de modal net opengaat (vanuit hidden), is de stack leeg.
+    if (document.getElementById('modal').classList.contains('hidden')) {
+        historyStack = [];
+    }
+    historyStack.push({ type: viewType, args: Array.from(args) });
+}
+
+function handleModalClose() {
+    // Verwijder het huidige scherm uit de stack (want dat sluiten we)
+    historyStack.pop();
+
+    if (historyStack.length > 0) {
+        // Er is nog geschiedenis! Ga terug naar de vorige.
+        const prev = historyStack[historyStack.length - 1]; // Bekijk vorige, maar laat in stack zitten (zodat we weer kunnen poppen)
+        
+        // We moeten 'pop' doen VOORDAT we de functie aanroepen, anders voegt die functie zichzelf weer toe aan de stack.
+        // Dus we moeten de 'addToHistory' in de functies tijdelijk omzeilen of een flag gebruiken.
+        // Simpelste oplossing: pop hem hier, en roep de functie aan met een extra 'isBack' parameter.
+        
+        // Maar om de bestaande functies niet te complex te maken: 
+        // We halen de data op, en renderen DIRECT. De functies show... roepen we opnieuw aan.
+        // We moeten zorgen dat show... niet dubbel toevoegt.
+        
+        // Beter: we passen de show-functies hieronder aan om 'addToHistory' te doen.
+        
+        // Bij de 'back' actie poppen we de huidige, en renderen we de vorige opnieuw.
+        // We moeten een flag 'isNavigatingBack' meegeven.
+        
+        const previousState = historyStack.pop(); // Haal vorige ook weg, want de functie voegt hem weer toe
+        
+        if (previousState.type === 'artist') showArtistDetails(...previousState.args);
+        else if (previousState.type === 'album') showAlbumDetails(...previousState.args);
+        else if (previousState.type === 'song') showSongSpotlight(...previousState.args);
+        else if (previousState.type === 'list') showTop100(...previousState.args);
+        
+    } else {
+        // Stack leeg, sluit modal volledig
+        document.getElementById('modal').classList.add('hidden');
+        historyStack = [];
+    }
+}
+
 // --- RENDER FUNCTIES ---
 
 function renderCharts() {
@@ -357,6 +405,8 @@ function renderList(id, items, unit, type) {
 }
 
 function showAlbumDetails(posterUrl, artistName) {
+    addToHistory('album', arguments); // Add to history
+
     const key = getAlbumKey(posterUrl, artistName);
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
     const container = document.getElementById('day-top-three-container');
@@ -372,8 +422,9 @@ function showAlbumDetails(posterUrl, artistName) {
     document.getElementById('modal').classList.remove('hidden');
 }
 
-// --- HIER ZIT DE AANPASSING VOOR DE ARTIESTENPAGINA ---
 function showArtistDetails(artist, overrideCount = null, monthKey = null) {
+    addToHistory('artist', arguments); // Add to history
+
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = cleanArtist;
@@ -391,7 +442,6 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null) {
         songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); 
     }
 
-    // -- NIEUW: Verzamel Albums van deze artiest --
     const albums = {};
     songsToShow.forEach(s => {
         if (s.poster && s.poster !== "img/placeholder.png") {
@@ -407,7 +457,6 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null) {
     
     html += `<button onclick="applyCalendarFilter('${cleanArtist.replace(/'/g, "\\'")}')" class="apply-btn" style="background:var(--spotify-green); border:none; padding:10px; width:100%; border-radius:10px; font-weight:700; cursor:pointer; margin-bottom:15px;">📅 Bekijk op kalender</button>`;
 
-    // -- NIEUW: Toon albums als die er zijn --
     if (sortedAlbums.length > 0) {
         html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Albums</h3>`;
         html += `<div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:15px; margin-bottom:10px;">`;
@@ -432,6 +481,8 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null) {
 }
 
 function showSongSpotlight(songFull, overrideCount = null) {
+    addToHistory('song', arguments); // Add to history
+
     let titel, artiest; if (songFull.includes(' - ')) { const p = songFull.split(' - '); titel = p[0]; artiest = p[1]; } else { titel = songFull; artiest = "Onbekend"; }
     const s = statsData.find(x => x.titel.trim() === titel.trim()) || { poster: 'img/placeholder.png', artiest: artiest, count: '?' };
     const countToDisplay = overrideCount !== null ? overrideCount : s.count;
@@ -441,6 +492,8 @@ function showSongSpotlight(songFull, overrideCount = null) {
 }
 
 function showTop100(category) {
+    addToHistory('list', arguments); // Add to history
+
     const container = document.getElementById('day-top-three-container');
     const titleEl = document.getElementById('modal-datum-titel');
     let items = [];
@@ -553,22 +606,82 @@ function renderCalendar() {
     }
 }
 
+// --- AANGEPASTE ZOEKFUNCTIE (MET ARTIEST-KLIK) ---
 function handleSearch() {
     const query = document.getElementById('musicSearch').value.toLowerCase().trim();
-    const resultsContainer = document.getElementById('search-results'); if (query.length < 2) { resultsContainer.innerHTML = ""; return; }
-    const matches = statsData.filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query)).sort((a, b) => b.count - a.count).slice(0, 8);
+    const resultsContainer = document.getElementById('search-results'); 
+    if (query.length < 2) { resultsContainer.innerHTML = ""; return; }
+
+    // 1. Zoek Artiesten (Groepeer eerst)
+    const artistMap = {};
+    statsData.forEach(s => {
+        const cleanName = s.artiest;
+        if (!artistMap[cleanName]) artistMap[cleanName] = { name: cleanName, count: 0 };
+        artistMap[cleanName].count += s.count;
+    });
     
-    resultsContainer.innerHTML = matches.map((s, idx) => {
-        const name = `${s.titel} - ${s.artiest}`;
-        const escapedName = name.replace(/'/g, "\\'");
-        const elementId = `search-${idx}`;
-        return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" onerror="this.src='img/placeholder.png'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;"><div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div><span class="point-badge">${s.count}x</span></div>`;
-    }).join('');
+    const artistMatches = Object.values(artistMap)
+        .filter(a => a.name.toLowerCase().includes(query))
+        .sort((a,b) => b.count - a.count)
+        .slice(0, 3);
+
+    // 2. Zoek Liedjes
+    const songMatches = statsData
+        .filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 8);
+
+    let html = '';
+
+    // Render Artiesten
+    if (artistMatches.length > 0) {
+        html += `<div style="padding: 5px 10px; font-size: 0.75rem; color: #aaa; text-transform:uppercase; font-weight:bold;">🎤 Artiesten</div>`;
+        html += artistMatches.map((a, idx) => {
+            const escapedName = a.name.replace(/'/g, "\\'");
+            const elementId = `search-art-${idx}`;
+            // Let op: type is 'artist', klik opent artiest details
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'artist', null, '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;">
+                        <div style="width:40px; height:40px; border-radius:50%; background:#333; display:flex; align-items:center; justify-content:center; margin-right:12px; font-size:1.2rem;">🎤</div>
+                        <div style="flex-grow:1;"><b>${a.name}</b><br><small style="color:var(--text-muted);">Artiest</small></div>
+                        <span class="point-badge">${a.count}x</span>
+                    </div>`;
+        }).join('');
+        html += `<div style="margin-bottom:15px;"></div>`; 
+    }
+
+    // Render Liedjes
+    if (songMatches.length > 0) {
+        html += `<div style="padding: 5px 10px; font-size: 0.75rem; color: #aaa; text-transform:uppercase; font-weight:bold;">🎵 Liedjes</div>`;
+        html += songMatches.map((s, idx) => {
+            const name = `${s.titel} - ${s.artiest}`;
+            const escapedName = name.replace(/'/g, "\\'");
+            const elementId = `search-song-${idx}`;
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;">
+                        <img src="${s.poster}" onerror="this.src='img/placeholder.png'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;">
+                        <div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div>
+                        <span class="point-badge">${s.count}x</span>
+                    </div>`;
+        }).join('');
+    }
+
+    if (artistMatches.length === 0 && songMatches.length === 0) {
+        html = `<div style="padding:20px; text-align:center; color:#777;">Geen resultaten gevonden.</div>`;
+    }
+
+    resultsContainer.innerHTML = html;
 }
 
 function calculateStreak() {
-    const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse(); if (dates.length === 0) return;
-    let streak = 0; for (let i = 0; i < dates.length - 1; i++) { if (Math.floor((new Date(dates[i]) - new Date(dates[i+1])) / 86400000) === 1) streak++; else break; }
+    const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse(); 
+    if (dates.length === 0) {
+        document.getElementById('streak-count').innerText = 0;
+        return;
+    }
+    let streak = 0; 
+    for (let i = 0; i < dates.length - 1; i++) { 
+        if (Math.floor((new Date(dates[i]) - new Date(dates[i+1])) / 86400000) === 1) streak++; 
+        else break; 
+    }
     document.getElementById('streak-count').innerText = streak + 1;
 }
 
@@ -577,7 +690,8 @@ function switchTab(tabName) { document.getElementById('view-calendar').classList
 function applyCalendarFilter(artist) { activeFilter = artist; document.getElementById('modal').classList.add('hidden'); switchTab('calendar'); document.getElementById('resetFilter').classList.remove('hidden'); renderCalendar(); }
 document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };
 document.getElementById('nextMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderCalendar(); };
-document.getElementById('close-button').onclick = () => document.getElementById('modal').classList.add('hidden');
+// AANGEPAST: Close button roept nu handleModalClose aan (voor "back" functionaliteit)
+document.getElementById('close-button').onclick = () => handleModalClose();
 document.getElementById('resetFilter').onclick = function() { activeFilter = null; this.classList.add('hidden'); renderCalendar(); };
 
 loadMusic();
