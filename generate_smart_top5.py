@@ -35,7 +35,17 @@ def clean_music_data(artist, title):
         artist = pattern.sub('', artist).strip()
         title = pattern.sub('', title).strip()
 
-    return artist.strip(), title.strip()
+    # 6. NIEUW: Standaardiseer hoofdletters (Title Case)
+    # Dit lost het "papaoutai" vs "Papaoutai" probleem automatisch op.
+    artist = artist.strip().title() 
+    
+    if title:
+        title = title.strip()
+        # Zet de eerste letter van elk woord in een hoofdletter
+        # Dit lost "Wake Me up" vs "Wake Me Up" op.
+        title = title.title()
+
+    return artist, title
 
 def generate_smart_top5():
     # 1. Poster cache laden

@@ -2,7 +2,7 @@
   "songs_top": [
     {
       "artiest": "Pommelien Thijs",
-      "titel": "Ben je klaar?",
+      "titel": "Ben Je Klaar?",
       "streak": 21,
       "period": "14/09/25 - 04/10/25"
     },
@@ -25,13 +25,13 @@
       "period": "07/04/25 - 18/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "the remedy for a broken heart",
+      "artiest": "Xxxtentacion",
+      "titel": "The Remedy For A Broken Heart",
       "streak": 12,
       "period": "10/08/25 - 21/08/25"
     },
     {
-      "artiest": "Florence + the Machine",
+      "artiest": "Florence + The Machine",
       "titel": "Dog Days Are Over",
       "streak": 11,
       "period": "13/12/25 - 23/12/25"
@@ -43,31 +43,31 @@
       "period": "08/04/25 - 18/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Revenge",
       "streak": 10,
       "period": "01/09/24 - 10/09/24"
     },
     {
       "artiest": "Pommelien Thijs",
-      "titel": "IK MOET GAAN",
+      "titel": "Ik Moet Gaan",
       "streak": 9,
       "period": "08/10/25 - 16/10/25"
     },
     {
-      "artiest": "LP",
-      "titel": "Lost on You",
+      "artiest": "Lp",
+      "titel": "Lost On You",
       "streak": 9,
       "period": "16/05/25 - 24/05/25"
     },
     {
-      "artiest": "MIKA",
+      "artiest": "Mika",
       "titel": "Relax, Take It Easy",
       "streak": 9,
       "period": "19/10/25 - 27/10/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "True Love",
       "streak": 9,
       "period": "06/06/25 - 14/06/25"
@@ -86,7 +86,7 @@
     },
     {
       "artiest": "Glass Animals",
-      "titel": "I Don't Wanna Talk",
+      "titel": "I Don'T Wanna Talk",
       "streak": 8,
       "period": "24/09/25 - 01/10/25"
     },
@@ -104,19 +104,19 @@
     },
     {
       "artiest": "Adele",
-      "titel": "Rolling in the Deep",
+      "titel": "Rolling In The Deep",
       "streak": 8,
       "period": "10/11/25 - 17/11/25"
     },
     {
-      "artiest": "MGMT",
-      "titel": "Time to Pretend",
+      "artiest": "Mgmt",
+      "titel": "Time To Pretend",
       "streak": 8,
       "period": "20/10/25 - 27/10/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "SAD!",
+      "artiest": "Xxxtentacion",
+      "titel": "Sad!",
       "streak": 8,
       "period": "06/06/25 - 13/06/25"
     },
@@ -169,13 +169,13 @@
       "period": "02/09/24 - 08/09/24"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Hope",
       "streak": 7,
       "period": "09/06/25 - 15/06/25"
     },
     {
-      "artiest": "Jopke van Dobbenburgh",
+      "artiest": "Jopke Van Dobbenburgh",
       "titel": "Lotje",
       "streak": 7,
       "period": "08/06/25 - 14/06/25"
@@ -212,13 +212,13 @@
     },
     {
       "artiest": "The Smiths",
-      "titel": "There Is a Light That Never Goes Out",
+      "titel": "There Is A Light That Never Goes Out",
       "streak": 6,
       "period": "09/11/25 - 14/11/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "NUMB",
+      "artiest": "Xxxtentacion",
+      "titel": "Numb",
       "streak": 6,
       "period": "04/06/25 - 09/06/25"
     },
@@ -236,7 +236,7 @@
     },
     {
       "artiest": "Oasis",
-      "titel": "Don't Look Back In Anger",
+      "titel": "Don'T Look Back In Anger",
       "streak": 6,
       "period": "29/11/24 - 04/12/24"
     },
@@ -319,7 +319,7 @@
       "period": "18/10/25 - 23/10/25"
     },
     {
-      "artiest": "TOOL",
+      "artiest": "Tool",
       "titel": "Schism",
       "streak": 6,
       "period": "10/08/25 - 15/08/25"
@@ -332,7 +332,7 @@
     },
     {
       "artiest": "Kendrick Lamar",
-      "titel": "PRIDE.",
+      "titel": "Pride.",
       "streak": 6,
       "period": "15/08/25 - 20/08/25"
     },
@@ -350,12 +350,12 @@
     },
     {
       "artiest": "Djo",
-      "titel": "End of Beginning",
+      "titel": "End Of Beginning",
       "streak": 5,
       "period": "10/05/25 - 14/05/25"
     },
     {
-      "artiest": "Juice WRLD",
+      "artiest": "Juice Wrld",
       "titel": "Robbery",
       "streak": 5,
       "period": "02/06/25 - 06/06/25"
@@ -373,7 +373,7 @@
       "period": "15/12/25 - 19/12/25"
     },
     {
-      "artiest": "Florence + the Machine",
+      "artiest": "Florence + The Machine",
       "titel": "Spectrum",
       "streak": 5,
       "period": "09/05/25 - 13/05/25"
@@ -386,9 +386,15 @@
     },
     {
       "artiest": "Sean Paul",
-      "titel": "She Doesn't Mind",
+      "titel": "She Doesn'T Mind",
       "streak": 5,
       "period": "09/08/25 - 13/08/25"
+    },
+    {
+      "artiest": "Clean Bandit",
+      "titel": "Symphony",
+      "streak": 5,
+      "period": "05/10/24 - 09/10/24"
     },
     {
       "artiest": "Pommelien Thijs",
@@ -398,7 +404,7 @@
     },
     {
       "artiest": "Rixton",
-      "titel": "Me and My Broken Heart",
+      "titel": "Me And My Broken Heart",
       "streak": 5,
       "period": "16/10/24 - 20/10/24"
     },
@@ -416,7 +422,7 @@
     },
     {
       "artiest": "The Kid Laroi",
-      "titel": "BABY I'M BACK",
+      "titel": "Baby I'M Back",
       "streak": 5,
       "period": "04/05/25 - 08/05/25"
     },
@@ -452,7 +458,7 @@
     },
     {
       "artiest": "Green Day",
-      "titel": "Wake Me up When September Ends",
+      "titel": "Wake Me Up When September Ends",
       "streak": 5,
       "period": "11/12/24 - 15/12/24"
     },
@@ -464,12 +470,12 @@
     },
     {
       "artiest": "The Fray",
-      "titel": "How to Save a Life",
+      "titel": "How To Save A Life",
       "streak": 5,
       "period": "12/12/25 - 16/12/25"
     },
     {
-      "artiest": "Juice WRLD",
+      "artiest": "Juice Wrld",
       "titel": "Lucid Dreams",
       "streak": 5,
       "period": "14/12/25 - 18/12/25"
@@ -530,80 +536,74 @@
     },
     {
       "artiest": "Lil Wayne",
-      "titel": "Scared of the Dark",
+      "titel": "Scared Of The Dark",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "Looking for a Star",
+      "artiest": "Xxxtentacion",
+      "titel": "Looking For A Star",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "I spoke to the devil in miami, he said everything would be fine",
+      "artiest": "Xxxtentacion",
+      "titel": "I Spoke To The Devil In Miami, He Said Everything Would Be Fine",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "whoa",
+      "artiest": "Xxxtentacion",
+      "titel": "Whoa",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "BAD!",
+      "artiest": "Xxxtentacion",
+      "titel": "Bad!",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Arms Around You",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "I don't let go",
+      "artiest": "Xxxtentacion",
+      "titel": "I Don'T Let Go",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Moonlight",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
-      "titel": "HEARTEATER",
+      "artiest": "Xxxtentacion",
+      "titel": "Hearteater",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Save Me",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     },
     {
-      "artiest": "XXXTENTACION",
+      "artiest": "Xxxtentacion",
       "titel": "Carry On",
-      "streak": 5,
-      "period": "31/03/25 - 04/04/25"
-    },
-    {
-      "artiest": "XXXTENTACION",
-      "titel": "Everybody Dies In Their Nightmares",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
     }
   ],
   "songs_current": [
     {
-      "artiest": "ABBA",
+      "artiest": "Abba",
       "titel": "The Winner Takes It All",
       "streak": 4,
       "period": "sinds 02/01/26"
@@ -628,18 +628,18 @@
     },
     {
       "artiest": "Pommelien Thijs",
-      "titel": "Ben je klaar?",
+      "titel": "Ben Je Klaar?",
       "streak": 4,
       "period": "sinds 02/01/26"
     },
     {
       "artiest": "Simple Minds",
-      "titel": "Don't You",
+      "titel": "Don'T You",
       "streak": 3,
       "period": "sinds 03/01/26"
     },
     {
-      "artiest": "Juice WRLD",
+      "artiest": "Juice Wrld",
       "titel": "Robbery",
       "streak": 3,
       "period": "sinds 03/01/26"
@@ -694,7 +694,7 @@
       "period": "10/11/25 - 24/12/25"
     },
     {
-      "naam": "XXXTENTACION",
+      "naam": "Xxxtentacion",
       "streak": 24,
       "period": "02/06/25 - 25/06/25"
     },
@@ -754,7 +754,7 @@
       "period": "07/04/25 - 18/04/25"
     },
     {
-      "naam": "Florence + the Machine",
+      "naam": "Florence + The Machine",
       "streak": 11,
       "period": "13/12/25 - 23/12/25"
     },
@@ -789,7 +789,7 @@
       "period": "01/09/24 - 10/09/24"
     },
     {
-      "naam": "MIKA",
+      "naam": "Mika",
       "streak": 10,
       "period": "18/10/25 - 27/10/25"
     },
@@ -804,7 +804,7 @@
       "period": "23/09/25 - 01/10/25"
     },
     {
-      "naam": "MGMT",
+      "naam": "Mgmt",
       "streak": 9,
       "period": "19/10/25 - 27/10/25"
     },
@@ -814,7 +814,7 @@
       "period": "30/04/25 - 08/05/25"
     },
     {
-      "naam": "LP",
+      "naam": "Lp",
       "streak": 9,
       "period": "16/05/25 - 24/05/25"
     },
@@ -884,12 +884,12 @@
       "period": "12/12/25 - 18/12/25"
     },
     {
-      "naam": "Jopke van Dobbenburgh",
+      "naam": "Jopke Van Dobbenburgh",
       "streak": 7,
       "period": "08/06/25 - 14/06/25"
     },
     {
-      "naam": "Juice WRLD",
+      "naam": "Juice Wrld",
       "streak": 6,
       "period": "16/09/24 - 21/09/24"
     },
@@ -964,7 +964,7 @@
       "period": "04/06/25 - 09/06/25"
     },
     {
-      "naam": "TOOL",
+      "naam": "Tool",
       "streak": 6,
       "period": "10/08/25 - 15/08/25"
     },
@@ -1016,7 +1016,7 @@
     {
       "naam": "Clean Bandit",
       "streak": 5,
-      "period": "25/10/24 - 29/10/24"
+      "period": "05/10/24 - 09/10/24"
     },
     {
       "naam": "Rixton",
@@ -1124,12 +1124,12 @@
       "period": "25/08/25 - 29/08/25"
     },
     {
-      "naam": "BaseBoost Central",
+      "naam": "Baseboost Central",
       "streak": 5,
       "period": "12/08/25 - 16/08/25"
     },
     {
-      "naam": "ABBA",
+      "naam": "Abba",
       "streak": 4,
       "period": "02/01/26 - 05/01/26"
     },
@@ -1216,7 +1216,7 @@
       "period": "sinds 02/01/26"
     },
     {
-      "naam": "ABBA",
+      "naam": "Abba",
       "streak": 4,
       "period": "sinds 02/01/26"
     },
@@ -1231,7 +1231,7 @@
       "period": "sinds 02/01/26"
     },
     {
-      "naam": "Florence + the Machine",
+      "naam": "Florence + The Machine",
       "streak": 4,
       "period": "sinds 02/01/26"
     },
@@ -1241,7 +1241,7 @@
       "period": "sinds 03/01/26"
     },
     {
-      "naam": "Juice WRLD",
+      "naam": "Juice Wrld",
       "streak": 3,
       "period": "sinds 03/01/26"
     },
