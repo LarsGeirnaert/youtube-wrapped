@@ -1,9 +1,9 @@
 let currentViewDate = new Date();
 let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
-let myChart = null;
+let charts = {};
 
 // --- NAVIGATIE GESCHIEDENIS ---
-let historyStack = []; // Houdt bij waar we zijn geweest in de modal
+let modalHistory = [];
 
 // --- MERGE MODE STATE ---
 let mergeMode = false;
@@ -11,21 +11,26 @@ let selectedForMerge = [];
 let existingCorrections = [];
 let fileHandle = null;
 
-// --- INDEXED DB ---
+// --- COMPARISON STATE ---
+let comparisonItems = []; 
+
+function escapeStr(str) {
+    if (!str) return '';
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
 const DB_NAME = 'MuziekDagboekDB';
 const STORE_NAME = 'Settings';
 
 function openDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME);
-            }
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME);
         };
-        request.onsuccess = (event) => resolve(event.target.result);
-        request.onerror = (event) => reject(event.target.error);
+        request.onsuccess = (e) => resolve(e.target.result);
+        request.onerror = (e) => reject(e.target.error);
     });
 }
 
@@ -40,20 +45,64 @@ async function getHandleFromDB() {
     const db = await openDB();
     return new Promise((resolve) => {
         const tx = db.transaction(STORE_NAME, 'readonly');
-        const request = tx.objectStore(STORE_NAME).get('correctionsHandle');
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => resolve(null);
+        const req = tx.objectStore(STORE_NAME).get('correctionsHandle');
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
     });
 }
 
-// --- INITIALISATIE ---
+async function linkFile() {
+    try {
+        const [handle] = await window.showOpenFilePicker({
+            types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }],
+            multiple: false
+        });
+        fileHandle = handle;
+        await saveHandleToDB(fileHandle);
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+        if(text) existingCorrections = JSON.parse(text);
+        updateFileStatus(true);
+        alert("✅ Bestand gekoppeld!");
+    } catch (err) { console.error(err); alert("Kon bestand niet koppelen."); }
+}
+
+async function verifyPermission(handle, readWrite) {
+    const options = {};
+    if (readWrite) options.mode = 'readwrite';
+    if ((await handle.queryPermission(options)) === 'granted') return true;
+    if ((await handle.requestPermission(options)) === 'granted') return true;
+    return false;
+}
+
+async function saveCorrections() {
+    if (fileHandle) {
+        try {
+            const hasPermission = await verifyPermission(fileHandle, true);
+            if (!hasPermission) return false;
+            const writable = await fileHandle.createWritable();
+            await writable.write(JSON.stringify(existingCorrections, null, 2));
+            await writable.close();
+            return true;
+        } catch (err) { console.error("Auto-save mislukt:", err); return false; }
+    } else {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(existingCorrections, null, 2));
+        const dl = document.createElement('a');
+        dl.setAttribute("href", dataStr);
+        dl.setAttribute("download", "corrections.json");
+        document.body.appendChild(dl);
+        dl.click();
+        dl.remove();
+        return false; 
+    }
+}
 
 async function loadMusic() {
     try {
         const savedHandle = await getHandleFromDB();
         if (savedHandle) {
             fileHandle = savedHandle;
-            console.log("📂 Bestandskoppeling hersteld uit geheugen.");
+            console.log("📂 Bestandskoppeling hersteld.");
             updateFileStatus(true);
             try {
                 if ((await fileHandle.queryPermission({ mode: 'read' })) === 'granted') {
@@ -89,13 +138,14 @@ async function loadMusic() {
         renderCharts();
         calculateStreak();
         renderCalendar();
+        renderFunStats();
+        updateComparisonChart(); 
     } catch (error) { console.error("Fout bij laden:", error); }
 }
 
 function updateFileStatus(isConnected) {
     const statusEl = document.getElementById('file-status');
     const btnEl = document.getElementById('btn-link-file');
-    
     if (isConnected) {
         statusEl.innerHTML = "💾 Opslaan: <b>Automatisch</b>";
         statusEl.style.color = "#1db954";
@@ -113,56 +163,6 @@ function getAlbumKey(posterUrl, artist) {
     if (!posterUrl || posterUrl.includes('placeholder')) return artist.toLowerCase();
     const uniqueId = posterUrl.split('/image/thumb/')[1] || posterUrl;
     return `${artist.toLowerCase()}_${uniqueId}`;
-}
-
-// --- FILE SYSTEM ACCESS API ---
-
-async function linkFile() {
-    try {
-        const [handle] = await window.showOpenFilePicker({
-            types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }],
-            multiple: false
-        });
-        fileHandle = handle;
-        await saveHandleToDB(fileHandle);
-
-        const file = await fileHandle.getFile();
-        const text = await file.text();
-        if(text) existingCorrections = JSON.parse(text);
-
-        updateFileStatus(true);
-        alert("✅ Bestand gekoppeld!");
-    } catch (err) { console.error(err); alert("Kon bestand niet koppelen."); }
-}
-
-async function verifyPermission(handle, readWrite) {
-    const options = {};
-    if (readWrite) options.mode = 'readwrite';
-    if ((await handle.queryPermission(options)) === 'granted') return true;
-    if ((await handle.requestPermission(options)) === 'granted') return true;
-    return false;
-}
-
-async function saveCorrections() {
-    if (fileHandle) {
-        try {
-            const hasPermission = await verifyPermission(fileHandle, true);
-            if (!hasPermission) return false;
-            const writable = await fileHandle.createWritable();
-            await writable.write(JSON.stringify(existingCorrections, null, 2));
-            await writable.close();
-            return true;
-        } catch (err) { console.error("Auto-save mislukt:", err); return false; }
-    } else {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(existingCorrections, null, 2));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "corrections.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-        return false; 
-    }
 }
 
 // --- MERGE LOGICA ---
@@ -191,58 +191,82 @@ function toggleMergeMode() {
         bar.classList.remove('visible');
         document.querySelectorAll('.merge-selected').forEach(el => el.classList.remove('merge-selected'));
     }
+    updateModalMergeButton();
+}
+
+function updateModalMergeButton() {
+    const container = document.getElementById('modal-action-container');
+    if (!container) return;
+
+    const artistNameEl = document.getElementById('modal-datum-titel');
+    const isArtistView = artistNameEl && !artistNameEl.innerText.startsWith('Album van');
+    let artistName = isArtistView ? artistNameEl.innerText : '';
+
+    let html = '';
+    if (isArtistView) {
+        html += `<button onclick="applyCalendarFilter('${escapeStr(artistName)}')" class="apply-btn" style="background:var(--spotify-green); border:none; padding:10px; width:auto; border-radius:10px; font-weight:700; cursor:pointer;">📅 Kalender</button>`;
+    }
+
+    if (mergeMode) {
+        html += `<button onclick="toggleMergeMode()" style="background:red;border:1px solid red;color:white;width:auto;padding:10px 15px;border-radius:10px;font-weight:bold;cursor:pointer;">❌ Stop Merge</button>`;
+        if (selectedForMerge.length >= 2) {
+            html += `<button onclick="showMergeModal()" style="background:var(--spotify-green); border:1px solid var(--spotify-green); color:black; width:auto; padding:10px 15px; border-radius:10px; font-weight:bold; cursor:pointer; animation: pulse 1s infinite;">✅ BEVESTIG MERGE (${selectedForMerge.length})</button>`;
+        }
+    } else {
+        html += `<button onclick="toggleMergeMode()" style="background:rgba(255,165,0,0.2);border:1px solid orange;color:orange;width:auto;padding:10px 15px;border-radius:10px;font-weight:bold;cursor:pointer;">🛠️ Start Merge</button>`;
+    }
+    container.innerHTML = html;
 }
 
 function handleListClick(name, type, poster, albumArtist, elementId) {
+    if (document.getElementById('modal').classList.contains('hidden')) modalHistory = [];
     if (mergeMode) {
-        if (type === 'song') toggleMergeSelection(name, elementId);
-        else alert("Je kan alleen liedjes samenvoegen.");
+        if (type === 'song' || type === 'album') toggleMergeSelection(name, type, poster, albumArtist, elementId);
+        else alert("Je kan alleen liedjes of albums samenvoegen.");
     } else {
-        const escapedName = name; 
-        if (type === 'artist') showArtistDetails(escapedName);
+        if (type === 'artist') showArtistDetails(name);
         else if (type === 'album') showAlbumDetails(poster, albumArtist);
-        else showSongSpotlight(escapedName);
+        else showSongSpotlight(name);
     }
 }
 
-function toggleMergeSelection(name, elementId) {
-    let parts = name.split(' - ');
+function toggleMergeSelection(name, type, poster, albumArtist, elementId) {
+    if (selectedForMerge.length > 0 && selectedForMerge[0].type !== type) { alert(`Je kan geen ${type} met een ${selectedForMerge[0].type} mixen.`); return; }
     let item = {};
-    if (parts.length > 1) item = { titel: parts[0].trim(), artiest: parts[1].trim() };
-    else item = { titel: "", artiest: name.trim() };
-    
-    const key = `${item.artiest}|${item.titel}`.toLowerCase();
-    const index = selectedForMerge.findIndex(x => x.key === key);
-    
-    if (index > -1) {
-        selectedForMerge.splice(index, 1);
-        if(document.getElementById(elementId)) document.getElementById(elementId).classList.remove('merge-selected');
-    } else {
-        selectedForMerge.push({ key: key, naam: name, item: item });
-        if(document.getElementById(elementId)) document.getElementById(elementId).classList.add('merge-selected');
+    let key = "";
+    if (type === 'song') {
+        let parts = name.split(' - ');
+        if (parts.length > 1) { item.artiest = parts.pop().trim(); item.titel = parts.join(' - ').trim(); }
+        else { item = { titel: "", artiest: name.trim() }; }
+        key = `song|${item.artiest}|${item.titel}`.toLowerCase();
+    } else if (type === 'album') {
+        const realArtist = albumArtist || name.replace('Album van ', '');
+        item = { artiest: realArtist, poster: poster, displayTitle: name };
+        key = `album|${realArtist}|${poster}`;
     }
+    const index = selectedForMerge.findIndex(x => x.key === key);
+    const el = document.getElementById(elementId);
+    if (index > -1) { selectedForMerge.splice(index, 1); if(el) el.classList.remove('merge-selected'); }
+    else { selectedForMerge.push({ key: key, naam: name, item: item, type: type }); if(el) el.classList.add('merge-selected'); }
     updateMergeUI();
 }
 
 function updateMergeUI() {
     document.getElementById('merge-count').innerText = `${selectedForMerge.length} geselecteerd`;
+    updateModalMergeButton();
 }
 
 function showMergeModal() {
-    if (selectedForMerge.length < 2) { alert("Selecteer minstens 2 liedjes."); return; }
-
+    if (selectedForMerge.length < 2) { alert("Selecteer minstens 2 items."); return; }
     const container = document.getElementById('day-top-three-container');
-    const titleEl = document.getElementById('modal-datum-titel');
-    titleEl.innerText = "Kies de Hoofdversie";
-    
-    let html = `<p style="text-align:center; margin-bottom:15px; color:#ccc;">Welke naam wil je behouden?</p>`;
-    html += `<form id="merge-form" style="max-height:300px; overflow-y:auto; margin-bottom:20px;">`;
-    
+    document.getElementById('modal-datum-titel').innerText = "Kies de Hoofdversie";
+    let html = `<p style="text-align:center;margin-bottom:15px;color:#ccc;">Welke versie moet blijven?</p>`;
+    html += `<form id="merge-form" style="max-height:300px;overflow-y:auto;margin-bottom:20px;">`;
     selectedForMerge.forEach((obj, idx) => {
-        const checked = idx === 0 ? 'checked' : '';
-        html += `<label class="radio-item"><input type="radio" name="merge-target" value="${idx}" ${checked}><div><span style="font-weight:600; display:block;">${obj.item.titel}</span><span style="font-size:0.8rem; color:#aaa;">${obj.item.artiest}</span></div></label>`;
+        const label = obj.type === 'song' ? obj.item.titel : obj.item.displayTitle;
+        const sub = obj.item.artiest;
+        html += `<label class="radio-item"><input type="radio" name="merge-target" value="${idx}" ${idx===0?'checked':''}><div><span style="font-weight:600;display:block;">${label}</span><span style="font-size:0.8rem;color:#aaa;">${sub}</span></div></label>`;
     });
-    
     html += `</form><button onclick="confirmMerge()" class="apply-btn">✅ Samenvoegen & Opslaan</button>`;
     container.innerHTML = html;
     document.getElementById('modal').classList.remove('hidden');
@@ -253,108 +277,278 @@ async function confirmMerge() {
     let selectedIndex = -1;
     for (const r of radios) { if (r.checked) { selectedIndex = parseInt(r.value); break; } }
     if (selectedIndex === -1) return;
-    
-    const targetObj = selectedForMerge[selectedIndex].item;
+    const targetObj = selectedForMerge[selectedIndex];
     let newCount = 0;
-    selectedForMerge.forEach((obj, idx) => {
-        if (idx !== selectedIndex) {
-            existingCorrections.push({ original: obj.item, target: targetObj });
-            newCount++;
-        }
-    });
-
+    if (targetObj.type === 'song') {
+        selectedForMerge.forEach((obj, idx) => {
+            if (idx !== selectedIndex) {
+                existingCorrections.push({ original: obj.item, target: targetObj.item });
+                newCount++;
+            }
+        });
+    } else if (targetObj.type === 'album') {
+        const targetArtist = targetObj.item.artiest;
+        const targetPoster = targetObj.item.poster;
+        selectedForMerge.forEach((sourceObj, idx) => {
+            if (idx !== selectedIndex) {
+                const songsToMove = statsData.filter(s => s.artiest === sourceObj.item.artiest && s.poster === sourceObj.item.poster);
+                songsToMove.forEach(song => {
+                    existingCorrections.push({
+                        original: { titel: song.titel, artiest: song.artiest },
+                        target: { titel: song.titel, artiest: targetArtist, poster: targetPoster }
+                    });
+                    newCount++;
+                });
+            }
+        });
+    }
     const isAuto = await saveCorrections();
-    let msg = `Succes! ${newCount} variaties samengevoegd.`;
+    let msg = `Succes! ${newCount} correctieregels toegevoegd.`;
     if (!isAuto) msg += " (Bestand gedownload).";
-    
     alert(msg);
     document.getElementById('modal').classList.add('hidden');
     toggleMergeMode(); 
 }
 
-// --- HISTORY NAVIGATION ---
+// --- COMPARISON LOGIC ---
 
-function addToHistory(viewType, args) {
-    // Als de modal net opengaat (vanuit hidden), is de stack leeg.
-    if (document.getElementById('modal').classList.contains('hidden')) {
-        historyStack = [];
-    }
-    historyStack.push({ type: viewType, args: Array.from(args) });
-}
-
-function handleModalClose() {
-    // Verwijder het huidige scherm uit de stack (want dat sluiten we)
-    historyStack.pop();
-
-    if (historyStack.length > 0) {
-        // Er is nog geschiedenis! Ga terug naar de vorige.
-        const prev = historyStack[historyStack.length - 1]; // Bekijk vorige, maar laat in stack zitten (zodat we weer kunnen poppen)
-        
-        // We moeten 'pop' doen VOORDAT we de functie aanroepen, anders voegt die functie zichzelf weer toe aan de stack.
-        // Dus we moeten de 'addToHistory' in de functies tijdelijk omzeilen of een flag gebruiken.
-        // Simpelste oplossing: pop hem hier, en roep de functie aan met een extra 'isBack' parameter.
-        
-        // Maar om de bestaande functies niet te complex te maken: 
-        // We halen de data op, en renderen DIRECT. De functies show... roepen we opnieuw aan.
-        // We moeten zorgen dat show... niet dubbel toevoegt.
-        
-        // Beter: we passen de show-functies hieronder aan om 'addToHistory' te doen.
-        
-        // Bij de 'back' actie poppen we de huidige, en renderen we de vorige opnieuw.
-        // We moeten een flag 'isNavigatingBack' meegeven.
-        
-        const previousState = historyStack.pop(); // Haal vorige ook weg, want de functie voegt hem weer toe
-        
-        if (previousState.type === 'artist') showArtistDetails(...previousState.args);
-        else if (previousState.type === 'album') showAlbumDetails(...previousState.args);
-        else if (previousState.type === 'song') showSongSpotlight(...previousState.args);
-        else if (previousState.type === 'list') showTop100(...previousState.args);
-        
-    } else {
-        // Stack leeg, sluit modal volledig
-        document.getElementById('modal').classList.add('hidden');
-        historyStack = [];
-    }
-}
-
-// --- RENDER FUNCTIES ---
-
-function renderCharts() {
-    const canvas = document.getElementById('listeningChart');
-    if (!canvas || !chartData.values) return;
-    const ctx = canvas.getContext('2d');
-    if (myChart) myChart.destroy();
+function handleComparisonSearch(type) {
+    const inputId = type === 'song' ? 'comp-song-search' : 'comp-artist-search';
+    const resultsId = type === 'song' ? 'comp-song-results' : 'comp-artist-results';
+    const query = document.getElementById(inputId).value.toLowerCase().trim();
+    const dropdown = document.getElementById(resultsId);
     
-    myChart = new Chart(ctx, {
+    if (query.length < 2) { dropdown.classList.add('hidden'); return; }
+
+    let matches = [];
+    if (type === 'song') {
+        matches = statsData.filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query))
+            .sort((a,b) => b.count - a.count).slice(0, 5);
+    } else {
+        const artistMap = {};
+        statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
+        matches = Object.keys(artistMap).filter(a => a.toLowerCase().includes(query))
+            .map(a => ({ artiest: a, count: artistMap[a] }))
+            .sort((a,b) => b.count - a.count).slice(0, 5);
+    }
+
+    if (matches.length > 0) {
+        dropdown.innerHTML = matches.map(m => {
+            const name = type === 'song' ? m.titel : m.artiest;
+            const sub = type === 'song' ? m.artiest : `${m.count}x`;
+            const clickArg = type === 'song' ? `${m.titel}|${m.artiest}` : m.artiest;
+            return `<div class="comp-result-item" onclick="addToComparison('${escapeStr(clickArg)}', '${type}')">
+                        <b>${name}</b><br><small>${sub}</small>
+                    </div>`;
+        }).join('');
+        dropdown.classList.remove('hidden');
+    } else { dropdown.classList.add('hidden'); }
+}
+
+function addToComparison(key, type) {
+    if (comparisonItems.length >= 5) { alert("Max 5 items tegelijk vergelijken."); return; }
+    
+    let label = key;
+    if (type === 'song') {
+        const [t, a] = key.split('|');
+        label = `${t} - ${a}`;
+    }
+
+    if (!comparisonItems.some(i => i.key === key && i.type === type)) {
+        comparisonItems.push({ type: type, key: key, label: label });
+        updateComparisonUI();
+        updateComparisonChart();
+    }
+    
+    document.getElementById('comp-song-search').value = '';
+    document.getElementById('comp-artist-search').value = '';
+    document.querySelectorAll('.search-dropdown').forEach(d => d.classList.add('hidden'));
+}
+
+function removeFromComparison(index) {
+    comparisonItems.splice(index, 1);
+    updateComparisonUI();
+    updateComparisonChart();
+}
+
+function updateComparisonUI() {
+    const container = document.getElementById('selected-chips');
+    container.innerHTML = comparisonItems.map((item, idx) => 
+        `<div class="comp-chip">${item.label} <span onclick="removeFromComparison(${idx})">&times;</span></div>`
+    ).join('');
+}
+
+function updateComparisonChart() {
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+    const ctxMonthly = document.getElementById('comparisonMonthlyChart').getContext('2d');
+    
+    if (charts['comparison']) charts['comparison'].destroy();
+    if (charts['comparisonMonthly']) charts['comparisonMonthly'].destroy();
+
+    const labels = chartData.history.labels; // Maanden (bijv. "2023-01")
+    
+    // Data voorbereiden
+    const datasetsCumulative = [];
+    const datasetsMonthly = [];
+
+    comparisonItems.forEach((item, i) => {
+        const color = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'][i % 5];
+        let dataPointsCumulative = [];
+        let dataPointsMonthly = [];
+        let runningTotal = 0;
+
+        labels.forEach(month => {
+            let count = 0;
+            if (monthlyStats[month]) {
+                if (item.type === 'artist') {
+                    if (monthlyStats[month].artist_counts) {
+                        count = monthlyStats[month].artist_counts[item.key] || 0;
+                    }
+                } else {
+                    if (monthlyStats[month].song_counts) {
+                        count = monthlyStats[month].song_counts[item.key] || 0;
+                    }
+                }
+            }
+            runningTotal += count;
+            dataPointsMonthly.push(count);
+            dataPointsCumulative.push(runningTotal);
+        });
+
+        // Dataset 1: Cumulatief (Race)
+        datasetsCumulative.push({
+            label: item.label,
+            data: dataPointsCumulative,
+            borderColor: color,
+            backgroundColor: color + '22',
+            tension: 0.3,
+            fill: false
+        });
+
+        // Dataset 2: Per Maand (Trend)
+        datasetsMonthly.push({
+            label: item.label,
+            data: dataPointsMonthly,
+            backgroundColor: color + '88', // Iets transparanter voor bars
+            borderColor: color,
+            borderWidth: 1,
+            tension: 0.3
+        });
+    });
+
+    // Chart 1: Race (Line)
+    charts['comparison'] = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: chartData.labels.map(l => {
-                const [y, m] = l.split('-');
-                return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
-            }),
-            datasets: [{
-                data: chartData.values, borderColor: '#1db954', backgroundColor: 'rgba(29, 185, 84, 0.1)',
-                borderWidth: 3, tension: 0.4, fill: true, pointRadius: 2
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#b3b3b3', font: { size: 10 } } } } }
+        data: { labels: labels.map(l => l.substring(2)), datasets: datasetsCumulative },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#ccc' } } },
+            scales: { x: { grid: { color: '#333' }, ticks: { color: '#777' } }, y: { grid: { color: '#333' }, ticks: { color: '#777' } } }
+        }
+    });
+
+    // Chart 2: Per Maand (Bar)
+    charts['comparisonMonthly'] = new Chart(ctxMonthly, {
+        type: 'bar',
+        data: { labels: labels.map(l => l.substring(2)), datasets: datasetsMonthly },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#ccc' } } },
+            scales: { x: { grid: { display: false }, ticks: { color: '#777' } }, y: { grid: { color: '#333' }, ticks: { color: '#777' } } }
+        }
     });
 }
 
+function renderFunStats() {
+    if(!chartData.fun_stats) return;
+    const fs = chartData.fun_stats;
+    document.getElementById('fun-total-days').innerText = fs.total_time_days;
+    document.getElementById('fun-total-hours').innerText = `${fs.total_time_hours} uur totaal`;
+    
+    if(fs.busiest_day.date !== "-") {
+        const d = new Date(fs.busiest_day.date);
+        document.getElementById('fun-busiest-date').innerText = d.toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
+        document.getElementById('fun-busiest-count').innerText = fs.busiest_day.count;
+    }
+    
+    document.getElementById('fun-discovery').innerText = fs.avg_discovery;
+}
+
+// --- RENDER FUNCTIES (STANDAARD) ---
+
+function renderCharts() {
+    // 1. Hoofdgrafiek
+    const ctxHist = document.getElementById('listeningChart').getContext('2d');
+    if (charts['history']) charts['history'].destroy();
+    
+    const histLabels = chartData.history ? chartData.history.labels : chartData.labels;
+    const histValues = chartData.history ? chartData.history.values : chartData.values;
+
+    charts['history'] = new Chart(ctxHist, {
+        type: 'line',
+        data: {
+            labels: histLabels.map(l => { const [y, m] = l.split('-'); return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1)); }),
+            datasets: [{ data: histValues, borderColor: '#1db954', backgroundColor: 'rgba(29, 185, 84, 0.1)', borderWidth: 3, tension: 0.4, fill: true, pointRadius: 2 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#b3b3b3', font: { size: 10 } } } } }
+    });
+
+    if (!chartData.hours) return;
+
+    const ctxHours = document.getElementById('hoursChart').getContext('2d');
+    if (charts['hours']) charts['hours'].destroy();
+    charts['hours'] = new Chart(ctxHours, { type: 'bar', data: { labels: chartData.hours.labels, datasets: [{ data: chartData.hours.values, backgroundColor: 'rgba(33, 150, 243, 0.6)', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#777', font:{size:9} }, grid:{display:false} }, y: { display: false } } } });
+
+    const ctxWeek = document.getElementById('weekChart').getContext('2d');
+    if (charts['week']) charts['week'].destroy();
+    charts['week'] = new Chart(ctxWeek, { type: 'bar', data: { labels: chartData.weekdays.labels, datasets: [{ data: chartData.weekdays.values, backgroundColor: 'rgba(255, 165, 0, 0.6)', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#777' }, grid:{display:false} }, y: { display: false } } } });
+
+    const ctxArtist = document.getElementById('artistPieChart').getContext('2d');
+    if (charts['artist']) charts['artist'].destroy();
+    charts['artist'] = new Chart(ctxArtist, { type: 'doughnut', data: { labels: chartData.artists.labels, datasets: [{ data: chartData.artists.values, backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#333'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, cutout: '70%' } });
+
+    // 3. GROEIGRAFIEKEN (STATS TAB)
+    const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
+    
+    const ctxSongsGrowth = document.getElementById('topSongsGrowthChart');
+    if (ctxSongsGrowth && chartData.growth) {
+        if (charts['songsGrowth']) charts['songsGrowth'].destroy();
+        const datasets = Object.keys(chartData.growth.songs).map((key, i) => ({
+            label: key, data: chartData.growth.songs[key], borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.3, pointRadius: 0
+        }));
+        charts['songsGrowth'] = new Chart(ctxSongsGrowth.getContext('2d'), {
+            type: 'line', data: { labels: chartData.growth.labels.map(l => { const [y, m] = l.split('-'); return `${m}/${y.slice(2)}`; }), datasets: datasets },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#555', font:{size:9} }, grid:{display:false} }, y: { grid:{color:'#222'} } }, interaction: { mode: 'index', intersect: false } }
+        });
+    }
+
+    const ctxArtistsGrowth = document.getElementById('topArtistsGrowthChart');
+    if (ctxArtistsGrowth && chartData.growth) {
+        if (charts['artistsGrowth']) charts['artistsGrowth'].destroy();
+        const datasets = Object.keys(chartData.growth.artists).map((key, i) => ({
+            label: key, data: chartData.growth.artists[key], borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.3, pointRadius: 0
+        }));
+        charts['artistsGrowth'] = new Chart(ctxArtistsGrowth.getContext('2d'), {
+            type: 'line', data: { labels: chartData.growth.labels.map(l => { const [y, m] = l.split('-'); return `${m}/${y.slice(2)}`; }), datasets: datasets },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#555', font:{size:9} }, grid:{display:false} }, y: { grid:{color:'#222'} } }, interaction: { mode: 'index', intersect: false } }
+        });
+    }
+}
+
 function renderStatsDashboard() {
-    const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
+    const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 9);
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
-    const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
+    const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 9);
     
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
-    renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
+    renderList('comeback-list', comebackData.slice(0, 9).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
 
     if (streakData.songs_current) {
-        renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('current-artist-streaks', streakData.artists_current.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
-        renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
+        renderList('current-song-streaks', streakData.songs_current.slice(0, 9).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
+        renderList('top-song-streaks', streakData.songs_top.slice(0, 9).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
+        renderList('current-artist-streaks', streakData.artists_current.slice(0, 9).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
+        renderList('top-artist-streaks', streakData.artists_top.slice(0, 9).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
     }
 
     const albumMap = {};
@@ -366,35 +560,33 @@ function renderStatsDashboard() {
     });
     const albums = Object.values(albumMap);
     
-    renderList('top-albums-listens', albums.sort((a,b) => b.total - a.total).slice(0, 10).map(a => [`Album van ${a.artiest}`, a.total, a.poster]), 'x', 'album');
+    renderList('top-albums-listens', albums.sort((a,b) => b.total - a.total).slice(0, 9).map(a => [`Album van ${a.artiest}`, a.total, a.poster, a.artiest]), 'x', 'album');
     
     const sortedVariety = [...albums].sort((a,b) => b.unique.size - a.unique.size);
-    const filteredVariety = [];
-    const counts = {};
+    const filteredVariety = []; const counts = {};
     for (const alb of sortedVariety) {
-        if (filteredVariety.length >= 10) break;
-        const art = alb.artiest;
-        counts[art] = (counts[art] || 0) + 1;
+        if (filteredVariety.length >= 9) break;
+        const art = alb.artiest; counts[art] = (counts[art] || 0) + 1;
         if (counts[art] <= 2) filteredVariety.push(alb);
     }
-    renderList('top-albums-variety', filteredVariety.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster]), ' songs', 'album');
+    renderList('top-albums-variety', filteredVariety.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, a.artiest]), ' songs', 'album');
 
     const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); });
     const obsessions = [], explorers = [];
     Object.entries(artistGroups).forEach(([artist, songs]) => {
         if (songs.length === 1 && songs[0].count > 50) obsessions.push([`${songs[0].titel} (${artist})`, songs[0].count, songs[0].poster]);
-        if (songs.length >= 10) explorers.push([artist, songs.length, null]);
+        if (songs.length >= 9) explorers.push([artist, songs.length, null]);
     });
-    renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 10), 'x', 'song');
-    renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]).slice(0, 10), ' songs', 'artist');
+    renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 9), 'x', 'song');
+    renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]).slice(0, 9), ' songs', 'artist');
 }
 
 function renderList(id, items, unit, type) {
     const el = document.getElementById(id); if (!el) return;
-    el.innerHTML = items.map(([name, val, poster, period], index) => {
-        const escapedName = name.replace(/'/g, "\\'");
+    el.innerHTML = items.map(([name, val, poster, extraInfo, period], index) => {
+        const escapedName = escapeStr(name);
         const elementId = `${id}-${index}`;
-        const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${(escapedName.split('van ')[1] || '')}', '${elementId}')`;
+        const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${escapeStr(extraInfo||'')}', '${elementId}')`;
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
         const sub = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem;">${period}</small>` : '';
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center;">
@@ -404,43 +596,34 @@ function renderList(id, items, unit, type) {
     }).join('');
 }
 
-function showAlbumDetails(posterUrl, artistName) {
-    addToHistory('album', arguments); // Add to history
-
+function showAlbumDetails(posterUrl, artistName, isBack = false) {
+    if (!isBack) addToHistory('album', arguments);
     const key = getAlbumKey(posterUrl, artistName);
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = `Album van ${artistName}`;
-    
-    container.innerHTML = `<div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:150px;border-radius:20px;box-shadow:var(--shadow-lg);"></div>
+    container.innerHTML = `<div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:150px;border-radius:20px;box-shadow:var(--shadow-lg);">
+        <div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-top:10px;"></div></div>
         <div style="max-height:350px;overflow-y:auto;">${albumSongs.map((s, idx) => {
-            const name = `${s.titel} - ${s.artiest}`;
-            const escapedName = name.replace(/'/g, "\\'");
+            const escapedName = escapeStr(`${s.titel} - ${s.artiest}`);
             const elementId = `album-det-${idx}`;
             return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`;
         }).join('')}</div>`;
     document.getElementById('modal').classList.remove('hidden');
+    updateModalMergeButton();
 }
 
-function showArtistDetails(artist, overrideCount = null, monthKey = null) {
-    addToHistory('artist', arguments); // Add to history
-
+function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack = false) {
+    if (!isBack) addToHistory('artist', arguments);
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = cleanArtist;
     
-    let songsToShow = []; 
-    let label = "totaal";
-    
+    let songsToShow = []; let label = "totaal";
     if (monthKey && monthlyStats[monthKey] && monthlyStats[monthKey].artist_details[cleanArtist]) {
-        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { 
-            const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); 
-            return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; 
-        });
+        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; });
         label = "deze maand";
-    } else { 
-        songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); 
-    }
+    } else { songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); }
 
     const albums = {};
     songsToShow.forEach(s => {
@@ -454,14 +637,15 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null) {
 
     let html = '';
     if (overrideCount) html += `<p style="text-align:center; color:var(--spotify-green); margin-bottom:10px; font-weight:700;">${monthKey ? 'Deze maand' : 'Totaal'} ${overrideCount}x geluisterd</p>`;
-    
-    html += `<button onclick="applyCalendarFilter('${cleanArtist.replace(/'/g, "\\'")}')" class="apply-btn" style="background:var(--spotify-green); border:none; padding:10px; width:100%; border-radius:10px; font-weight:700; cursor:pointer; margin-bottom:15px;">📅 Bekijk op kalender</button>`;
+    html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
 
     if (sortedAlbums.length > 0) {
         html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Albums</h3>`;
         html += `<div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:15px; margin-bottom:10px;">`;
-        sortedAlbums.forEach(alb => {
-            html += `<div onclick="showAlbumDetails('${alb.poster}', '${cleanArtist.replace(/'/g, "\\'")}')" style="flex-shrink:0; cursor:pointer; width:80px; text-align:center;">
+        sortedAlbums.forEach((alb, idx) => {
+            const albEscaped = escapeStr(cleanArtist);
+            const elementId = `artist-album-${idx}`;
+            html += `<div id="${elementId}" onclick="handleAlbumClick('${alb.poster}', '${albEscaped}', '${elementId}')" style="flex-shrink:0; cursor:pointer; width:80px; text-align:center;">
                         <img src="${alb.poster}" style="width:80px; height:80px; border-radius:10px; object-fit:cover; margin-bottom:5px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
                     </div>`;
         });
@@ -470,19 +654,18 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null) {
 
     html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Songs</h3>`;
     html += `<div style="max-height:400px; overflow-y:auto;">${songsToShow.map((s, idx) => {
-            const name = `${s.titel} - ${cleanArtist}`;
-            const escapedName = name.replace(/'/g, "\\'");
+            const escapedName = escapeStr(`${s.titel} - ${cleanArtist}`);
             const elementId = `artist-det-${idx}`;
             return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" style="width:35px;height:35px;border-radius:5px;margin-right:10px;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge" style="background:rgba(255,255,255,0.05); color:white;">${s.count}x ${label}</span></div>`;
         }).join('')}</div>`;
     
     container.innerHTML = html;
     document.getElementById('modal').classList.remove('hidden');
+    updateModalMergeButton();
 }
 
-function showSongSpotlight(songFull, overrideCount = null) {
-    addToHistory('song', arguments); // Add to history
-
+function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
+    if (!isBack) addToHistory('song', arguments);
     let titel, artiest; if (songFull.includes(' - ')) { const p = songFull.split(' - '); titel = p[0]; artiest = p[1]; } else { titel = songFull; artiest = "Onbekend"; }
     const s = statsData.find(x => x.titel.trim() === titel.trim()) || { poster: 'img/placeholder.png', artiest: artiest, count: '?' };
     const countToDisplay = overrideCount !== null ? overrideCount : s.count;
@@ -491,68 +674,34 @@ function showSongSpotlight(songFull, overrideCount = null) {
     document.getElementById('modal-datum-titel').innerText = "Spotlight"; document.getElementById('modal').classList.remove('hidden');
 }
 
-function showTop100(category) {
-    addToHistory('list', arguments); // Add to history
-
+function showTop100(category, isBack = false) {
+    if (!isBack) addToHistory('list', arguments);
     const container = document.getElementById('day-top-three-container');
     const titleEl = document.getElementById('modal-datum-titel');
     let items = [];
     const monthKey = `${currentViewDate.getFullYear()}-${String(currentViewDate.getMonth() + 1).padStart(2, '0')}`;
     const mData = monthlyStats[monthKey];
 
-    if (category === 'songs') {
-        titleEl.innerText = "Top 100 Songs";
-        items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']);
-    } else if (category === 'artists') {
-        titleEl.innerText = "Top 100 Artiesten";
-        const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
-        items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], null, 'artist']);
-    } else if (category.includes('albums')) {
-        const albumMap = {};
-        statsData.forEach(s => {
-            if (s.poster === "img/placeholder.png") return;
-            const key = getAlbumKey(s.poster, s.artiest);
-            if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0, unique: new Set() };
-            albumMap[key].total += s.count; albumMap[key].unique.add(s.titel);
-        });
+    if (category === 'songs') { titleEl.innerText = "Top 100 Songs"; items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); }
+    else if (category === 'artists') { titleEl.innerText = "Top 100 Artiesten"; const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], null, 'artist']); }
+    else if (category.includes('albums')) {
+        const albumMap = {}; statsData.forEach(s => { if (s.poster === "img/placeholder.png") return; const key = getAlbumKey(s.poster, s.artiest); if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0, unique: new Set() }; albumMap[key].total += s.count; albumMap[key].unique.add(s.titel); });
         const albums = Object.values(albumMap);
-        if (category === 'albums-listens') { 
-            titleEl.innerText = "Top 100 Albums (Luisterbeurten)";
-            items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); 
-        } else { 
-            titleEl.innerText = "Top 100 Albums (Variatie)";
-            const sorted = albums.sort((a,b) => b.unique.size - a.unique.size);
-            const filtered = [];
-            const counts = {};
-            for (const alb of sorted) {
-                if (filtered.length >= 100) break;
-                const art = alb.artiest;
-                counts[art] = (counts[art] || 0) + 1;
-                if (counts[art] <= 2) filtered.push(alb);
-            }
-            items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); 
-        }
-    } else if (category.includes('streaks')) {
-        const key = category.split('streaks-')[1].replace('-', '_');
-        items = streakData[key].map(s => [s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', s.period]);
-    } else if (category === 'month-songs') {
-        titleEl.innerText = "Top Songs Deze Maand";
-        items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : [];
-    } else if (category === 'month-artists') {
-        titleEl.innerText = "Top Artiesten Deze Maand";
-        items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : [];
-    } else if (category === 'obsessions') {
-        const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); });
-        items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} (${a})`, songs[0].count, songs[0].poster, 'song']);
-    } else if (category === 'explorers') {
-        const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); });
-        items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']);
+        if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
+        else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
     }
+    else if (category.includes('streaks')) { const key = category.split('streaks-')[1].replace('-', '_'); items = streakData[key].map(s => [s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', s.period]); }
+    else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
+    else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
+    else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} (${a})`, songs[0].count, songs[0].poster, 'song']); }
+    else if (category === 'explorers') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']); }
 
     container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period], index) => {
-        const escapedName = name.replace(/'/g, "\\'");
+        const escapedName = escapeStr(name);
         const elementId = `top100-${index}`;
-        const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${(escapedName.split('van ')[1] || '')}', '${elementId}')`;
+        let actualType = type; let albumArtist = '';
+        if (name.startsWith('Album van ')) { actualType = 'album'; albumArtist = extraInfo; } // fix for extraInfo context if needed
+        const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted);">${period}</small>` : '';
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px;">
@@ -573,14 +722,14 @@ function calculateMonthlyHighlights(year, month) {
         songsEl.innerHTML = data.top_songs.slice(0, 5).map((s, idx) => {
             const songName = `${s[1]} - ${s[0]}`;
             const info = statsData.find(x => x.titel === s[1] && x.artiest === s[0]);
-            const escapedName = songName.replace(/'/g, "\\'");
+            const escapedName = escapeStr(songName);
             const elementId = `month-song-${idx}`;
             return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${info ? info.poster : 'img/placeholder.png'}', '', '${elementId}')">
                 <img src="${info ? info.poster : 'img/placeholder.png'}" style="width:20px; height:20px; border-radius:4px; margin-right:8px;">
                 <span style="flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${songName}</span>
                 <span style="color:var(--text-muted); font-size:0.7rem; margin-left:5px;">${s[2]}x</span></li>`;
         }).join('');
-        artistsEl.innerHTML = data.top_artists.slice(0, 5).map(a => `<li onclick="showArtistDetails('${a[0].replace(/'/g, "\\'")}', ${a[1]}, '${monthKey}')">
+        artistsEl.innerHTML = data.top_artists.slice(0, 5).map(a => `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')">
             <span style="flex-grow:1;">${a[0]}</span><span class="point-badge">${a[1]}x</span></li>`).join('');
         totalEl.innerText = data.total_listens;
     } else if (songsEl) {
@@ -606,13 +755,11 @@ function renderCalendar() {
     }
 }
 
-// --- AANGEPASTE ZOEKFUNCTIE (MET ARTIEST-KLIK) ---
 function handleSearch() {
     const query = document.getElementById('musicSearch').value.toLowerCase().trim();
     const resultsContainer = document.getElementById('search-results'); 
     if (query.length < 2) { resultsContainer.innerHTML = ""; return; }
 
-    // 1. Zoek Artiesten (Groepeer eerst)
     const artistMap = {};
     statsData.forEach(s => {
         const cleanName = s.artiest;
@@ -620,26 +767,15 @@ function handleSearch() {
         artistMap[cleanName].count += s.count;
     });
     
-    const artistMatches = Object.values(artistMap)
-        .filter(a => a.name.toLowerCase().includes(query))
-        .sort((a,b) => b.count - a.count)
-        .slice(0, 3);
-
-    // 2. Zoek Liedjes
-    const songMatches = statsData
-        .filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 8);
+    const artistMatches = Object.values(artistMap).filter(a => a.name.toLowerCase().includes(query)).sort((a,b) => b.count - a.count).slice(0, 3);
+    const songMatches = statsData.filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query)).sort((a, b) => b.count - a.count).slice(0, 8);
 
     let html = '';
-
-    // Render Artiesten
     if (artistMatches.length > 0) {
         html += `<div style="padding: 5px 10px; font-size: 0.75rem; color: #aaa; text-transform:uppercase; font-weight:bold;">🎤 Artiesten</div>`;
         html += artistMatches.map((a, idx) => {
-            const escapedName = a.name.replace(/'/g, "\\'");
+            const escapedName = escapeStr(a.name);
             const elementId = `search-art-${idx}`;
-            // Let op: type is 'artist', klik opent artiest details
             return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'artist', null, '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;">
                         <div style="width:40px; height:40px; border-radius:50%; background:#333; display:flex; align-items:center; justify-content:center; margin-right:12px; font-size:1.2rem;">🎤</div>
                         <div style="flex-grow:1;"><b>${a.name}</b><br><small style="color:var(--text-muted);">Artiest</small></div>
@@ -649,25 +785,20 @@ function handleSearch() {
         html += `<div style="margin-bottom:15px;"></div>`; 
     }
 
-    // Render Liedjes
     if (songMatches.length > 0) {
         html += `<div style="padding: 5px 10px; font-size: 0.75rem; color: #aaa; text-transform:uppercase; font-weight:bold;">🎵 Liedjes</div>`;
         html += songMatches.map((s, idx) => {
             const name = `${s.titel} - ${s.artiest}`;
-            const escapedName = name.replace(/'/g, "\\'");
+            const escapedName = escapeStr(name);
             const elementId = `search-song-${idx}`;
-            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;">
-                        <img src="${s.poster}" onerror="this.src='img/placeholder.png'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;">
-                        <div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div>
-                        <span class="point-badge">${s.count}x</span>
-                    </div>`;
+            const posterSrc = (s.poster && s.poster !== 'img/placeholder.png') ? s.poster : 'https://placehold.co/64x64/1e1e1e/444444?text=🎵';
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;"><img src="${posterSrc}" onerror="this.src='https://placehold.co/64x64/1e1e1e/444444?text=🎵'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;"><div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div><span class="point-badge">${s.count}x</span></div>`;
         }).join('');
     }
 
     if (artistMatches.length === 0 && songMatches.length === 0) {
         html = `<div style="padding:20px; text-align:center; color:#777;">Geen resultaten gevonden.</div>`;
     }
-
     resultsContainer.innerHTML = html;
 }
 
@@ -685,13 +816,26 @@ function calculateStreak() {
     document.getElementById('streak-count').innerText = streak + 1;
 }
 
-function openDagDetails(date, songs) { const container = document.getElementById('day-top-three-container'); document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }); container.innerHTML = songs.slice(0, 5).map((s, i) => `<div class="search-item" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${s.artiest.replace(/'/g, "\\'")}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:8px; cursor:pointer;"><span style="font-weight:800; color:var(--spotify-green); margin-right:15px; width:15px;">${i+1}</span><img src="${s.poster}" style="width:45px; height:45px; border-radius:8px; margin-right:15px;"><div class="search-item-info"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div></div>`).join(''); document.getElementById('modal').classList.remove('hidden'); }
-function switchTab(tabName) { document.getElementById('view-calendar').classList.toggle('hidden', tabName !== 'calendar'); document.getElementById('view-stats').classList.toggle('hidden', tabName !== 'stats'); document.getElementById('btn-calendar').classList.toggle('active', tabName === 'calendar'); document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats'); if (tabName === 'calendar') renderCalendar(); else renderStatsDashboard(); }
+function openDagDetails(date, songs) { const container = document.getElementById('day-top-three-container'); document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }); container.innerHTML = songs.slice(0, 5).map((s, i) => `<div class="search-item" onclick="showSongSpotlight('${escapeStr(s.titel)} - ${escapeStr(s.artiest)}') " style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:8px; cursor:pointer;"><span style="font-weight:800; color:var(--spotify-green); margin-right:15px; width:15px;">${i+1}</span><img src="${s.poster}" style="width:45px; height:45px; border-radius:8px; margin-right:15px;"><div class="search-item-info"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div></div>`).join(''); document.getElementById('modal').classList.remove('hidden'); }
+function switchTab(tabName) { 
+    document.getElementById('view-calendar').classList.toggle('hidden', tabName !== 'calendar'); 
+    document.getElementById('view-stats').classList.toggle('hidden', tabName !== 'stats'); 
+    document.getElementById('view-graphs').classList.toggle('hidden', tabName !== 'graphs');
+    document.getElementById('btn-calendar').classList.toggle('active', tabName === 'calendar'); 
+    document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats');
+    document.getElementById('btn-graphs').classList.toggle('active', tabName === 'graphs');
+    
+    if (tabName === 'calendar') renderCalendar(); 
+    else if (tabName === 'stats') renderStatsDashboard();
+    else if (tabName === 'graphs') {
+        renderCharts();
+        updateComparisonChart(); 
+    }
+}
 function applyCalendarFilter(artist) { activeFilter = artist; document.getElementById('modal').classList.add('hidden'); switchTab('calendar'); document.getElementById('resetFilter').classList.remove('hidden'); renderCalendar(); }
 document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };
 document.getElementById('nextMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderCalendar(); };
-// AANGEPAST: Close button roept nu handleModalClose aan (voor "back" functionaliteit)
-document.getElementById('close-button').onclick = () => handleModalClose();
+document.getElementById('close-button').onclick = () => closeModal();
 document.getElementById('resetFilter').onclick = function() { activeFilter = null; this.classList.add('hidden'); renderCalendar(); };
 
 loadMusic();
