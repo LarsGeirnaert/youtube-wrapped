@@ -1,5 +1,95 @@
 [
   {
+    "datum": "2026-01-05",
+    "titel": "Clocks",
+    "artiest": "Coldplay",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b9/b4/2a/b9b42ad1-1e25-5096-da43-497a247e69a3/190295978051.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-05",
+    "titel": "Poker Face",
+    "artiest": "Lady Gaga",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/35/0d/d6/350dd697-4b78-8aaf-cf65-74b96c1adab8/21UMGIM68808.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-05",
+    "titel": "Take Me To Church",
+    "artiest": "Hozier",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5e/1b/f1/5e1bf1de-e5f1-e73e-0752-e7882b4f2d57/886444718820.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-05",
+    "titel": "End of Beginning",
+    "artiest": "Djo",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/e5/94/31/e59431de-7591-58e6-c4d4-105b6373ad6a/5056494917336_1.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-05",
+    "titel": "Don't You",
+    "artiest": "Simple Minds",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/9e/ff/259effb3-cb4d-0e2c-ef86-982561e53bfd/177279.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-04",
+    "titel": "Let It Happen",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/2e/b4/a82eb490-f30a-a321-461a-0383c88fec95/15UMGIM23316.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-04",
+    "titel": "Paint It, Black",
+    "artiest": "The Rolling Stones",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/29/b7/81/29b781e5-3773-c87e-c6a8-82581e53d270/13ABKIM00053.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-04",
+    "titel": "Take Me Out",
+    "artiest": "Franz Ferdinand",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/83/c6/54/83c6541f-3b90-b46a-b46a-17bf8fd9af16/5034202113645.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-04",
+    "titel": "The One That Got Away",
+    "artiest": "Katy Perry",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c8/d3/42/c8d342af-26d9-3ec2-c511-e1eaf860e299/13UABIM57787.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-04",
+    "titel": "JAY-Z X Kanye West X Drake X Eminem “Ni**as In Paris”",
+    "artiest": "mooli",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/18/f5/07/18f5070d-b5dc-796c-bce4-42badb41a762/00602527812526.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-03",
+    "titel": "Let Her Go",
+    "artiest": "Passenger",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9b/7e/28/9b7e2896-e049-1663-6791-e0111690ffc1/067003051361.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-03",
+    "titel": "Black",
+    "artiest": "Pearl Jam",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-03",
+    "titel": "There Is a Light That Never Goes Out",
+    "artiest": "The Smiths",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1a/e8/70/1ae870c3-b402-096b-c4c4-8022af5a2ed9/745099189662.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-03",
+    "titel": "Where Is My Mind?",
+    "artiest": "Pixies",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/68/b7/c0/68b7c018-dc15-f44a-2611-be10237fc9a5/652637080308.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-03",
+    "titel": "Dracula",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/be/b4/36beb41f-c644-55cb-9fbb-bf0622a66653/196873644783.jpg/600x600bb.jpg"
+  },
+  {
     "datum": "2026-01-02",
     "titel": "I Feel It Coming",
     "artiest": "The Weeknd",
@@ -4213,6 +4303,12 @@
   },
   {
     "datum": "2025-08-09",
+    "titel": "We Found Love  ft. Calvin Harris",
+    "artiest": "Rihanna",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/ae/46/51/ae465169-b0a4-3c10-42a0-63e4448d1508/16UMGIM59230.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2025-08-09",
     "titel": "Scared of the Dark",
     "artiest": "Lil Wayne",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/4b/30/2c/4b302cb6-7a14-5464-4e97-0577e9d0be49/18UMGIM82277.rgb.jpg/600x600bb.jpg"
@@ -4234,12 +4330,6 @@
     "titel": "Save Me",
     "artiest": "XXXTENTACION",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/16/31/cb/1631cb12-f949-ff10-a699-278bd3043712/4050538910087.jpg/600x600bb.jpg"
-  },
-  {
-    "datum": "2025-08-09",
-    "titel": "Revenge",
-    "artiest": "XXXTENTACION",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/dd/67/be/dd67bed3-202f-26c5-42f0-da849a1266a9/artwork.jpg/600x600bb.jpg"
   },
   {
     "datum": "2025-08-08",
@@ -5617,6 +5707,12 @@
   },
   {
     "datum": "2025-06-21",
+    "titel": "We Found Love  ft. Calvin Harris",
+    "artiest": "Rihanna",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/ae/46/51/ae465169-b0a4-3c10-42a0-63e4448d1508/16UMGIM59230.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2025-06-21",
     "titel": "Starboy",
     "artiest": "The Weeknd",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/92/bb/b592bb72-52e3-e756-9b26-9f56d08f47ab/16UMGIM67864.rgb.jpg/600x600bb.jpg"
@@ -5638,12 +5734,6 @@
     "titel": "Mask Off",
     "artiest": "Future",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music127/v4/f9/10/59/f9105950-7370-e2ac-20b5-f82b9ccdc593/886446559476.jpg/600x600bb.jpg"
-  },
-  {
-    "datum": "2025-06-21",
-    "titel": "Robbery",
-    "artiest": "Juice WRLD",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/62/10/cf/6210cf4a-be77-3d97-218d-834f68bb33b3/19UMGIM16006.rgb.jpg/600x600bb.jpg"
   },
   {
     "datum": "2025-06-20",

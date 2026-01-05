@@ -13,16 +13,16 @@
       "period": "05/04/25 - 17/04/25"
     },
     {
-      "artiest": "Sevdaliza",
-      "titel": "Alibi",
-      "streak": 12,
-      "period": "07/04/25 - 18/04/25"
-    },
-    {
       "artiest": "Tame Impala",
       "titel": "Dracula",
       "streak": 12,
       "period": "15/10/25 - 26/10/25"
+    },
+    {
+      "artiest": "Sevdaliza",
+      "titel": "Alibi",
+      "streak": 12,
+      "period": "07/04/25 - 18/04/25"
     },
     {
       "artiest": "XXXTENTACION",
@@ -31,34 +31,22 @@
       "period": "10/08/25 - 21/08/25"
     },
     {
-      "artiest": "Pommelien Thijs",
-      "titel": "Atlas",
-      "streak": 11,
-      "period": "08/04/25 - 18/04/25"
-    },
-    {
       "artiest": "Florence + the Machine",
       "titel": "Dog Days Are Over",
       "streak": 11,
       "period": "13/12/25 - 23/12/25"
     },
     {
+      "artiest": "Pommelien Thijs",
+      "titel": "Atlas",
+      "streak": 11,
+      "period": "08/04/25 - 18/04/25"
+    },
+    {
       "artiest": "XXXTENTACION",
       "titel": "Revenge",
       "streak": 10,
       "period": "01/09/24 - 10/09/24"
-    },
-    {
-      "artiest": "XXXTENTACION",
-      "titel": "True Love",
-      "streak": 9,
-      "period": "06/06/25 - 14/06/25"
-    },
-    {
-      "artiest": "MIKA",
-      "titel": "Relax, Take It Easy",
-      "streak": 9,
-      "period": "19/10/25 - 27/10/25"
     },
     {
       "artiest": "Pommelien Thijs",
@@ -73,10 +61,16 @@
       "period": "16/05/25 - 24/05/25"
     },
     {
-      "artiest": "Lorde",
-      "titel": "Green Light",
-      "streak": 8,
-      "period": "05/12/25 - 12/12/25"
+      "artiest": "MIKA",
+      "titel": "Relax, Take It Easy",
+      "streak": 9,
+      "period": "19/10/25 - 27/10/25"
+    },
+    {
+      "artiest": "XXXTENTACION",
+      "titel": "True Love",
+      "streak": 9,
+      "period": "06/06/25 - 14/06/25"
     },
     {
       "artiest": "Dua Lipa",
@@ -85,28 +79,10 @@
       "period": "07/08/25 - 14/08/25"
     },
     {
-      "artiest": "MGMT",
-      "titel": "Time to Pretend",
-      "streak": 8,
-      "period": "20/10/25 - 27/10/25"
-    },
-    {
       "artiest": "Lil Peep",
       "titel": "Falling Down",
       "streak": 8,
       "period": "09/08/25 - 16/08/25"
-    },
-    {
-      "artiest": "XXXTENTACION",
-      "titel": "SAD!",
-      "streak": 8,
-      "period": "06/06/25 - 13/06/25"
-    },
-    {
-      "artiest": "Pommelien Thijs",
-      "titel": "Ongewoon",
-      "streak": 8,
-      "period": "13/12/25 - 20/12/25"
     },
     {
       "artiest": "Glass Animals",
@@ -115,10 +91,34 @@
       "period": "24/09/25 - 01/10/25"
     },
     {
+      "artiest": "Pommelien Thijs",
+      "titel": "Ongewoon",
+      "streak": 8,
+      "period": "13/12/25 - 20/12/25"
+    },
+    {
+      "artiest": "Lorde",
+      "titel": "Green Light",
+      "streak": 8,
+      "period": "05/12/25 - 12/12/25"
+    },
+    {
       "artiest": "Adele",
       "titel": "Rolling in the Deep",
       "streak": 8,
       "period": "10/11/25 - 17/11/25"
+    },
+    {
+      "artiest": "MGMT",
+      "titel": "Time to Pretend",
+      "streak": 8,
+      "period": "20/10/25 - 27/10/25"
+    },
+    {
+      "artiest": "XXXTENTACION",
+      "titel": "SAD!",
+      "streak": 8,
+      "period": "06/06/25 - 13/06/25"
     },
     {
       "artiest": "Dua Lipa",
@@ -127,16 +127,10 @@
       "period": "07/12/25 - 13/12/25"
     },
     {
-      "artiest": "Post Malone",
-      "titel": "Circles",
+      "artiest": "Tame Impala",
+      "titel": "The Less I Know The Better",
       "streak": 7,
-      "period": "02/09/24 - 08/09/24"
-    },
-    {
-      "artiest": "Pixies",
-      "titel": "Where Is My Mind?",
-      "streak": 7,
-      "period": "12/11/25 - 18/11/25"
+      "period": "24/04/25 - 30/04/25"
     },
     {
       "artiest": "Radiohead",
@@ -145,28 +139,10 @@
       "period": "23/11/25 - 29/11/25"
     },
     {
-      "artiest": "Tame Impala",
-      "titel": "The Less I Know The Better",
+      "artiest": "Pixies",
+      "titel": "Where Is My Mind?",
       "streak": 7,
-      "period": "24/04/25 - 30/04/25"
-    },
-    {
-      "artiest": "Eagles",
-      "titel": "Hotel California",
-      "streak": 7,
-      "period": "03/07/25 - 09/07/25"
-    },
-    {
-      "artiest": "XXXTENTACION",
-      "titel": "Hope",
-      "streak": 7,
-      "period": "09/06/25 - 15/06/25"
-    },
-    {
-      "artiest": "Gorki",
-      "titel": "Mia",
-      "streak": 7,
-      "period": "02/06/25 - 08/06/25"
+      "period": "12/11/25 - 18/11/25"
     },
     {
       "artiest": "Glass Animals",
@@ -175,16 +151,46 @@
       "period": "08/12/25 - 14/12/25"
     },
     {
+      "artiest": "Eagles",
+      "titel": "Hotel California",
+      "streak": 7,
+      "period": "03/07/25 - 09/07/25"
+    },
+    {
+      "artiest": "Gorki",
+      "titel": "Mia",
+      "streak": 7,
+      "period": "02/06/25 - 08/06/25"
+    },
+    {
+      "artiest": "Post Malone",
+      "titel": "Circles",
+      "streak": 7,
+      "period": "02/09/24 - 08/09/24"
+    },
+    {
+      "artiest": "XXXTENTACION",
+      "titel": "Hope",
+      "streak": 7,
+      "period": "09/06/25 - 15/06/25"
+    },
+    {
       "artiest": "Jopke van Dobbenburgh",
       "titel": "Lotje",
       "streak": 7,
       "period": "08/06/25 - 14/06/25"
     },
     {
-      "artiest": "Hooverphonic",
-      "titel": "Amalfi",
+      "artiest": "Katy Perry",
+      "titel": "The One That Got Away",
       "streak": 6,
-      "period": "18/10/25 - 23/10/25"
+      "period": "15/12/25 - 20/12/25"
+    },
+    {
+      "artiest": "mooli",
+      "titel": "JAY-Z X Kanye West X Drake X Eminem “Ni**as In Paris”",
+      "streak": 6,
+      "period": "19/10/25 - 24/10/25"
     },
     {
       "artiest": "Radiohead",
@@ -193,16 +199,22 @@
       "period": "03/10/25 - 08/10/25"
     },
     {
-      "artiest": "J. Cole",
-      "titel": "No Role Modelz",
+      "artiest": "Passenger",
+      "titel": "Let Her Go",
       "streak": 6,
-      "period": "06/06/25 - 11/06/25"
+      "period": "14/10/24 - 19/10/24"
     },
     {
-      "artiest": "Bee Gees",
-      "titel": "Tragedy",
+      "artiest": "Blanche",
+      "titel": "City Lights",
       "streak": 6,
-      "period": "12/12/25 - 17/12/25"
+      "period": "14/12/25 - 19/12/25"
+    },
+    {
+      "artiest": "The Smiths",
+      "titel": "There Is a Light That Never Goes Out",
+      "streak": 6,
+      "period": "09/11/25 - 14/11/25"
     },
     {
       "artiest": "XXXTENTACION",
@@ -211,16 +223,16 @@
       "period": "04/06/25 - 09/06/25"
     },
     {
-      "artiest": "Roxy Dekker",
-      "titel": "Gaan We Weg?",
+      "artiest": "Pearl Jam",
+      "titel": "Black",
       "streak": 6,
-      "period": "18/11/24 - 23/11/24"
+      "period": "03/09/24 - 08/09/24"
     },
     {
-      "artiest": "Glints",
-      "titel": "Housewife",
+      "artiest": "Bee Gees",
+      "titel": "Tragedy",
       "streak": 6,
-      "period": "19/05/25 - 24/05/25"
+      "period": "12/12/25 - 17/12/25"
     },
     {
       "artiest": "Oasis",
@@ -235,28 +247,76 @@
       "period": "03/09/24 - 08/09/24"
     },
     {
-      "artiest": "The Smiths",
-      "titel": "There Is a Light That Never Goes Out",
+      "artiest": "Glints",
+      "titel": "Housewife",
       "streak": 6,
-      "period": "09/11/25 - 14/11/25"
+      "period": "19/05/25 - 24/05/25"
     },
     {
-      "artiest": "mooli",
-      "titel": "JAY-Z X Kanye West X Drake X Eminem “Ni**as In Paris”",
+      "artiest": "Interpol",
+      "titel": "Evil",
       "streak": 6,
-      "period": "19/10/25 - 24/10/25"
+      "period": "15/10/25 - 20/10/25"
     },
     {
-      "artiest": "Katy Perry",
-      "titel": "The One That Got Away",
+      "artiest": "Nickelback",
+      "titel": "How You Remind Me",
       "streak": 6,
-      "period": "15/12/25 - 20/12/25"
+      "period": "04/12/25 - 09/12/25"
     },
     {
-      "artiest": "Passenger",
-      "titel": "Let Her Go",
+      "artiest": "Arctic Monkeys",
+      "titel": "Snap Out Of It",
       "streak": 6,
-      "period": "14/10/24 - 19/10/24"
+      "period": "17/08/25 - 22/08/25"
+    },
+    {
+      "artiest": "J. Cole",
+      "titel": "No Role Modelz",
+      "streak": 6,
+      "period": "06/06/25 - 11/06/25"
+    },
+    {
+      "artiest": "Green Day",
+      "titel": "Holiday",
+      "streak": 6,
+      "period": "10/08/25 - 15/08/25"
+    },
+    {
+      "artiest": "New Radicals",
+      "titel": "You Get What You Give",
+      "streak": 6,
+      "period": "26/11/25 - 01/12/25"
+    },
+    {
+      "artiest": "R.E.M.",
+      "titel": "Losing My Religion",
+      "streak": 6,
+      "period": "18/10/24 - 23/10/24"
+    },
+    {
+      "artiest": "The Weeknd",
+      "titel": "The Hills",
+      "streak": 6,
+      "period": "13/12/25 - 18/12/25"
+    },
+    {
+      "artiest": "Roxy Dekker",
+      "titel": "Gaan We Weg?",
+      "streak": 6,
+      "period": "18/11/24 - 23/11/24"
+    },
+    {
+      "artiest": "Pitbull",
+      "titel": "Feel This Moment",
+      "streak": 6,
+      "period": "13/12/25 - 18/12/25"
+    },
+    {
+      "artiest": "Hooverphonic",
+      "titel": "Amalfi",
+      "streak": 6,
+      "period": "18/10/25 - 23/10/25"
     },
     {
       "artiest": "TOOL",
@@ -271,70 +331,16 @@
       "period": "05/12/25 - 10/12/25"
     },
     {
-      "artiest": "The Weeknd",
-      "titel": "The Hills",
-      "streak": 6,
-      "period": "13/12/25 - 18/12/25"
-    },
-    {
-      "artiest": "Arctic Monkeys",
-      "titel": "Snap Out Of It",
-      "streak": 6,
-      "period": "17/08/25 - 22/08/25"
-    },
-    {
-      "artiest": "Green Day",
-      "titel": "Holiday",
-      "streak": 6,
-      "period": "10/08/25 - 15/08/25"
-    },
-    {
-      "artiest": "Nickelback",
-      "titel": "How You Remind Me",
-      "streak": 6,
-      "period": "04/12/25 - 09/12/25"
-    },
-    {
-      "artiest": "R.E.M.",
-      "titel": "Losing My Religion",
-      "streak": 6,
-      "period": "18/10/24 - 23/10/24"
-    },
-    {
-      "artiest": "Pearl Jam",
-      "titel": "Black",
-      "streak": 6,
-      "period": "03/09/24 - 08/09/24"
-    },
-    {
       "artiest": "Kendrick Lamar",
       "titel": "PRIDE.",
       "streak": 6,
       "period": "15/08/25 - 20/08/25"
     },
     {
-      "artiest": "Interpol",
-      "titel": "Evil",
-      "streak": 6,
-      "period": "15/10/25 - 20/10/25"
-    },
-    {
-      "artiest": "Blanche",
-      "titel": "City Lights",
-      "streak": 6,
-      "period": "14/12/25 - 19/12/25"
-    },
-    {
-      "artiest": "Pitbull",
-      "titel": "Feel This Moment",
-      "streak": 6,
-      "period": "13/12/25 - 18/12/25"
-    },
-    {
-      "artiest": "New Radicals",
-      "titel": "You Get What You Give",
-      "streak": 6,
-      "period": "26/11/25 - 01/12/25"
+      "artiest": "Coldplay",
+      "titel": "Clocks",
+      "streak": 5,
+      "period": "06/08/25 - 10/08/25"
     },
     {
       "artiest": "Hozier",
@@ -343,16 +349,154 @@
       "period": "14/12/25 - 18/12/25"
     },
     {
+      "artiest": "Djo",
+      "titel": "End of Beginning",
+      "streak": 5,
+      "period": "10/05/25 - 14/05/25"
+    },
+    {
+      "artiest": "Juice WRLD",
+      "titel": "Robbery",
+      "streak": 5,
+      "period": "02/06/25 - 06/06/25"
+    },
+    {
+      "artiest": "Rammstein",
+      "titel": "Sonne",
+      "streak": 5,
+      "period": "31/01/25 - 04/02/25"
+    },
+    {
+      "artiest": "Tove Lo",
+      "titel": "Habits",
+      "streak": 5,
+      "period": "15/12/25 - 19/12/25"
+    },
+    {
+      "artiest": "Florence + the Machine",
+      "titel": "Spectrum",
+      "streak": 5,
+      "period": "09/05/25 - 13/05/25"
+    },
+    {
+      "artiest": "Gigi Perez",
+      "titel": "Sailor Song",
+      "streak": 5,
+      "period": "08/04/25 - 12/04/25"
+    },
+    {
+      "artiest": "Sean Paul",
+      "titel": "She Doesn't Mind",
+      "streak": 5,
+      "period": "09/08/25 - 13/08/25"
+    },
+    {
+      "artiest": "Pommelien Thijs",
+      "titel": "Erop Of Eronder",
+      "streak": 5,
+      "period": "12/12/25 - 16/12/25"
+    },
+    {
+      "artiest": "Rixton",
+      "titel": "Me and My Broken Heart",
+      "streak": 5,
+      "period": "16/10/24 - 20/10/24"
+    },
+    {
+      "artiest": "Beyoncé",
+      "titel": "Halo",
+      "streak": 5,
+      "period": "21/05/25 - 25/05/25"
+    },
+    {
+      "artiest": "Tom Odell",
+      "titel": "Another Love",
+      "streak": 5,
+      "period": "04/09/24 - 08/09/24"
+    },
+    {
+      "artiest": "The Kid Laroi",
+      "titel": "BABY I'M BACK",
+      "streak": 5,
+      "period": "04/05/25 - 08/05/25"
+    },
+    {
+      "artiest": "Radiohead",
+      "titel": "Let Down",
+      "streak": 5,
+      "period": "13/12/25 - 17/12/25"
+    },
+    {
+      "artiest": "David Bowie",
+      "titel": "Starman",
+      "streak": 5,
+      "period": "18/10/25 - 22/10/25"
+    },
+    {
       "artiest": "The Weeknd",
       "titel": "Timeless",
       "streak": 5,
       "period": "02/10/25 - 06/10/25"
     },
     {
+      "artiest": "Green Day",
+      "titel": "Basket Case",
+      "streak": 5,
+      "period": "04/06/25 - 08/06/25"
+    },
+    {
+      "artiest": "The Cranberries",
+      "titel": "Zombie",
+      "streak": 5,
+      "period": "14/12/25 - 18/12/25"
+    },
+    {
+      "artiest": "Green Day",
+      "titel": "Wake Me up When September Ends",
+      "streak": 5,
+      "period": "11/12/24 - 15/12/24"
+    },
+    {
+      "artiest": "Red Hot Chili Peppers",
+      "titel": "Scar Tissue",
+      "streak": 5,
+      "period": "10/05/25 - 14/05/25"
+    },
+    {
+      "artiest": "The Fray",
+      "titel": "How to Save a Life",
+      "streak": 5,
+      "period": "12/12/25 - 16/12/25"
+    },
+    {
+      "artiest": "Juice WRLD",
+      "titel": "Lucid Dreams",
+      "streak": 5,
+      "period": "14/12/25 - 18/12/25"
+    },
+    {
       "artiest": "Ed Sheeran",
       "titel": "Castle On The Hill",
       "streak": 5,
       "period": "11/05/25 - 15/05/25"
+    },
+    {
+      "artiest": "Daft Punk",
+      "titel": "Instant Crush",
+      "streak": 5,
+      "period": "03/05/25 - 07/05/25"
+    },
+    {
+      "artiest": "Oasis",
+      "titel": "Wonderwall",
+      "streak": 5,
+      "period": "30/06/25 - 04/07/25"
+    },
+    {
+      "artiest": "Olly Alexander (Years & Years)",
+      "titel": "King",
+      "streak": 5,
+      "period": "03/05/25 - 07/05/25"
     },
     {
       "artiest": "Zara Larsson",
@@ -365,30 +509,6 @@
       "titel": "Starships",
       "streak": 5,
       "period": "24/08/25 - 28/08/25"
-    },
-    {
-      "artiest": "The Kid Laroi",
-      "titel": "BABY I'M BACK",
-      "streak": 5,
-      "period": "04/05/25 - 08/05/25"
-    },
-    {
-      "artiest": "Sean Paul",
-      "titel": "She Doesn't Mind",
-      "streak": 5,
-      "period": "09/08/25 - 13/08/25"
-    },
-    {
-      "artiest": "Rammstein",
-      "titel": "Sonne",
-      "streak": 5,
-      "period": "31/01/25 - 04/02/25"
-    },
-    {
-      "artiest": "Florence + the Machine",
-      "titel": "Spectrum",
-      "streak": 5,
-      "period": "09/05/25 - 13/05/25"
     },
     {
       "artiest": "Bazart",
@@ -407,12 +527,6 @@
       "titel": "Something Just Like This",
       "streak": 5,
       "period": "15/08/25 - 19/08/25"
-    },
-    {
-      "artiest": "Juice WRLD",
-      "titel": "Robbery",
-      "streak": 5,
-      "period": "02/06/25 - 06/06/25"
     },
     {
       "artiest": "Lil Wayne",
@@ -485,188 +599,92 @@
       "titel": "Everybody Dies In Their Nightmares",
       "streak": 5,
       "period": "31/03/25 - 04/04/25"
-    },
-    {
-      "artiest": "David Bowie",
-      "titel": "Starman",
-      "streak": 5,
-      "period": "18/10/25 - 22/10/25"
-    },
-    {
-      "artiest": "Pommelien Thijs",
-      "titel": "Erop Of Eronder",
-      "streak": 5,
-      "period": "12/12/25 - 16/12/25"
-    },
-    {
-      "artiest": "Coldplay",
-      "titel": "Clocks",
-      "streak": 5,
-      "period": "06/08/25 - 10/08/25"
-    },
-    {
-      "artiest": "Radiohead",
-      "titel": "Let Down",
-      "streak": 5,
-      "period": "13/12/25 - 17/12/25"
-    },
-    {
-      "artiest": "Future",
-      "titel": "Mask Off",
-      "streak": 5,
-      "period": "04/06/25 - 08/06/25"
-    },
-    {
-      "artiest": "Justin Bieber",
-      "titel": "Beauty And A Beat",
-      "streak": 5,
-      "period": "09/05/25 - 13/05/25"
-    },
-    {
-      "artiest": "Oasis",
-      "titel": "Wonderwall",
-      "streak": 5,
-      "period": "30/06/25 - 04/07/25"
-    },
-    {
-      "artiest": "Djo",
-      "titel": "End of Beginning",
-      "streak": 5,
-      "period": "10/05/25 - 14/05/25"
-    },
-    {
-      "artiest": "Green Day",
-      "titel": "Basket Case",
-      "streak": 5,
-      "period": "04/06/25 - 08/06/25"
-    },
-    {
-      "artiest": "Gigi Perez",
-      "titel": "Sailor Song",
-      "streak": 5,
-      "period": "08/04/25 - 12/04/25"
-    },
-    {
-      "artiest": "Red Hot Chili Peppers",
-      "titel": "Scar Tissue",
-      "streak": 5,
-      "period": "10/05/25 - 14/05/25"
-    },
-    {
-      "artiest": "Rixton",
-      "titel": "Me and My Broken Heart",
-      "streak": 5,
-      "period": "16/10/24 - 20/10/24"
-    },
-    {
-      "artiest": "Beyoncé",
-      "titel": "Halo",
-      "streak": 5,
-      "period": "21/05/25 - 25/05/25"
-    },
-    {
-      "artiest": "Olly Alexander (Years & Years)",
-      "titel": "King",
-      "streak": 5,
-      "period": "03/05/25 - 07/05/25"
-    },
-    {
-      "artiest": "The Fray",
-      "titel": "How to Save a Life",
-      "streak": 5,
-      "period": "12/12/25 - 16/12/25"
-    },
-    {
-      "artiest": "Daft Punk",
-      "titel": "Instant Crush",
-      "streak": 5,
-      "period": "03/05/25 - 07/05/25"
-    },
-    {
-      "artiest": "Juice WRLD",
-      "titel": "Lucid Dreams",
-      "streak": 5,
-      "period": "14/12/25 - 18/12/25"
-    },
-    {
-      "artiest": "Tom Odell",
-      "titel": "Another Love",
-      "streak": 5,
-      "period": "04/09/24 - 08/09/24"
-    },
-    {
-      "artiest": "Green Day",
-      "titel": "Wake Me up When September Ends",
-      "streak": 5,
-      "period": "11/12/24 - 15/12/24"
     }
   ],
   "songs_current": [
     {
-      "artiest": "XXXTENTACION",
-      "titel": "True Love",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "artiest": "ABBA",
+      "titel": "The Winner Takes It All",
+      "streak": 4,
+      "period": "sinds 02/01/26"
+    },
+    {
+      "artiest": "The War On Drugs",
+      "titel": "Pain",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
       "artiest": "Radiohead",
-      "titel": "No Surprises",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "titel": "Street Spirit",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
-      "artiest": "Sevdaliza",
-      "titel": "Alibi",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Bee Gees",
-      "titel": "Tragedy",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Lost Frequencies",
-      "titel": "Reality",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Roxy Dekker",
-      "titel": "Gaan We Weg?",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Pixies",
-      "titel": "Where Is My Mind?",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Radiohead",
-      "titel": "Creep",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "artiest": "Michael Sembello",
-      "titel": "Maniac",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "artiest": "Scorpions",
+      "titel": "Wind Of Change",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
       "artiest": "Pommelien Thijs",
-      "titel": "Atlas",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "titel": "Ben je klaar?",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
-      "artiest": "Kate Bush",
-      "titel": "Running Up That Hill",
+      "artiest": "Simple Minds",
+      "titel": "Don't You",
+      "streak": 3,
+      "period": "sinds 03/01/26"
+    },
+    {
+      "artiest": "Juice WRLD",
+      "titel": "Robbery",
+      "streak": 3,
+      "period": "sinds 03/01/26"
+    },
+    {
+      "artiest": "Coldplay",
+      "titel": "Clocks",
       "streak": 2,
-      "period": "sinds 01/01/26"
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "Lady Gaga",
+      "titel": "Poker Face",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "Hozier",
+      "titel": "Take Me To Church",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "The War On Drugs",
+      "titel": "Red Eyes",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "Rammstein",
+      "titel": "Sonne",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "Tove Lo",
+      "titel": "Habits",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "artiest": "Netsky",
+      "titel": "Running Low",
+      "streak": 2,
+      "period": "sinds 04/01/26"
     }
   ],
   "artists_top": [
@@ -706,14 +724,14 @@
       "period": "15/08/25 - 28/08/25"
     },
     {
+      "naam": "Lady Gaga",
+      "streak": 12,
+      "period": "27/04/25 - 08/05/25"
+    },
+    {
       "naam": "Radiohead",
       "streak": 12,
       "period": "21/11/25 - 02/12/25"
-    },
-    {
-      "naam": "Sevdaliza",
-      "streak": 12,
-      "period": "07/04/25 - 18/04/25"
     },
     {
       "naam": "Green Day",
@@ -721,19 +739,24 @@
       "period": "28/06/25 - 09/07/25"
     },
     {
+      "naam": "Oasis",
+      "streak": 12,
+      "period": "10/08/25 - 21/08/25"
+    },
+    {
       "naam": "Travis Scott",
       "streak": 12,
       "period": "02/06/25 - 13/06/25"
     },
     {
-      "naam": "Lady Gaga",
+      "naam": "Sevdaliza",
       "streak": 12,
-      "period": "27/04/25 - 08/05/25"
+      "period": "07/04/25 - 18/04/25"
     },
     {
-      "naam": "Oasis",
-      "streak": 12,
-      "period": "10/08/25 - 21/08/25"
+      "naam": "Florence + the Machine",
+      "streak": 11,
+      "period": "13/12/25 - 23/12/25"
     },
     {
       "naam": "Arctic Monkeys",
@@ -746,9 +769,19 @@
       "period": "25/07/25 - 04/08/25"
     },
     {
-      "naam": "Florence + the Machine",
-      "streak": 11,
-      "period": "13/12/25 - 23/12/25"
+      "naam": "Coldplay",
+      "streak": 10,
+      "period": "15/08/25 - 24/08/25"
+    },
+    {
+      "naam": "Editors",
+      "streak": 10,
+      "period": "18/05/25 - 27/05/25"
+    },
+    {
+      "naam": "Rihanna",
+      "streak": 10,
+      "period": "06/08/25 - 15/08/25"
     },
     {
       "naam": "Post Malone",
@@ -761,24 +794,14 @@
       "period": "18/10/25 - 27/10/25"
     },
     {
-      "naam": "Coldplay",
-      "streak": 10,
-      "period": "15/08/25 - 24/08/25"
-    },
-    {
       "naam": "Roxy Dekker",
       "streak": 10,
       "period": "30/08/24 - 08/09/24"
     },
     {
-      "naam": "Rihanna",
-      "streak": 10,
-      "period": "06/08/25 - 15/08/25"
-    },
-    {
-      "naam": "Editors",
-      "streak": 10,
-      "period": "18/05/25 - 27/05/25"
+      "naam": "Glass Animals",
+      "streak": 9,
+      "period": "23/09/25 - 01/10/25"
     },
     {
       "naam": "MGMT",
@@ -796,29 +819,9 @@
       "period": "16/05/25 - 24/05/25"
     },
     {
-      "naam": "Glass Animals",
-      "streak": 9,
-      "period": "23/09/25 - 01/10/25"
-    },
-    {
-      "naam": "J. Cole",
-      "streak": 8,
-      "period": "05/06/25 - 12/06/25"
-    },
-    {
       "naam": "The Smiths",
       "streak": 8,
       "period": "07/11/25 - 14/11/25"
-    },
-    {
-      "naam": "Lorde",
-      "streak": 8,
-      "period": "05/12/25 - 12/12/25"
-    },
-    {
-      "naam": "Fleetwood Mac",
-      "streak": 8,
-      "period": "07/05/25 - 14/05/25"
     },
     {
       "naam": "Katy Perry",
@@ -826,24 +829,39 @@
       "period": "03/12/25 - 10/12/25"
     },
     {
-      "naam": "Lil Peep",
-      "streak": 8,
-      "period": "09/08/25 - 16/08/25"
-    },
-    {
       "naam": "Pearl Jam",
       "streak": 8,
       "period": "01/09/24 - 08/09/24"
     },
     {
-      "naam": "Eminem",
-      "streak": 7,
-      "period": "12/12/25 - 18/12/25"
+      "naam": "Fleetwood Mac",
+      "streak": 8,
+      "period": "07/05/25 - 14/05/25"
+    },
+    {
+      "naam": "Lil Peep",
+      "streak": 8,
+      "period": "09/08/25 - 16/08/25"
+    },
+    {
+      "naam": "Lorde",
+      "streak": 8,
+      "period": "05/12/25 - 12/12/25"
+    },
+    {
+      "naam": "J. Cole",
+      "streak": 8,
+      "period": "05/06/25 - 12/06/25"
     },
     {
       "naam": "Stromae",
       "streak": 7,
       "period": "07/12/25 - 13/12/25"
+    },
+    {
+      "naam": "Pitbull",
+      "streak": 7,
+      "period": "12/08/25 - 18/08/25"
     },
     {
       "naam": "Pixies",
@@ -861,44 +879,14 @@
       "period": "02/06/25 - 08/06/25"
     },
     {
-      "naam": "Pitbull",
+      "naam": "Eminem",
       "streak": 7,
-      "period": "12/08/25 - 18/08/25"
+      "period": "12/12/25 - 18/12/25"
     },
     {
       "naam": "Jopke van Dobbenburgh",
       "streak": 7,
       "period": "08/06/25 - 14/06/25"
-    },
-    {
-      "naam": "Kendrick Lamar",
-      "streak": 6,
-      "period": "15/08/25 - 20/08/25"
-    },
-    {
-      "naam": "Hooverphonic",
-      "streak": 6,
-      "period": "18/10/25 - 23/10/25"
-    },
-    {
-      "naam": "Bee Gees",
-      "streak": 6,
-      "period": "12/12/25 - 17/12/25"
-    },
-    {
-      "naam": "Lost Frequencies",
-      "streak": 6,
-      "period": "13/12/25 - 18/12/25"
-    },
-    {
-      "naam": "Glints",
-      "streak": 6,
-      "period": "19/05/25 - 24/05/25"
-    },
-    {
-      "naam": "Vance Joy",
-      "streak": 6,
-      "period": "03/09/24 - 08/09/24"
     },
     {
       "naam": "Juice WRLD",
@@ -911,14 +899,69 @@
       "period": "19/10/25 - 24/10/25"
     },
     {
-      "naam": "Future",
-      "streak": 6,
-      "period": "04/06/25 - 09/06/25"
-    },
-    {
       "naam": "Passenger",
       "streak": 6,
       "period": "14/10/24 - 19/10/24"
+    },
+    {
+      "naam": "Blanche",
+      "streak": 6,
+      "period": "14/12/25 - 19/12/25"
+    },
+    {
+      "naam": "Lost Frequencies",
+      "streak": 6,
+      "period": "13/12/25 - 18/12/25"
+    },
+    {
+      "naam": "Bee Gees",
+      "streak": 6,
+      "period": "12/12/25 - 17/12/25"
+    },
+    {
+      "naam": "Interpol",
+      "streak": 6,
+      "period": "15/10/25 - 20/10/25"
+    },
+    {
+      "naam": "Vance Joy",
+      "streak": 6,
+      "period": "03/09/24 - 08/09/24"
+    },
+    {
+      "naam": "Glints",
+      "streak": 6,
+      "period": "19/05/25 - 24/05/25"
+    },
+    {
+      "naam": "Nickelback",
+      "streak": 6,
+      "period": "04/12/25 - 09/12/25"
+    },
+    {
+      "naam": "New Radicals",
+      "streak": 6,
+      "period": "26/11/25 - 01/12/25"
+    },
+    {
+      "naam": "R.E.M.",
+      "streak": 6,
+      "period": "18/10/24 - 23/10/24"
+    },
+    {
+      "naam": "Kendrick Lamar",
+      "streak": 6,
+      "period": "15/08/25 - 20/08/25"
+    },
+    {
+      "naam": "Hooverphonic",
+      "streak": 6,
+      "period": "18/10/25 - 23/10/25"
+    },
+    {
+      "naam": "Future",
+      "streak": 6,
+      "period": "04/06/25 - 09/06/25"
     },
     {
       "naam": "TOOL",
@@ -931,114 +974,9 @@
       "period": "05/12/25 - 10/12/25"
     },
     {
-      "naam": "Nickelback",
-      "streak": 6,
-      "period": "04/12/25 - 09/12/25"
-    },
-    {
-      "naam": "R.E.M.",
-      "streak": 6,
-      "period": "18/10/24 - 23/10/24"
-    },
-    {
-      "naam": "Interpol",
-      "streak": 6,
-      "period": "15/10/25 - 20/10/25"
-    },
-    {
-      "naam": "Blanche",
-      "streak": 6,
-      "period": "14/12/25 - 19/12/25"
-    },
-    {
-      "naam": "New Radicals",
-      "streak": 6,
-      "period": "26/11/25 - 01/12/25"
-    },
-    {
       "naam": "Hozier",
       "streak": 5,
       "period": "14/12/25 - 18/12/25"
-    },
-    {
-      "naam": "Ed Sheeran",
-      "streak": 5,
-      "period": "11/05/25 - 15/05/25"
-    },
-    {
-      "naam": "Zara Larsson",
-      "streak": 5,
-      "period": "19/10/24 - 23/10/24"
-    },
-    {
-      "naam": "Linkin Park",
-      "streak": 5,
-      "period": "31/01/25 - 04/02/25"
-    },
-    {
-      "naam": "Nicki Minaj",
-      "streak": 5,
-      "period": "24/08/25 - 28/08/25"
-    },
-    {
-      "naam": "Sean Paul",
-      "streak": 5,
-      "period": "09/08/25 - 13/08/25"
-    },
-    {
-      "naam": "Michael Jackson",
-      "streak": 5,
-      "period": "18/05/25 - 22/05/25"
-    },
-    {
-      "naam": "Rammstein",
-      "streak": 5,
-      "period": "31/01/25 - 04/02/25"
-    },
-    {
-      "naam": "Bazart",
-      "streak": 5,
-      "period": "19/05/25 - 23/05/25"
-    },
-    {
-      "naam": "Maroon 5",
-      "streak": 5,
-      "period": "29/09/25 - 03/10/25"
-    },
-    {
-      "naam": "The Chainsmokers",
-      "streak": 5,
-      "period": "15/08/25 - 19/08/25"
-    },
-    {
-      "naam": "Netsky",
-      "streak": 5,
-      "period": "02/02/25 - 06/02/25"
-    },
-    {
-      "naam": "Lil Wayne",
-      "streak": 5,
-      "period": "31/03/25 - 04/04/25"
-    },
-    {
-      "naam": "David Bowie",
-      "streak": 5,
-      "period": "18/10/25 - 22/10/25"
-    },
-    {
-      "naam": "Depeche Mode",
-      "streak": 5,
-      "period": "09/08/25 - 13/08/25"
-    },
-    {
-      "naam": "Clean Bandit",
-      "streak": 5,
-      "period": "25/10/24 - 29/10/24"
-    },
-    {
-      "naam": "Justin Bieber",
-      "streak": 5,
-      "period": "09/05/25 - 13/05/25"
     },
     {
       "naam": "Djo",
@@ -1046,9 +984,39 @@
       "period": "10/05/25 - 14/05/25"
     },
     {
+      "naam": "Rammstein",
+      "streak": 5,
+      "period": "31/01/25 - 04/02/25"
+    },
+    {
+      "naam": "Tove Lo",
+      "streak": 5,
+      "period": "15/12/25 - 19/12/25"
+    },
+    {
+      "naam": "Netsky",
+      "streak": 5,
+      "period": "02/02/25 - 06/02/25"
+    },
+    {
       "naam": "Gigi Perez",
       "streak": 5,
       "period": "08/04/25 - 12/04/25"
+    },
+    {
+      "naam": "Sean Paul",
+      "streak": 5,
+      "period": "09/08/25 - 13/08/25"
+    },
+    {
+      "naam": "Linkin Park",
+      "streak": 5,
+      "period": "31/01/25 - 04/02/25"
+    },
+    {
+      "naam": "Clean Bandit",
+      "streak": 5,
+      "period": "25/10/24 - 29/10/24"
     },
     {
       "naam": "Rixton",
@@ -1061,14 +1029,14 @@
       "period": "21/05/25 - 25/05/25"
     },
     {
-      "naam": "Olly Alexander (Years & Years)",
+      "naam": "Bruno Mars",
       "streak": 5,
-      "period": "03/05/25 - 07/05/25"
+      "period": "18/05/25 - 22/05/25"
     },
     {
-      "naam": "The Fray",
+      "naam": "Maroon 5",
       "streak": 5,
-      "period": "12/12/25 - 16/12/25"
+      "period": "29/09/25 - 03/10/25"
     },
     {
       "naam": "Daft Punk",
@@ -1081,9 +1049,14 @@
       "period": "04/09/24 - 08/09/24"
     },
     {
-      "naam": "Tove Lo",
+      "naam": "Depeche Mode",
       "streak": 5,
-      "period": "15/12/25 - 19/12/25"
+      "period": "09/08/25 - 13/08/25"
+    },
+    {
+      "naam": "David Bowie",
+      "streak": 5,
+      "period": "18/10/25 - 22/10/25"
     },
     {
       "naam": "The Cranberries",
@@ -1091,9 +1064,54 @@
       "period": "14/12/25 - 18/12/25"
     },
     {
-      "naam": "Bruno Mars",
+      "naam": "The Fray",
+      "streak": 5,
+      "period": "12/12/25 - 16/12/25"
+    },
+    {
+      "naam": "Ed Sheeran",
+      "streak": 5,
+      "period": "11/05/25 - 15/05/25"
+    },
+    {
+      "naam": "Olly Alexander (Years & Years)",
+      "streak": 5,
+      "period": "03/05/25 - 07/05/25"
+    },
+    {
+      "naam": "Zara Larsson",
+      "streak": 5,
+      "period": "19/10/24 - 23/10/24"
+    },
+    {
+      "naam": "Nicki Minaj",
+      "streak": 5,
+      "period": "24/08/25 - 28/08/25"
+    },
+    {
+      "naam": "Michael Jackson",
       "streak": 5,
       "period": "18/05/25 - 22/05/25"
+    },
+    {
+      "naam": "Bazart",
+      "streak": 5,
+      "period": "19/05/25 - 23/05/25"
+    },
+    {
+      "naam": "The Chainsmokers",
+      "streak": 5,
+      "period": "15/08/25 - 19/08/25"
+    },
+    {
+      "naam": "Lil Wayne",
+      "streak": 5,
+      "period": "31/03/25 - 04/04/25"
+    },
+    {
+      "naam": "Justin Bieber",
+      "streak": 5,
+      "period": "09/05/25 - 13/05/25"
     },
     {
       "naam": "Jamie Foxx",
@@ -1111,54 +1129,29 @@
       "period": "12/08/25 - 16/08/25"
     },
     {
-      "naam": "Goose",
+      "naam": "ABBA",
       "streak": 4,
-      "period": "02/05/25 - 05/05/25"
+      "period": "02/01/26 - 05/01/26"
     },
     {
-      "naam": "David Guetta",
+      "naam": "The War On Drugs",
       "streak": 4,
-      "period": "19/04/25 - 22/04/25"
+      "period": "02/01/26 - 05/01/26"
     },
     {
-      "naam": "The Killers",
+      "naam": "Scorpions",
       "streak": 4,
-      "period": "03/09/24 - 06/09/24"
+      "period": "02/01/26 - 05/01/26"
     },
     {
-      "naam": "The Lumineers",
+      "naam": "Franz Ferdinand",
       "streak": 4,
-      "period": "29/09/25 - 02/10/25"
+      "period": "14/10/25 - 17/10/25"
     },
     {
-      "naam": "24kGoldn",
+      "naam": "Keane",
       "streak": 4,
-      "period": "07/06/25 - 10/06/25"
-    },
-    {
-      "naam": "Metallica",
-      "streak": 4,
-      "period": "27/09/25 - 30/09/25"
-    },
-    {
-      "naam": "John Newman",
-      "streak": 4,
-      "period": "29/04/25 - 02/05/25"
-    },
-    {
-      "naam": "NLE Choppa",
-      "streak": 4,
-      "period": "08/08/25 - 11/08/25"
-    },
-    {
-      "naam": "Wheatus",
-      "streak": 4,
-      "period": "26/05/25 - 29/05/25"
-    },
-    {
-      "naam": "Lykke Li",
-      "streak": 4,
-      "period": "10/08/25 - 13/08/25"
+      "period": "26/07/25 - 29/07/25"
     },
     {
       "naam": "Michael Sembello",
@@ -1166,86 +1159,111 @@
       "period": "13/12/25 - 16/12/25"
     },
     {
-      "naam": "GIGI D'AGOSTINO",
+      "naam": "Elton John",
       "streak": 4,
-      "period": "18/05/25 - 21/05/25"
+      "period": "04/11/25 - 07/11/25"
+    },
+    {
+      "naam": "Dire Straits",
+      "streak": 4,
+      "period": "27/07/25 - 30/07/25"
+    },
+    {
+      "naam": "Kygo",
+      "streak": 4,
+      "period": "31/01/25 - 03/02/25"
+    },
+    {
+      "naam": "The Goo Goo Dolls",
+      "streak": 4,
+      "period": "03/10/24 - 06/10/24"
+    },
+    {
+      "naam": "Metallica",
+      "streak": 4,
+      "period": "27/09/25 - 30/09/25"
+    },
+    {
+      "naam": "David Guetta",
+      "streak": 4,
+      "period": "19/04/25 - 22/04/25"
     }
   ],
   "artists_current": [
     {
-      "naam": "MGMT",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "XXXTENTACION",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Radiohead",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Arctic Monkeys",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Sevdaliza",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Bee Gees",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Travis Scott",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Lost Frequencies",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Roxy Dekker",
-      "streak": 2,
-      "period": "sinds 01/01/26"
-    },
-    {
-      "naam": "Pixies",
-      "streak": 2,
+      "naam": "Lady Gaga",
+      "streak": 5,
       "period": "sinds 01/01/26"
     },
     {
       "naam": "The Smiths",
-      "streak": 2,
+      "streak": 5,
+      "period": "sinds 01/01/26"
+    },
+    {
+      "naam": "Radiohead",
+      "streak": 5,
       "period": "sinds 01/01/26"
     },
     {
       "naam": "Pommelien Thijs",
-      "streak": 2,
+      "streak": 5,
       "period": "sinds 01/01/26"
     },
     {
-      "naam": "Michael Sembello",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "naam": "Coldplay",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
-      "naam": "Lady Gaga",
-      "streak": 2,
-      "period": "sinds 01/01/26"
+      "naam": "ABBA",
+      "streak": 4,
+      "period": "sinds 02/01/26"
     },
     {
-      "naam": "Kate Bush",
+      "naam": "The War On Drugs",
+      "streak": 4,
+      "period": "sinds 02/01/26"
+    },
+    {
+      "naam": "Scorpions",
+      "streak": 4,
+      "period": "sinds 02/01/26"
+    },
+    {
+      "naam": "Florence + the Machine",
+      "streak": 4,
+      "period": "sinds 02/01/26"
+    },
+    {
+      "naam": "Simple Minds",
+      "streak": 3,
+      "period": "sinds 03/01/26"
+    },
+    {
+      "naam": "Juice WRLD",
+      "streak": 3,
+      "period": "sinds 03/01/26"
+    },
+    {
+      "naam": "Netsky",
+      "streak": 3,
+      "period": "sinds 03/01/26"
+    },
+    {
+      "naam": "Hozier",
       "streak": 2,
-      "period": "sinds 01/01/26"
+      "period": "sinds 04/01/26"
+    },
+    {
+      "naam": "Rammstein",
+      "streak": 2,
+      "period": "sinds 04/01/26"
+    },
+    {
+      "naam": "Tove Lo",
+      "streak": 2,
+      "period": "sinds 04/01/26"
     }
   ]
 }
