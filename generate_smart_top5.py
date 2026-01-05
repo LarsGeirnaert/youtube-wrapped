@@ -5,26 +5,40 @@ from collections import Counter
 from datetime import datetime, timedelta
 
 def clean_music_data(artist, title):
-    # Basis opschoning
+    # 1. Verwijder backslashes (veroorzaken bugs)
+    title = title.replace('\\', '')
+    artist = artist.replace('\\', '')
+
+    # 2. Verwijder alles na een dubbele slash // (vaak commentaar)
+    title = re.sub(r'\s*//.*', '', title)
+    
+    # 3. Basis opschoning (regex)
     title = re.sub(r'^Je hebt naar\s+', '', title)
     title = re.sub(r'\s+gekeken$', '', title)
     title = re.sub(r'^Watched\s+', '', title)
     title = re.sub(r'\[.*?\]', '', title)
     title = re.sub(r'\(.*?\)', '', title)
-    
+
+    # 4. Splits Artist - Title als dat in de titel zit
     if " - " in title:
         parts = title.split(" - ", 1)
-        artist, title = parts[0].strip(), parts[1].strip()
-        
-    junk = ['VEVO', '- Topic', 'Official', 'Records', 'Music', 'Channel', '!K7', 'Lyrics', 'Audio']
+        artist_cand, title_cand = parts[0].strip(), parts[1].strip()
+        # Check of de nieuwe artiest niet leeg is
+        if artist_cand and title_cand:
+            artist, title = artist_cand, title_cand
+
+    # 5. Verwijder junk woorden
+    junk = ['VEVO', '- Topic', 'Official', 'Records', 'Music', 'Channel', '!K7', 'Lyrics', 'Audio', 'Video']
     for word in junk:
-        artist = artist.replace(word, '').strip()
-        title = title.replace(word, '').strip()
-        
+        # Case insensitive replace voor junk woorden aan het eind of begin
+        pattern = re.compile(re.escape(word), re.IGNORECASE)
+        artist = pattern.sub('', artist).strip()
+        title = pattern.sub('', title).strip()
+
     return artist.strip(), title.strip()
 
 def generate_smart_top5():
-    # 1. Poster cache laden (zodat we plaatjes behouden)
+    # 1. Poster cache laden
     poster_cache = {}
     if os.path.exists('stats.json'):
         with open('stats.json', 'r', encoding='utf-8') as f:
@@ -34,45 +48,65 @@ def generate_smart_top5():
                         poster_cache[(entry['artiest'].lower().strip(), entry['titel'].lower().strip())] = entry['poster']
             except: pass
 
-    if not os.path.exists('kijkgeschiedenis.json'): 
+    # 2. Correcties laden
+    corrections = {}
+    if os.path.exists('corrections.json'):
+        try:
+            with open('corrections.json', 'r', encoding='utf-8') as f:
+                corrections_list = json.load(f)
+                for c in corrections_list:
+                    # We maken de sleutel schoon met dezelfde functie, voor de zekerheid
+                    orig_a, orig_t = clean_music_data(c['original']['artiest'], c['original']['titel'])
+                    key = f"{orig_a.lower()}|{orig_t.lower()}"
+                    corrections[key] = c['target']
+            print(f"🔧 {len(corrections)} correctieregels geladen.")
+        except Exception as e: 
+            print(f"⚠️ Fout bij laden corrections.json: {e}")
+
+    if not os.path.exists('kijkgeschiedenis.json'):
         print("Fout: kijkgeschiedenis.json niet gevonden")
         return
-        
+
     with open('kijkgeschiedenis.json', 'r', encoding='utf-8') as f:
         history = json.load(f)
 
     days_dict, all_listens, monthly_stats = {}, Counter(), {}
-    song_history_dates = {} # Nodig voor Momentum & Comebacks
+    song_history_dates = {} 
     monthly_counts = Counter()
     all_dates_found = set()
 
-    print("🚀 Data verwerken (Momentum Methode, zonder correcties)...")
+    print("🚀 Data verwerken (Momentum Methode)...")
 
     for entry in history:
         is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
         if not is_music or 'title' not in entry: continue
-        
+
         datum_str = entry['time'][:10]
         m_key = datum_str[:7]
         raw_artist = entry.get('subtitles', [{'name': 'Onbekend'}])[0]['name']
-        
+
         a, t = clean_music_data(raw_artist, entry['title'])
         if not t or t.startswith('http'): continue
-        
+
+        # --- CORRECTIE TOEPASSEN ---
+        check_key = f"{a.lower()}|{t.lower()}"
+        if check_key in corrections:
+            target = corrections[check_key]
+            a = target['artiest']
+            t = target['titel']
+        # ---------------------------
+
         all_dates_found.add(datum_str)
         song_key = (a, t)
-        
-        # Datums opslaan voor berekeningen
+
         if song_key not in song_history_dates: song_history_dates[song_key] = []
         song_history_dates[song_key].append(datetime.strptime(datum_str, "%Y-%m-%d"))
 
-        # Basis tellers
         if datum_str not in days_dict: days_dict[datum_str] = []
         days_dict[datum_str].append(song_key)
         all_listens[song_key] += 1
         monthly_counts[m_key] += 1
 
-        # Maand stats
         if m_key not in monthly_stats:
             monthly_stats[m_key] = {"songs": Counter(), "artists": Counter(), "artist_song_details": {}}
         monthly_stats[m_key]["songs"][song_key] += 1
@@ -81,36 +115,34 @@ def generate_smart_top5():
             monthly_stats[m_key]["artist_song_details"][a] = Counter()
         monthly_stats[m_key]["artist_song_details"][a][t] += 1
 
-    # --- COMEBACK LOGICA (10x -> 30d -> 10x) ---
+    # --- REST VAN DE VERWERKING ---
+
+    # Comebacks
     comebacks = []
     for song, dates in song_history_dates.items():
         sorted_dates = sorted(dates)
         if len(sorted_dates) < 20: continue
-        
         for i in range(len(sorted_dates) - 1):
             gap = (sorted_dates[i+1] - sorted_dates[i]).days
-            if gap >= 30: # 30 Dagen gap
+            if gap >= 30: 
                 before = len([d for d in sorted_dates if d <= sorted_dates[i]])
                 after = len([d for d in sorted_dates if d >= sorted_dates[i+1]])
-                
                 if before >= 10 and after >= 10:
                     comebacks.append({
-                        "artiest": song[0],
-                        "titel": song[1],
-                        "gap": gap,
+                        "artiest": song[0], "titel": song[1], "gap": gap,
                         "poster": poster_cache.get((song[0].lower(), song[1].lower()), "img/placeholder.png"),
                         "periode": f"{sorted_dates[i].year} ➔ {sorted_dates[i+1].year}"
                     })
-                    break 
+                    break
 
     with open('comebacks.json', 'w', encoding='utf-8') as f:
         json.dump(sorted(comebacks, key=lambda x: x['gap'], reverse=True), f, indent=2, ensure_ascii=False)
 
-    # --- GRAFIEK DATA ---
+    # Chart Data
     chart_data = {"labels": sorted(monthly_counts.keys()), "values": [monthly_counts[m] for m in sorted(monthly_counts.keys())]}
     with open('chart_data.json', 'w', encoding='utf-8') as f: json.dump(chart_data, f, indent=2)
 
-    # --- STREAK BEREKENING ---
+    # Streaks
     if not all_dates_found: return
     last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
 
@@ -152,7 +184,7 @@ def generate_smart_top5():
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)
 
-    # --- OPSLAAN REST ---
+    # Monthly Stats & Overall Stats
     json_monthly = {}
     for m, d in monthly_stats.items():
         json_monthly[m] = {
@@ -165,19 +197,16 @@ def generate_smart_top5():
 
     stats_out = [{"artiest": a, "titel": t, "count": c, "poster": poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")} for (a, t), c in all_listens.items()]
     with open('stats.json', 'w', encoding='utf-8') as f: json.dump(stats_out, f, indent=2, ensure_ascii=False)
-    
-    # --- NIEUWE TOP 5 LOGICA (MOMENTUM) ---
+
+    # Momentum Top 5
     final_data = []
     sorted_days = sorted(days_dict.keys(), reverse=True)
-    
+
     for d in sorted_days:
         current_date_obj = datetime.strptime(d, "%Y-%m-%d")
-        # 30 dagen terug vanaf deze dag
         month_ago_date_obj = current_date_obj - timedelta(days=30)
-        
         today_counter = Counter(days_dict[d])
-        
-        # Functie om te tellen hoe vaak een liedje in de 30 dagen hieraan voorafgaand is geluisterd
+
         def get_momentum_score(song_key):
             dates = song_history_dates.get(song_key, [])
             score = 0
@@ -187,24 +216,18 @@ def generate_smart_top5():
             return score
 
         unique_songs_today = list(today_counter.keys())
-        
-        # Sorteer eerst op aantal plays vandaag, dan op momentum (30 dagen)
         unique_songs_today.sort(key=lambda s: (today_counter[s], get_momentum_score(s)), reverse=True)
-        
-        # Pak de top 5
+
         for song_key in unique_songs_today[:5]:
             artiest, titel = song_key
             poster = poster_cache.get((artiest.lower(), titel.lower()), "img/placeholder.png")
             final_data.append({
-                "datum": d,
-                "titel": titel,
-                "artiest": artiest,
-                "poster": poster
+                "datum": d, "titel": titel, "artiest": artiest, "poster": poster
             })
 
     with open('data.json', 'w', encoding='utf-8') as f: json.dump(final_data, f, indent=2, ensure_ascii=False)
 
-    print("✅ Klaar! Top 5 berekend op basis van Momentum (laatste 30 dagen).")
+    print("✅ Klaar! Top 5 berekend (inclusief correcties & extra opschoning).")
 
 if __name__ == "__main__":
     generate_smart_top5()

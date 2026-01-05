@@ -2,20 +2,83 @@ let currentViewDate = new Date();
 let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
 let myChart = null;
 
+// --- MERGE MODE STATE ---
+let mergeMode = false;
+let selectedForMerge = []; 
+let existingCorrections = [];
+let fileHandle = null;
+
+// --- INDEXED DB ---
+const DB_NAME = 'MuziekDagboekDB';
+const STORE_NAME = 'Settings';
+
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME);
+            }
+        };
+        request.onsuccess = (event) => resolve(event.target.result);
+        request.onerror = (event) => reject(event.target.error);
+    });
+}
+
+async function saveHandleToDB(handle) {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(handle, 'correctionsHandle');
+    return tx.complete;
+}
+
+async function getHandleFromDB() {
+    const db = await openDB();
+    return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const request = tx.objectStore(STORE_NAME).get('correctionsHandle');
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => resolve(null);
+    });
+}
+
+// --- INITIALISATIE ---
+
 async function loadMusic() {
     try {
-        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes] = await Promise.all([
+        const savedHandle = await getHandleFromDB();
+        if (savedHandle) {
+            fileHandle = savedHandle;
+            console.log("📂 Bestandskoppeling hersteld uit geheugen.");
+            updateFileStatus(true);
+            try {
+                if ((await fileHandle.queryPermission({ mode: 'read' })) === 'granted') {
+                    const file = await fileHandle.getFile();
+                    const text = await file.text();
+                    if (text) existingCorrections = JSON.parse(text);
+                }
+            } catch (e) { console.log("Wacht op permissie...", e); }
+        }
+
+        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes] = await Promise.all([
             fetch('data.json'), fetch('stats.json'), fetch('monthly_stats.json'), 
             fetch('streaks.json').catch(() => ({json: () => ({})})),
             fetch('chart_data.json').catch(() => ({json: () => ({})})),
-            fetch('comebacks.json').catch(() => ({json: () => ([])}))
+            fetch('comebacks.json').catch(() => ({json: () => ([])})),
+            fetch('corrections.json').catch(() => ({json: () => ([])})) 
         ]);
+
         musicData = await dataRes.json();
         statsData = await statsRes.json();
         monthlyStats = await monthlyRes.json();
         chartData = await chartRes.json();
         comebackData = await comebackRes.json();
         try { streakData = await streaksRes.json(); } catch(e) { streakData = {}; }
+        
+        if (existingCorrections.length === 0) {
+            try { existingCorrections = await correctionsRes.json(); } catch(e) { existingCorrections = []; }
+        }
 
         document.getElementById('unique-songs-count').innerText = statsData.length;
         document.getElementById('total-days-count').innerText = new Set(musicData.map(s => s.datum)).size;
@@ -26,11 +89,187 @@ async function loadMusic() {
     } catch (error) { console.error("Fout bij laden:", error); }
 }
 
+function updateFileStatus(isConnected) {
+    const statusEl = document.getElementById('file-status');
+    const btnEl = document.getElementById('btn-link-file');
+    
+    if (isConnected) {
+        statusEl.innerHTML = "💾 Opslaan: <b>Automatisch</b>";
+        statusEl.style.color = "#1db954";
+        statusEl.style.borderColor = "#1db954";
+        btnEl.classList.add('hidden');
+    } else {
+        statusEl.innerHTML = "💾 Opslaan: Handmatig";
+        statusEl.style.color = "#aaa";
+        statusEl.style.borderColor = "#333";
+        btnEl.classList.remove('hidden');
+    }
+}
+
 function getAlbumKey(posterUrl, artist) {
     if (!posterUrl || posterUrl.includes('placeholder')) return artist.toLowerCase();
     const uniqueId = posterUrl.split('/image/thumb/')[1] || posterUrl;
     return `${artist.toLowerCase()}_${uniqueId}`;
 }
+
+// --- FILE SYSTEM ACCESS API ---
+
+async function linkFile() {
+    try {
+        const [handle] = await window.showOpenFilePicker({
+            types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }],
+            multiple: false
+        });
+        fileHandle = handle;
+        await saveHandleToDB(fileHandle);
+
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+        if(text) existingCorrections = JSON.parse(text);
+
+        updateFileStatus(true);
+        alert("✅ Bestand gekoppeld!");
+    } catch (err) { console.error(err); alert("Kon bestand niet koppelen."); }
+}
+
+async function verifyPermission(handle, readWrite) {
+    const options = {};
+    if (readWrite) options.mode = 'readwrite';
+    if ((await handle.queryPermission(options)) === 'granted') return true;
+    if ((await handle.requestPermission(options)) === 'granted') return true;
+    return false;
+}
+
+async function saveCorrections() {
+    if (fileHandle) {
+        try {
+            const hasPermission = await verifyPermission(fileHandle, true);
+            if (!hasPermission) return false;
+            const writable = await fileHandle.createWritable();
+            await writable.write(JSON.stringify(existingCorrections, null, 2));
+            await writable.close();
+            return true;
+        } catch (err) { console.error("Auto-save mislukt:", err); return false; }
+    } else {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(existingCorrections, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "corrections.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+        return false; 
+    }
+}
+
+// --- MERGE LOGICA ---
+
+function toggleMergeMode() {
+    mergeMode = !mergeMode;
+    const btn = document.getElementById('btn-merge-mode');
+    const instr = document.getElementById('merge-instructions');
+    const bar = document.getElementById('merge-action-bar');
+    
+    if (mergeMode) {
+        btn.innerText = "❌ Stop Merge Mode";
+        btn.style.background = "red";
+        btn.style.borderColor = "red";
+        btn.style.color = "white";
+        instr.classList.remove('hidden');
+        bar.classList.add('visible');
+        selectedForMerge = [];
+        updateMergeUI();
+    } else {
+        btn.innerText = "Start Merge Mode";
+        btn.style.background = "rgba(255,165,0,0.2)";
+        btn.style.borderColor = "orange";
+        btn.style.color = "orange";
+        instr.classList.add('hidden');
+        bar.classList.remove('visible');
+        document.querySelectorAll('.merge-selected').forEach(el => el.classList.remove('merge-selected'));
+    }
+}
+
+function handleListClick(name, type, poster, albumArtist, elementId) {
+    if (mergeMode) {
+        if (type === 'song') toggleMergeSelection(name, elementId);
+        else alert("Je kan alleen liedjes samenvoegen.");
+    } else {
+        const escapedName = name; 
+        if (type === 'artist') showArtistDetails(escapedName);
+        else if (type === 'album') showAlbumDetails(poster, albumArtist);
+        else showSongSpotlight(escapedName);
+    }
+}
+
+function toggleMergeSelection(name, elementId) {
+    let parts = name.split(' - ');
+    let item = {};
+    if (parts.length > 1) item = { titel: parts[0].trim(), artiest: parts[1].trim() };
+    else item = { titel: "", artiest: name.trim() };
+    
+    const key = `${item.artiest}|${item.titel}`.toLowerCase();
+    const index = selectedForMerge.findIndex(x => x.key === key);
+    
+    if (index > -1) {
+        selectedForMerge.splice(index, 1);
+        if(document.getElementById(elementId)) document.getElementById(elementId).classList.remove('merge-selected');
+    } else {
+        selectedForMerge.push({ key: key, naam: name, item: item });
+        if(document.getElementById(elementId)) document.getElementById(elementId).classList.add('merge-selected');
+    }
+    updateMergeUI();
+}
+
+function updateMergeUI() {
+    document.getElementById('merge-count').innerText = `${selectedForMerge.length} geselecteerd`;
+}
+
+function showMergeModal() {
+    if (selectedForMerge.length < 2) { alert("Selecteer minstens 2 liedjes."); return; }
+
+    const container = document.getElementById('day-top-three-container');
+    const titleEl = document.getElementById('modal-datum-titel');
+    titleEl.innerText = "Kies de Hoofdversie";
+    
+    let html = `<p style="text-align:center; margin-bottom:15px; color:#ccc;">Welke naam wil je behouden?</p>`;
+    html += `<form id="merge-form" style="max-height:300px; overflow-y:auto; margin-bottom:20px;">`;
+    
+    selectedForMerge.forEach((obj, idx) => {
+        const checked = idx === 0 ? 'checked' : '';
+        html += `<label class="radio-item"><input type="radio" name="merge-target" value="${idx}" ${checked}><div><span style="font-weight:600; display:block;">${obj.item.titel}</span><span style="font-size:0.8rem; color:#aaa;">${obj.item.artiest}</span></div></label>`;
+    });
+    
+    html += `</form><button onclick="confirmMerge()" class="apply-btn">✅ Samenvoegen & Opslaan</button>`;
+    container.innerHTML = html;
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+async function confirmMerge() {
+    const radios = document.getElementsByName('merge-target');
+    let selectedIndex = -1;
+    for (const r of radios) { if (r.checked) { selectedIndex = parseInt(r.value); break; } }
+    if (selectedIndex === -1) return;
+    
+    const targetObj = selectedForMerge[selectedIndex].item;
+    let newCount = 0;
+    selectedForMerge.forEach((obj, idx) => {
+        if (idx !== selectedIndex) {
+            existingCorrections.push({ original: obj.item, target: targetObj });
+            newCount++;
+        }
+    });
+
+    const isAuto = await saveCorrections();
+    let msg = `Succes! ${newCount} variaties samengevoegd.`;
+    if (!isAuto) msg += " (Bestand gedownload).";
+    
+    alert(msg);
+    document.getElementById('modal').classList.add('hidden');
+    toggleMergeMode(); 
+}
+
+// --- RENDER FUNCTIES ---
 
 function renderCharts() {
     const canvas = document.getElementById('listeningChart');
@@ -61,11 +300,8 @@ function renderStatsDashboard() {
     
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
-
-    // Comebacks
     renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
 
-    // Streaks
     if (streakData.songs_current) {
         renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
         renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
@@ -73,7 +309,6 @@ function renderStatsDashboard() {
         renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
     }
 
-    // Albums
     const albumMap = {};
     statsData.forEach(s => {
         if (s.poster === "img/placeholder.png") return;
@@ -85,7 +320,6 @@ function renderStatsDashboard() {
     
     renderList('top-albums-listens', albums.sort((a,b) => b.total - a.total).slice(0, 10).map(a => [`Album van ${a.artiest}`, a.total, a.poster]), 'x', 'album');
     
-    // Top Albums (Variatie) - Filter max 2 per artiest
     const sortedVariety = [...albums].sort((a,b) => b.unique.size - a.unique.size);
     const filteredVariety = [];
     const counts = {};
@@ -97,7 +331,6 @@ function renderStatsDashboard() {
     }
     renderList('top-albums-variety', filteredVariety.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster]), ' songs', 'album');
 
-    // Inzichten
     const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); });
     const obsessions = [], explorers = [];
     Object.entries(artistGroups).forEach(([artist, songs]) => {
@@ -112,12 +345,13 @@ function renderList(id, items, unit, type) {
     const el = document.getElementById(id); if (!el) return;
     el.innerHTML = items.map(([name, val, poster, period], index) => {
         const escapedName = name.replace(/'/g, "\\'");
-        const action = type === 'artist' ? `showArtistDetails('${escapedName}')` : (type === 'album' ? `showAlbumDetails('${poster}', '${escapedName.split('van ')[1]}')` : `showSongSpotlight('${escapedName}')`);
-        const imgTag = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; object-fit:cover;">` : '';
-        const periodTag = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem;">${period}</small>` : '';
-        return `<li onclick="${action}" style="display:flex; align-items:center;">
+        const elementId = `${id}-${index}`;
+        const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${(escapedName.split('van ')[1] || '')}', '${elementId}')`;
+        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
+        const sub = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem;">${period}</small>` : '';
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center;">
                     <span style="width:20px; font-size:0.7rem; font-weight:700; color:var(--spotify-green); margin-right:5px;">${index+1}.</span>
-                    ${imgTag}<div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500;">${name}</span>${periodTag}</div>
+                    ${img}<div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500;">${name}</span>${sub}</div>
                     <span class="point-badge" style="margin-left:10px;">${val}${unit}</span></li>`;
     }).join('');
 }
@@ -127,22 +361,73 @@ function showAlbumDetails(posterUrl, artistName) {
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = `Album van ${artistName}`;
+    
     container.innerHTML = `<div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:150px;border-radius:20px;box-shadow:var(--shadow-lg);"></div>
-        <div style="max-height:350px;overflow-y:auto;">${albumSongs.map(s => `<div class="search-item" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${s.artiest.replace(/'/g, "\\'")}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`).join('')}</div>`;
+        <div style="max-height:350px;overflow-y:auto;">${albumSongs.map((s, idx) => {
+            const name = `${s.titel} - ${s.artiest}`;
+            const escapedName = name.replace(/'/g, "\\'");
+            const elementId = `album-det-${idx}`;
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`;
+        }).join('')}</div>`;
     document.getElementById('modal').classList.remove('hidden');
 }
 
+// --- HIER ZIT DE AANPASSING VOOR DE ARTIESTENPAGINA ---
 function showArtistDetails(artist, overrideCount = null, monthKey = null) {
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = cleanArtist;
-    let songsToShow = []; let label = "totaal";
+    
+    let songsToShow = []; 
+    let label = "totaal";
+    
     if (monthKey && monthlyStats[monthKey] && monthlyStats[monthKey].artist_details[cleanArtist]) {
-        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png' }; });
+        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { 
+            const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); 
+            return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; 
+        });
         label = "deze maand";
-    } else { songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); }
-    container.innerHTML = `${overrideCount ? `<p style="text-align:center; color:var(--spotify-green); margin-bottom:10px; font-weight:700;">${monthKey ? 'Deze maand' : 'Totaal'} ${overrideCount}x geluisterd</p>` : ''}<button onclick="applyCalendarFilter('${cleanArtist.replace(/'/g, "\\'")}')" class="apply-btn" style="background:var(--spotify-green); border:none; padding:10px; width:100%; border-radius:10px; font-weight:700; cursor:pointer; margin-bottom:15px;">📅 Bekijk op kalender</button>
-        <div style="max-height:400px; overflow-y:auto;">${songsToShow.map(s => `<div class="search-item" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${cleanArtist.replace(/'/g, "\\'")}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" style="width:35px;height:35px;border-radius:5px;margin-right:10px;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge" style="background:rgba(255,255,255,0.05); color:white;">${s.count}x ${label}</span></div>`).join('')}</div>`;
+    } else { 
+        songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); 
+    }
+
+    // -- NIEUW: Verzamel Albums van deze artiest --
+    const albums = {};
+    songsToShow.forEach(s => {
+        if (s.poster && s.poster !== "img/placeholder.png") {
+            const albumKey = getAlbumKey(s.poster, s.artiest);
+            if (!albums[albumKey]) albums[albumKey] = { poster: s.poster, count: 0, title: 'Album' };
+            albums[albumKey].count += s.count;
+        }
+    });
+    const sortedAlbums = Object.values(albums).sort((a,b) => b.count - a.count);
+
+    let html = '';
+    if (overrideCount) html += `<p style="text-align:center; color:var(--spotify-green); margin-bottom:10px; font-weight:700;">${monthKey ? 'Deze maand' : 'Totaal'} ${overrideCount}x geluisterd</p>`;
+    
+    html += `<button onclick="applyCalendarFilter('${cleanArtist.replace(/'/g, "\\'")}')" class="apply-btn" style="background:var(--spotify-green); border:none; padding:10px; width:100%; border-radius:10px; font-weight:700; cursor:pointer; margin-bottom:15px;">📅 Bekijk op kalender</button>`;
+
+    // -- NIEUW: Toon albums als die er zijn --
+    if (sortedAlbums.length > 0) {
+        html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Albums</h3>`;
+        html += `<div style="display:flex; gap:12px; overflow-x:auto; padding-bottom:15px; margin-bottom:10px;">`;
+        sortedAlbums.forEach(alb => {
+            html += `<div onclick="showAlbumDetails('${alb.poster}', '${cleanArtist.replace(/'/g, "\\'")}')" style="flex-shrink:0; cursor:pointer; width:80px; text-align:center;">
+                        <img src="${alb.poster}" style="width:80px; height:80px; border-radius:10px; object-fit:cover; margin-bottom:5px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+                    </div>`;
+        });
+        html += `</div>`;
+    }
+
+    html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Songs</h3>`;
+    html += `<div style="max-height:400px; overflow-y:auto;">${songsToShow.map((s, idx) => {
+            const name = `${s.titel} - ${cleanArtist}`;
+            const escapedName = name.replace(/'/g, "\\'");
+            const elementId = `artist-det-${idx}`;
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" style="width:35px;height:35px;border-radius:5px;margin-right:10px;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge" style="background:rgba(255,255,255,0.05); color:white;">${s.count}x ${label}</span></div>`;
+        }).join('')}</div>`;
+    
+    container.innerHTML = html;
     document.getElementById('modal').classList.remove('hidden');
 }
 
@@ -183,7 +468,6 @@ function showTop100(category) {
             items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); 
         } else { 
             titleEl.innerText = "Top 100 Albums (Variatie)";
-            // UPDATE: Filter max 2 albums per artiest ook hier!
             const sorted = albums.sort((a,b) => b.unique.size - a.unique.size);
             const filtered = [];
             const counts = {};
@@ -214,10 +498,11 @@ function showTop100(category) {
 
     container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period], index) => {
         const escapedName = name.replace(/'/g, "\\'");
-        const action = type === 'artist' ? `showArtistDetails('${escapedName}')` : (type === 'album' ? `showAlbumDetails('${poster}', '${escapedName.split('van ')[1]}')` : `showSongSpotlight('${escapedName}')`);
+        const elementId = `top100-${index}`;
+        const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${(escapedName.split('van ')[1] || '')}', '${elementId}')`;
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted);">${period}</small>` : '';
-        return `<li onclick="${action}" style="display:flex; align-items:center; padding: 12px 15px;">
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px;">
                     <span style="width: 25px; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
                     ${img}<div style="flex-grow:1; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>${sub}</div>
                     <span class="point-badge">${val}${unit||''}</span></li>`;
@@ -232,10 +517,12 @@ function calculateMonthlyHighlights(year, month) {
     const artistsEl = document.getElementById('month-artists-list');
     const totalEl = document.getElementById('month-total-listens-count');
     if (data && songsEl) {
-        songsEl.innerHTML = data.top_songs.slice(0, 5).map(s => {
+        songsEl.innerHTML = data.top_songs.slice(0, 5).map((s, idx) => {
             const songName = `${s[1]} - ${s[0]}`;
             const info = statsData.find(x => x.titel === s[1] && x.artiest === s[0]);
-            return `<li onclick="showSongSpotlight('${songName.replace(/'/g, "\\'")}', ${s[2]})">
+            const escapedName = songName.replace(/'/g, "\\'");
+            const elementId = `month-song-${idx}`;
+            return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${info ? info.poster : 'img/placeholder.png'}', '', '${elementId}')">
                 <img src="${info ? info.poster : 'img/placeholder.png'}" style="width:20px; height:20px; border-radius:4px; margin-right:8px;">
                 <span style="flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${songName}</span>
                 <span style="color:var(--text-muted); font-size:0.7rem; margin-left:5px;">${s[2]}x</span></li>`;
@@ -270,7 +557,13 @@ function handleSearch() {
     const query = document.getElementById('musicSearch').value.toLowerCase().trim();
     const resultsContainer = document.getElementById('search-results'); if (query.length < 2) { resultsContainer.innerHTML = ""; return; }
     const matches = statsData.filter(s => s.titel.toLowerCase().includes(query) || s.artiest.toLowerCase().includes(query)).sort((a, b) => b.count - a.count).slice(0, 8);
-    resultsContainer.innerHTML = matches.map(s => `<div class="search-item" onclick="showSongSpotlight('${s.titel.replace(/'/g, "\\'")} - ${s.artiest.replace(/'/g, "\\'")}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" onerror="this.src='img/placeholder.png'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;"><div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div><span class="point-badge">${s.count}x</span></div>`).join('');
+    
+    resultsContainer.innerHTML = matches.map((s, idx) => {
+        const name = `${s.titel} - ${s.artiest}`;
+        const escapedName = name.replace(/'/g, "\\'");
+        const elementId = `search-${idx}`;
+        return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" onerror="this.src='img/placeholder.png'" style="width:40px; height:40px; border-radius:6px; margin-right:12px;"><div style="flex-grow:1;"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div><span class="point-badge">${s.count}x</span></div>`;
+    }).join('');
 }
 
 function calculateStreak() {

@@ -8,6 +8,49 @@
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Extra styles specifiek voor de merge knoppen */
+        #btn-merge-mode:hover { background: rgba(255,165,0,0.4) !important; }
+        
+        .merge-selected {
+            border: 2px solid orange !important;
+            background: rgba(255, 165, 0, 0.1) !important;
+        }
+
+        /* Floating Action Bar voor Mergen */
+        #merge-action-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #111;
+            border: 1px solid orange;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        #merge-action-bar.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .radio-item:hover { background: rgba(255,255,255,0.1); }
+        .radio-item input { margin-right: 10px; accent-color: var(--spotify-green); transform: scale(1.2); }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -65,6 +108,22 @@
         </div>
 
         <div id="view-stats" class="hidden">
+            <section class="stat-card" style="margin-bottom: 20px; border-color: rgba(255, 165, 0, 0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <h3 style="margin: 0; color: orange; font-size: 1rem;">🛠️ Tools</h3>
+                        <span id="file-status" style="font-size:0.75rem; color:#aaa; border:1px solid #333; padding:2px 8px; border-radius:4px;">💾 Opslaan: Handmatig</span>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button id="btn-link-file" onclick="linkFile()" class="apply-btn" style="width: auto; padding: 8px 15px; background: #333; border: 1px solid #555; font-size: 0.8rem;">📂 Koppel corrections.json</button>
+                        <button id="btn-merge-mode" onclick="toggleMergeMode()" class="apply-btn" style="width: auto; padding: 8px 15px; background: rgba(255,165,0,0.2); color: orange; border: 1px solid orange; font-size: 0.8rem;">Start Merge Mode</button>
+                    </div>
+                </div>
+                <p id="merge-instructions" class="hidden" style="margin-top: 10px; font-size: 0.85rem; color: #ccc;">
+                    <b>Merge Mode Actief:</b> Klik op liedjes in de lijsten hieronder om ze te selecteren. Klik op "Samenvoegen" in de balk onderaan als je klaar bent.
+                </p>
+            </section>
+
             <section class="stat-card search-section">
                 <h3>🔍 Snel Zoeken</h3>
                 <input type="text" id="musicSearch" placeholder="Zoek artiest of titel..." oninput="handleSearch()">
@@ -107,6 +166,11 @@
                 <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('explorers')">🧭 Ontdekkingsreizigers ➔</h3><ul id="variety-list" class="ranking-list"></ul></div>
             </div>
         </div>
+    </div>
+
+    <div id="merge-action-bar">
+        <span id="merge-count" style="color:white; font-weight:bold;">0 geselecteerd</span>
+        <button onclick="showMergeModal()" class="apply-btn" style="width:auto; padding: 10px 20px; background: orange; color: black;">Samenvoegen</button>
     </div>
 
     <div id="modal" class="hidden">

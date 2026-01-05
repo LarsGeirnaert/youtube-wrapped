@@ -4,6 +4,10 @@ kijkgeschiedenis.json
 watch-history.json
 kijkgeschiedenis.json:Zone.Identifier
 
+# --- CONFIGURATIE & LOKALE FIXES ---
+# Jouw persoonlijke correcties (niet delen, want dit is specifiek voor jouw data)
+corrections.json
+
 # --- INTERMEDIAIRE BESTANDEN ---
 # Bestanden die door scripts worden gemaakt maar niet nodig zijn voor de website
 filtered_music.json

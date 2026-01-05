@@ -133,13 +133,6 @@
     "periode": "2024 ➔ 2025"
   },
   {
-    "artiest": "Eminem",
-    "titel": "Stan",
-    "gap": 56,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a7/06/99/a70699f9-2f5a-9198-fe70-6236b534738f/06UMGIM16683.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
     "artiest": "Roxy Dekker",
     "titel": "Casual",
     "gap": 56,
@@ -407,9 +400,9 @@
   },
   {
     "artiest": "Netsky",
-    "titel": "Come Alive -  Video",
+    "titel": "Come Alive -",
     "gap": 35,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6a/7d/1c/6a7d1cf1-2766-1f69-792b-7671a1c8f41b/NHS213DD-Packshot-1440px.jpg/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/95/e7/66/95e76643-2267-bc05-bc29-7670d48b97df/NHS211-Packshot-1440px.jpg/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
   },
   {
@@ -578,6 +571,13 @@
     "titel": "Losing My Religion",
     "gap": 33,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d4/9c/f6/d49cf63f-a412-5737-9392-1576c297b475/00888072396272.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Eminem",
+    "titel": "Stan",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a7/06/99/a70699f9-2f5a-9198-fe70-6236b534738f/06UMGIM16683.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -813,7 +813,7 @@
   },
   {
     "artiest": "J. Cole",
-    "titel": "She Knows  ft. Amber Coffman, Cults",
+    "titel": "She Knows",
     "gap": 30,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/da/52/41/da52415b-d0ac-d61f-422c-e84bf5ef8162/20UMGIM66000.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
