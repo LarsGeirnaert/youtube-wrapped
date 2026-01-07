@@ -131,7 +131,7 @@
 
             <div class="section-title">🎤 Repertoire Analyse</div>
             <section class="stat-card" style="padding: 20px; margin-bottom: 30px;">
-                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Zoek een artiest om de groei van hun top 5 nummers te zien.</p>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Zoek een artiest om de groei en het ritme van hun top 5 nummers te zien.</p>
                 <div style="position:relative; margin-bottom:20px;">
                     <input type="text" id="repertoire-search" placeholder="🔍 Zoek een artiest..." class="comp-input" oninput="handleRepertoireSearch()">
                     <div id="repertoire-results" class="search-dropdown hidden"></div>
@@ -139,7 +139,12 @@
                 
                 <div id="repertoire-chart-container" class="hidden">
                     <h3 id="repertoire-title" style="margin-bottom:15px; text-align:center; color:white;"></h3>
-                    <div style="height: 350px;"><canvas id="repertoireChart"></canvas></div>
+                    
+                    <h4 style="font-size: 0.8rem; color: #aaa; margin-bottom: 10px;">📈 Groei Top 5 Nummers</h4>
+                    <div style="height: 300px; margin-bottom: 30px;"><canvas id="repertoireChart"></canvas></div>
+
+                    <h4 style="font-size: 0.8rem; color: #aaa; margin-bottom: 10px;">📅 Weekritme (Wanneer luister je?)</h4>
+                    <div style="height: 200px;"><canvas id="repertoireWeekChart"></canvas></div>
                 </div>
             </section>
 

@@ -321,15 +321,8 @@ function renderRecapSelector() {
     const selector = document.getElementById('recap-month-select');
     if(!selector) return;
     
-    // 1. Alle maanden ophalen en sorteren (oud -> nieuw)
     let allMonths = Object.keys(monthlyStats).sort();
-
-    // 2. De allereerste maand verwijderen (want vaak incompleet)
-    if (allMonths.length > 0) {
-        allMonths.shift();
-    }
-
-    // 3. Omdraaien zodat nieuwste bovenaan staat voor de dropdown
+    if (allMonths.length > 0) allMonths.shift();
     const months = allMonths.reverse();
     
     selector.innerHTML = months.map(m => {
@@ -338,7 +331,6 @@ function renderRecapSelector() {
         return `<option value="${m}">${label}</option>`;
     }).join('');
     
-    // Render direct de eerste (dit is nu de nieuwste, min de allereerste)
     if(months.length > 0) renderRecap();
 }
 
@@ -346,27 +338,22 @@ function renderRecap() {
     const selector = document.getElementById('recap-month-select');
     const monthKey = selector.value;
     const data = monthlyStats[monthKey];
-    
     if(!data) return;
 
-    // 1. Hero Section (Top Song)
-    const topSong = data.top_songs[0]; // [Artist, Title, Count]
+    const topSong = data.top_songs[0];
     if(topSong) {
         const songInfo = statsData.find(s => s.titel === topSong[1] && s.artiest === topSong[0]);
         document.getElementById('recap-hero-title').innerText = topSong[1];
         document.getElementById('recap-hero-artist').innerText = `${topSong[0]} (${topSong[2]} plays)`;
         const imgEl = document.getElementById('recap-hero-img');
-        
         const poster = (songInfo && songInfo.poster !== 'img/placeholder.png') ? songInfo.poster : 'https://placehold.co/150x150/222/444?text=🎵';
         imgEl.src = poster;
     }
 
-    // 2. Stats
     document.getElementById('recap-total-plays').innerText = data.total_listens;
     document.getElementById('recap-unique-songs').innerText = data.unique_songs || '-';
     document.getElementById('recap-unique-artists').innerText = data.unique_artists || '-';
 
-    // 3. Lijstjes
     const songsEl = document.getElementById('recap-top-songs');
     songsEl.innerHTML = data.top_songs.slice(0, 5).map((s, idx) => {
         const songName = `${s[1]} - ${s[0]}`;
@@ -374,13 +361,11 @@ function renderRecap() {
         const escapedName = escapeStr(songName);
         const elementId = `recap-song-${idx}`;
         const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
-        
         return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${poster}', '', '${elementId}')" style="display:flex; align-items:center;">
             <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
             <img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">
             <div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[1]}</span><small style="color:#aaa;">${s[0]}</small></div>
-            <span class="point-badge">${s[2]}x</span>
-        </li>`;
+            <span class="point-badge">${s[2]}x</span></li>`;
     }).join('');
 
     const artistsEl = document.getElementById('recap-top-artists');
@@ -388,8 +373,7 @@ function renderRecap() {
         return `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')" style="display:flex; align-items:center;">
             <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
             <div style="flex-grow:1;">${a[0]}</div>
-            <span class="point-badge">${a[1]}x</span>
-        </li>`;
+            <span class="point-badge">${a[1]}x</span></li>`;
     }).join('');
 }
 
@@ -468,8 +452,7 @@ function updateComparisonChart() {
     if (charts['comparison']) charts['comparison'].destroy();
     if (charts['comparisonMonthly']) charts['comparisonMonthly'].destroy();
 
-    const labels = chartData.history.labels; // Maanden (bijv. "2023-01")
-    
+    const labels = chartData.history.labels;
     const datasetsCumulative = [];
     const datasetsMonthly = [];
 
@@ -565,44 +548,41 @@ function showRepertoireChart(artistName) {
     document.getElementById('repertoire-search').value = '';
     document.getElementById('repertoire-results').classList.add('hidden');
     document.getElementById('repertoire-chart-container').classList.remove('hidden');
-    document.getElementById('repertoire-title').innerText = `Top 5 van ${artistName}`; // AANGEPAST NAAR TOP 5
+    document.getElementById('repertoire-title').innerText = `Analyse: ${artistName}`;
 
+    // 1. Teken de Groeigrafiek
+    renderRepertoireGrowthChart(artistName);
+    
+    // 2. Teken de Weekgrafiek (Nieuw)
+    renderRepertoireWeekChart(artistName);
+}
+
+function renderRepertoireGrowthChart(artistName) {
     const ctx = document.getElementById('repertoireChart').getContext('2d');
     if (charts['repertoire']) charts['repertoire'].destroy();
 
-    // 1. Zoek Top 5 nummers van deze artiest (AANGEPAST NAAR SLICE(0,5))
     const songs = statsData.filter(s => s.artiest === artistName)
                            .sort((a, b) => b.count - a.count)
                            .slice(0, 5);
 
-    const labels = chartData.history.labels; // De maanden
+    const labels = chartData.history.labels;
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
 
     const datasets = songs.map((song, i) => {
         let dataPoints = [];
         let runningTotal = 0;
-
         labels.forEach(month => {
             let count = 0;
-            // De sleutel in song_counts is "Titel|Artiest" (zoals in Python generate script)
             const key = `${song.titel}|${song.artiest}`;
-            
             if (monthlyStats[month] && monthlyStats[month].song_counts) {
-                // Soms is de key in JSON net andersom of met spaties, check beiden voor zekerheid
                 count = monthlyStats[month].song_counts[key] || 0;
             }
             runningTotal += count;
             dataPoints.push(runningTotal);
         });
-
         return {
-            label: song.titel,
-            data: dataPoints,
-            borderColor: colors[i % colors.length],
-            backgroundColor: 'transparent',
-            tension: 0.3,
-            pointRadius: 0,
-            borderWidth: 2
+            label: song.titel, data: dataPoints, borderColor: colors[i % colors.length],
+            backgroundColor: 'transparent', tension: 0.3, pointRadius: 0, borderWidth: 2
         };
     });
 
@@ -614,6 +594,52 @@ function showRepertoireChart(artistName) {
             plugins: { legend: { labels: { color: '#ccc', boxWidth: 10, font: {size:10} } } },
             scales: { x: { grid: { color: '#333' }, ticks: { color: '#777' } }, y: { grid: { color: '#333' }, ticks: { color: '#777' } } },
             interaction: { mode: 'index', intersect: false }
+        }
+    });
+}
+
+function renderRepertoireWeekChart(artistName) {
+    const ctx = document.getElementById('repertoireWeekChart').getContext('2d');
+    if (charts['repertoireWeek']) charts['repertoireWeek'].destroy();
+
+    // Filter alle luistermomenten voor deze artiest uit de ruwe data
+    const artistListens = musicData.filter(d => d.artiest === artistName);
+    
+    // Tel plays per weekdag (0=Zondag, 1=Maandag, etc.)
+    const weekdayCounts = Array(7).fill(0);
+    artistListens.forEach(listen => {
+        const date = new Date(listen.datum);
+        const dayIndex = date.getDay(); // 0 (Sun) - 6 (Sat)
+        weekdayCounts[dayIndex]++;
+    });
+
+    // Verschuif zodat Maandag (index 1) vooraan staat: [Ma, Di, Wo, Do, Vr, Za, Zo]
+    const orderedCounts = [
+        weekdayCounts[1], weekdayCounts[2], weekdayCounts[3], weekdayCounts[4],
+        weekdayCounts[5], weekdayCounts[6], weekdayCounts[0]
+    ];
+
+    charts['repertoireWeek'] = new Chart(ctx, {
+        type: 'line', // LIJNGRAFIEK zoals gevraagd
+        data: {
+            labels: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
+            datasets: [{
+                label: 'Plays',
+                data: orderedCounts,
+                borderColor: '#ff9800', // Oranje kleur
+                backgroundColor: 'rgba(255, 152, 0, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#333' }, ticks: { color: '#777', stepSize: 1 } },
+                x: { grid: { display: false }, ticks: { color: '#777' } }
+            }
         }
     });
 }
@@ -653,15 +679,49 @@ function renderCharts() {
 
     if (!chartData.hours) return;
 
+    // --- AANGEPAST NAAR LIJNGRAFIEKEN ---
     const ctxHours = document.getElementById('hoursChart').getContext('2d');
     if (charts['hours']) charts['hours'].destroy();
-    charts['hours'] = new Chart(ctxHours, { type: 'bar', data: { labels: chartData.hours.labels, datasets: [{ data: chartData.hours.values, backgroundColor: 'rgba(33, 150, 243, 0.6)', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#777', font:{size:9} }, grid:{display:false} }, y: { display: false } } } });
+    charts['hours'] = new Chart(ctxHours, {
+        type: 'line', // Was 'bar'
+        data: {
+            labels: chartData.hours.labels,
+            datasets: [{
+                data: chartData.hours.values,
+                borderColor: '#2196f3',
+                backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+            scales: { x: { ticks: { color: '#777', font: { size: 9 } }, grid: { display: false } }, y: { display: false } }
+        }
+    });
 
     const ctxWeek = document.getElementById('weekChart').getContext('2d');
     if (charts['week']) charts['week'].destroy();
-    charts['week'] = new Chart(ctxWeek, { type: 'bar', data: { labels: chartData.weekdays.labels, datasets: [{ data: chartData.weekdays.values, backgroundColor: 'rgba(255, 165, 0, 0.6)', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#777' }, grid:{display:false} }, y: { display: false } } } });
+    charts['week'] = new Chart(ctxWeek, {
+        type: 'line', // Was 'bar'
+        data: {
+            labels: chartData.weekdays.labels,
+            datasets: [{
+                data: chartData.weekdays.values,
+                borderColor: '#ff9800',
+                backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+            scales: { x: { ticks: { color: '#777' }, grid: { display: false } }, y: { display: false } }
+        }
+    });
     
-    // Render pie charts here as well, to ensure they load on initial page load if graphs tab is active
     renderArtistPieChart();
     renderSongPieChart();
 }
@@ -675,14 +735,12 @@ function renderArtistPieChart() {
             labels: chartData.artists.labels, 
             datasets: [{ 
                 data: chartData.artists.values, 
-                // Weer 10 kleuren omdat het Top 9 is (plus marge)
                 backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'], 
                 borderWidth: 0 
             }] 
         }, 
         options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
+            responsive: true, maintainAspectRatio: false, 
             plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, 
             cutout: '70%' 
         } 
@@ -695,7 +753,7 @@ function renderSongPieChart() {
     charts['song'] = new Chart(ctxSong, { 
         type: 'doughnut', 
         data: { 
-            labels: chartData.songs.labels, // Gebruik de nieuwe songs data
+            labels: chartData.songs.labels, 
             datasets: [{ 
                 data: chartData.songs.values, 
                 backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'], 
@@ -703,8 +761,7 @@ function renderSongPieChart() {
             }] 
         }, 
         options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
+            responsive: true, maintainAspectRatio: false, 
             plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, 
             cutout: '70%' 
         } 
@@ -712,19 +769,20 @@ function renderSongPieChart() {
 }
 
 function renderStatsDashboard() {
-    const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 9);
+    // --- AANGEPAST NAAR TOP 10 (was slice(0,9)) ---
+    const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
-    const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 9);
+    const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
     
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
-    renderList('comeback-list', comebackData.slice(0, 9).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
+    renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
 
     if (streakData.songs_current) {
-        renderList('current-song-streaks', streakData.songs_current.slice(0, 9).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('top-song-streaks', streakData.songs_top.slice(0, 9).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('current-artist-streaks', streakData.artists_current.slice(0, 9).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
-        renderList('top-artist-streaks', streakData.artists_top.slice(0, 9).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
+        renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
+        renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
+        renderList('current-artist-streaks', streakData.artists_current.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
+        renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
     }
 
     const albumMap = {};
@@ -736,12 +794,12 @@ function renderStatsDashboard() {
     });
     const albums = Object.values(albumMap);
     
-    renderList('top-albums-listens', albums.sort((a,b) => b.total - a.total).slice(0, 9).map(a => [`Album van ${a.artiest}`, a.total, a.poster, a.artiest]), 'x', 'album');
+    renderList('top-albums-listens', albums.sort((a,b) => b.total - a.total).slice(0, 10).map(a => [`Album van ${a.artiest}`, a.total, a.poster, a.artiest]), 'x', 'album');
     
     const sortedVariety = [...albums].sort((a,b) => b.unique.size - a.unique.size);
     const filteredVariety = []; const counts = {};
     for (const alb of sortedVariety) {
-        if (filteredVariety.length >= 9) break;
+        if (filteredVariety.length >= 10) break;
         const art = alb.artiest; counts[art] = (counts[art] || 0) + 1;
         if (counts[art] <= 2) filteredVariety.push(alb);
     }
@@ -751,10 +809,10 @@ function renderStatsDashboard() {
     const obsessions = [], explorers = [];
     Object.entries(artistGroups).forEach(([artist, songs]) => {
         if (songs.length === 1 && songs[0].count > 50) obsessions.push([`${songs[0].titel} - ${artist}`, songs[0].count, songs[0].poster]);
-        if (songs.length >= 9) explorers.push([artist, songs.length, null]);
+        if (songs.length >= 10) explorers.push([artist, songs.length, null]);
     });
-    renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 9), 'x', 'song');
-    renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]).slice(0, 9), ' songs', 'artist');
+    renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 10), 'x', 'song');
+    renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]).slice(0, 10), ' songs', 'artist');
 }
 
 function renderList(id, items, unit, type) {
