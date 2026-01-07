@@ -139,6 +139,30 @@
       422
     ]
   },
+  "songs": {
+    "labels": [
+      "Revenge - Xxxtentacion",
+      "Falling Down - Lil Peep",
+      "Numb - Xxxtentacion",
+      "Hope - Xxxtentacion",
+      "Let It Happen - Tame Impala",
+      "Gaan We Weg? - Roxy Dekker",
+      "Losing My Religion - R.E.M.",
+      "Don'T Look Back In Anger - Oasis",
+      "Sad! - Xxxtentacion"
+    ],
+    "values": [
+      209,
+      207,
+      190,
+      190,
+      183,
+      174,
+      158,
+      156,
+      155
+    ]
+  },
   "fun_stats": {
     "busiest_day": {
       "date": "2026-01-05",

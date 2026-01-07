@@ -2427,6 +2427,8 @@
       ]
     },
     "total_listens": 841,
+    "unique_artists": 176,
+    "unique_songs": 292,
     "artist_counts": {
       "Radiohead": 24,
       "Kate Bush": 5,
@@ -2898,9 +2900,7 @@
       "Lover, You Should'Ve Come Over|Jeff Buckley": 1,
       "Stole The Show|Kygo": 1,
       "Stay|Rihanna": 1
-    },
-    "unique_artists": 176,
-    "unique_songs": 292
+    }
   },
   "2025-12": {
     "top_songs": [
@@ -5684,6 +5684,8 @@
       ]
     },
     "total_listens": 2636,
+    "unique_artists": 213,
+    "unique_songs": 362,
     "artist_counts": {
       "Florence + The Machine": 27,
       "Green Day": 46,
@@ -6262,9 +6264,7 @@
       "Don'T Start Now|Dua Lipa": 1,
       "Get Lucky|Daft Punk": 1,
       "Be My Baby|The Ronettes": 1
-    },
-    "unique_artists": 213,
-    "unique_songs": 362
+    }
   },
   "2025-11": {
     "top_songs": [
@@ -8628,6 +8628,8 @@
       ]
     },
     "total_listens": 1921,
+    "unique_artists": 175,
+    "unique_songs": 276,
     "artist_counts": {
       "Kanye West": 9,
       "The Weeknd": 55,
@@ -9082,9 +9084,7 @@
       "Greens And Blues|Pixies": 1,
       "Knockin' On Heaven'S Door|Bob Dylan": 1,
       "Fluorescent Adolescent|Arctic Monkeys": 1
-    },
-    "unique_artists": 175,
-    "unique_songs": 276
+    }
   },
   "2025-10": {
     "top_songs": [
@@ -12410,6 +12410,8 @@
       ]
     },
     "total_listens": 1835,
+    "unique_artists": 268,
+    "unique_songs": 470,
     "artist_counts": {
       "Foreigner": 1,
       "Fleetwood Mac": 12,
@@ -13151,9 +13153,7 @@
       "Entertainment|Pommelien Thijs": 1,
       "Ordinary|Alex Warren": 1,
       "Another Love|City Sessions": 1
-    },
-    "unique_artists": 268,
-    "unique_songs": 470
+    }
   },
   "2025-03": {
     "top_songs": [
@@ -18283,6 +18283,8 @@
       ]
     },
     "total_listens": 1753,
+    "unique_artists": 444,
+    "unique_songs": 833,
     "artist_counts": {
       "Jay-Z": 4,
       "The Weeknd": 122,
@@ -19563,9 +19565,7 @@
       "Creep|Radiohead": 1,
       "Notion|The Rare Occasions": 1,
       "I Like The Way You Kiss Me|Artemas": 1
-    },
-    "unique_artists": 444,
-    "unique_songs": 833
+    }
   },
   "2025-09": {
     "top_songs": [
@@ -21887,6 +21887,8 @@
       ]
     },
     "total_listens": 1230,
+    "unique_artists": 180,
+    "unique_songs": 263,
     "artist_counts": {
       "J. Cole": 11,
       "The Weeknd": 43,
@@ -22333,9 +22335,7 @@
       "Die With A Smile|Lady Gaga": 1,
       "Icon|Daan": 1,
       "Runaway Train|Soul Asylum": 1
-    },
-    "unique_artists": 180,
-    "unique_songs": 263
+    }
   },
   "2025-08": {
     "top_songs": [
@@ -24831,6 +24831,8 @@
       ]
     },
     "total_listens": 2342,
+    "unique_artists": 189,
+    "unique_songs": 302,
     "artist_counts": {
       "Zara Larsson": 11,
       "The Weeknd": 74,
@@ -25325,9 +25327,7 @@
       "Don'T Be So Shy|Imany": 1,
       "Speechless|Robin Schulz": 2,
       "Out Of Breath|Juice Wrld": 1
-    },
-    "unique_artists": 189,
-    "unique_songs": 302
+    }
   },
   "2025-07": {
     "top_songs": [
@@ -29405,6 +29405,8 @@
       ]
     },
     "total_listens": 1875,
+    "unique_artists": 360,
+    "unique_songs": 612,
     "artist_counts": {
       "Baseboost Central": 1,
       "Stromae": 9,
@@ -30380,9 +30382,7 @@
       "Jong Gedaan|Bankzitters Ft. John Chimney": 1,
       "Was Ik Maar Één Dag|Koen": 1,
       "Tijdmachine|Bankzitters": 1
-    },
-    "unique_artists": 360,
-    "unique_songs": 612
+    }
   },
   "2025-01": {
     "top_songs": [
@@ -32222,6 +32222,8 @@
       ]
     },
     "total_listens": 504,
+    "unique_artists": 121,
+    "unique_songs": 172,
     "artist_counts": {
       "Linkin Park": 8,
       "Rihanna": 5,
@@ -32518,9 +32520,7 @@
       "Alors On Danse|Stromae": 1,
       "Symphony|Clean Bandit": 1,
       "Hey Brother|Avicii": 1
-    },
-    "unique_artists": 121,
-    "unique_songs": 172
+    }
   },
   "2025-06": {
     "top_songs": [
@@ -35790,6 +35790,8 @@
       ]
     },
     "total_listens": 1959,
+    "unique_artists": 252,
+    "unique_songs": 464,
     "artist_counts": {
       "The Weeknd": 72,
       "Michael Jackson": 20,
@@ -36509,9 +36511,7 @@
       "Past Lives|sapientdream": 3,
       "Cry Alone|Lil Peep": 1,
       "Buma In Mijn Zak|De Jeugd Van Tegenwoordig": 1
-    },
-    "unique_artists": 252,
-    "unique_songs": 464
+    }
   },
   "2024-12": {
     "top_songs": [
@@ -39861,6 +39861,8 @@
       ]
     },
     "total_listens": 1119,
+    "unique_artists": 320,
+    "unique_songs": 450,
     "artist_counts": {
       "Xxxtentacion": 64,
       "Post Malone": 21,
@@ -40634,9 +40636,7 @@
       "Sweet But Psycho|Ava Max": 1,
       "New Person, Same Old Mistakes|Tame Impala": 1,
       "Home Again|Michael Kiwanuka": 1
-    },
-    "unique_artists": 320,
-    "unique_songs": 450
+    }
   },
   "2025-05": {
     "top_songs": [
@@ -43320,6 +43320,8 @@
       ]
     },
     "total_listens": 2216,
+    "unique_artists": 209,
+    "unique_songs": 339,
     "artist_counts": {
       "The Goo Goo Dolls": 10,
       "Roddy Ricch": 10,
@@ -43871,9 +43873,7 @@
       "Snap|Rosa Linn": 1,
       "Somebody That I Used To Know|Gotye": 1,
       "Amalfi|Hooverphonic": 1
-    },
-    "unique_artists": 209,
-    "unique_songs": 339
+    }
   },
   "2025-04": {
     "top_songs": [
@@ -48093,6 +48093,8 @@
       ]
     },
     "total_listens": 1875,
+    "unique_artists": 359,
+    "unique_songs": 648,
     "artist_counts": {
       "Stromae": 13,
       "Beyoncé": 6,
@@ -49103,9 +49105,7 @@
       "Tranen|Kris Kross Amsterdam": 1,
       "Impossible|James Arthur": 1,
       "Changes|Xxxtentacion": 1
-    },
-    "unique_artists": 359,
-    "unique_songs": 648
+    }
   },
   "2024-11": {
     "top_songs": [
@@ -51411,6 +51411,8 @@
       ]
     },
     "total_listens": 1186,
+    "unique_artists": 182,
+    "unique_songs": 258,
     "artist_counts": {
       "Avicii": 11,
       "Xxxtentacion": 48,
@@ -51854,9 +51856,7 @@
       "Miss You|Oliver Tree": 1,
       "Friesenjung|Ski Aggu": 1,
       "Housewife|Daan": 1
-    },
-    "unique_artists": 182,
-    "unique_songs": 258
+    }
   },
   "2025-02": {
     "top_songs": [
@@ -53966,6 +53966,8 @@
       ]
     },
     "total_listens": 586,
+    "unique_artists": 158,
+    "unique_songs": 221,
     "artist_counts": {
       "Xxxtentacion": 22,
       "24Kgoldn": 5,
@@ -54348,9 +54350,7 @@
       "Starboy|The Weeknd": 1,
       "Home|Dotan": 1,
       "Little Talks|Of Monsters And Men": 1
-    },
-    "unique_artists": 158,
-    "unique_songs": 221
+    }
   },
   "2024-10": {
     "top_songs": [
@@ -56718,6 +56718,8 @@
       ]
     },
     "total_listens": 1342,
+    "unique_artists": 195,
+    "unique_songs": 267,
     "artist_counts": {
       "Mumford And Sons": 8,
       "Avicii": 17,
@@ -57183,9 +57185,7 @@
       "Another Love|Yunvzq": 1,
       "𝘾𝙤𝙪𝙣𝙩𝙞𝙣𝙜 𝙎𝙩𝙖𝙧𝙨|𝙊𝙣𝙚𝙍𝙚𝙥𝙪𝙗𝙡𝙞𝙘": 1,
       "Hello|Martin Solveig": 1
-    },
-    "unique_artists": 195,
-    "unique_songs": 267
+    }
   },
   "2024-09": {
     "top_songs": [
@@ -59309,6 +59309,8 @@
       ]
     },
     "total_listens": 825,
+    "unique_artists": 149,
+    "unique_songs": 229,
     "artist_counts": {
       "Kesha": 1,
       "Arctic Monkeys": 19,
@@ -59690,9 +59692,7 @@
       "Bali|Bankzitters": 1,
       "Entourage|Bankzitters": 1,
       "The Nights|Avicii": 1
-    },
-    "unique_artists": 149,
-    "unique_songs": 229
+    }
   },
   "2024-08": {
     "top_songs": [
@@ -60101,6 +60101,8 @@
       ]
     },
     "total_listens": 94,
+    "unique_artists": 26,
+    "unique_songs": 27,
     "artist_counts": {
       "Roxy Dekker": 2,
       "Adele": 1,
@@ -60157,8 +60159,6 @@
       "Circles|Post Malone": 1,
       "Falling Down|Lil Peep": 1,
       "Https:|Onbekend": 67
-    },
-    "unique_artists": 26,
-    "unique_songs": 27
+    }
   }
 }

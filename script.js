@@ -231,7 +231,6 @@ function handleListClick(name, type, poster, albumArtist, elementId) {
     }
 }
 
-// NIEUWE FUNCTIE TOEGEVOEGD OM ERROR TE VERHELPEN
 function handleAlbumClick(poster, artist, elementId) {
     showAlbumDetails(poster, artist);
 }
@@ -538,6 +537,87 @@ function updateComparisonChart() {
     });
 }
 
+// --- NIEUWE REPERTOIRE LOGICA ---
+
+function handleRepertoireSearch() {
+    const query = document.getElementById('repertoire-search').value.toLowerCase().trim();
+    const dropdown = document.getElementById('repertoire-results');
+    
+    if (query.length < 2) { dropdown.classList.add('hidden'); return; }
+
+    const artistMap = {};
+    statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
+    const matches = Object.keys(artistMap).filter(a => a.toLowerCase().includes(query))
+        .map(a => ({ artiest: a, count: artistMap[a] }))
+        .sort((a,b) => b.count - a.count).slice(0, 5);
+
+    if (matches.length > 0) {
+        dropdown.innerHTML = matches.map(m => {
+            return `<div class="comp-result-item" onclick="showRepertoireChart('${escapeStr(m.artiest)}')">
+                        <b>${m.artiest}</b><br><small>${m.count}x plays</small>
+                    </div>`;
+        }).join('');
+        dropdown.classList.remove('hidden');
+    } else { dropdown.classList.add('hidden'); }
+}
+
+function showRepertoireChart(artistName) {
+    document.getElementById('repertoire-search').value = '';
+    document.getElementById('repertoire-results').classList.add('hidden');
+    document.getElementById('repertoire-chart-container').classList.remove('hidden');
+    document.getElementById('repertoire-title').innerText = `Top 5 van ${artistName}`; // AANGEPAST NAAR TOP 5
+
+    const ctx = document.getElementById('repertoireChart').getContext('2d');
+    if (charts['repertoire']) charts['repertoire'].destroy();
+
+    // 1. Zoek Top 5 nummers van deze artiest (AANGEPAST NAAR SLICE(0,5))
+    const songs = statsData.filter(s => s.artiest === artistName)
+                           .sort((a, b) => b.count - a.count)
+                           .slice(0, 5);
+
+    const labels = chartData.history.labels; // De maanden
+    const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
+
+    const datasets = songs.map((song, i) => {
+        let dataPoints = [];
+        let runningTotal = 0;
+
+        labels.forEach(month => {
+            let count = 0;
+            // De sleutel in song_counts is "Titel|Artiest" (zoals in Python generate script)
+            const key = `${song.titel}|${song.artiest}`;
+            
+            if (monthlyStats[month] && monthlyStats[month].song_counts) {
+                // Soms is de key in JSON net andersom of met spaties, check beiden voor zekerheid
+                count = monthlyStats[month].song_counts[key] || 0;
+            }
+            runningTotal += count;
+            dataPoints.push(runningTotal);
+        });
+
+        return {
+            label: song.titel,
+            data: dataPoints,
+            borderColor: colors[i % colors.length],
+            backgroundColor: 'transparent',
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 2
+        };
+    });
+
+    charts['repertoire'] = new Chart(ctx, {
+        type: 'line',
+        data: { labels: labels.map(l => l.substring(2)), datasets: datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#ccc', boxWidth: 10, font: {size:10} } } },
+            scales: { x: { grid: { color: '#333' }, ticks: { color: '#777' } }, y: { grid: { color: '#333' }, ticks: { color: '#777' } } },
+            interaction: { mode: 'index', intersect: false }
+        }
+    });
+}
+
 function renderFunStats() {
     if(!chartData.fun_stats) return;
     const fs = chartData.fun_stats;
@@ -580,7 +660,13 @@ function renderCharts() {
     const ctxWeek = document.getElementById('weekChart').getContext('2d');
     if (charts['week']) charts['week'].destroy();
     charts['week'] = new Chart(ctxWeek, { type: 'bar', data: { labels: chartData.weekdays.labels, datasets: [{ data: chartData.weekdays.values, backgroundColor: 'rgba(255, 165, 0, 0.6)', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#777' }, grid:{display:false} }, y: { display: false } } } });
+    
+    // Render pie charts here as well, to ensure they load on initial page load if graphs tab is active
+    renderArtistPieChart();
+    renderSongPieChart();
+}
 
+function renderArtistPieChart() {
     const ctxArtist = document.getElementById('artistPieChart').getContext('2d');
     if (charts['artist']) charts['artist'].destroy();
     charts['artist'] = new Chart(ctxArtist, { 
@@ -589,6 +675,29 @@ function renderCharts() {
             labels: chartData.artists.labels, 
             datasets: [{ 
                 data: chartData.artists.values, 
+                // Weer 10 kleuren omdat het Top 9 is (plus marge)
+                backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'], 
+                borderWidth: 0 
+            }] 
+        }, 
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, 
+            cutout: '70%' 
+        } 
+    });
+}
+
+function renderSongPieChart() {
+    const ctxSong = document.getElementById('songPieChart').getContext('2d');
+    if (charts['song']) charts['song'].destroy();
+    charts['song'] = new Chart(ctxSong, { 
+        type: 'doughnut', 
+        data: { 
+            labels: chartData.songs.labels, // Gebruik de nieuwe songs data
+            datasets: [{ 
+                data: chartData.songs.values, 
                 backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'], 
                 borderWidth: 0 
             }] 
@@ -940,7 +1049,10 @@ function switchTab(tabName) {
     document.getElementById('btn-recap').classList.toggle('active', tabName === 'recap');
     
     if (tabName === 'calendar') renderCalendar(); 
-    else if (tabName === 'stats') renderStatsDashboard();
+    else if (tabName === 'stats') {
+        renderStatsDashboard();
+        // renderArtistPieChart(); // Pie chart niet meer in stats
+    }
     else if (tabName === 'graphs') {
         renderCharts();
         updateComparisonChart(); 

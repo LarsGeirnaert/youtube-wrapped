@@ -129,6 +129,20 @@
                 </div>
             </div>
 
+            <div class="section-title">🎤 Repertoire Analyse</div>
+            <section class="stat-card" style="padding: 20px; margin-bottom: 30px;">
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Zoek een artiest om de groei van hun top 5 nummers te zien.</p>
+                <div style="position:relative; margin-bottom:20px;">
+                    <input type="text" id="repertoire-search" placeholder="🔍 Zoek een artiest..." class="comp-input" oninput="handleRepertoireSearch()">
+                    <div id="repertoire-results" class="search-dropdown hidden"></div>
+                </div>
+                
+                <div id="repertoire-chart-container" class="hidden">
+                    <h3 id="repertoire-title" style="margin-bottom:15px; text-align:center; color:white;"></h3>
+                    <div style="height: 350px;"><canvas id="repertoireChart"></canvas></div>
+                </div>
+            </section>
+
             <div class="section-title">⚔️ Vergelijk Songs & Artiesten</div>
             <section class="stat-card" style="padding:20px;">
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
@@ -150,6 +164,22 @@
                 <div style="height: 250px;"><canvas id="comparisonMonthlyChart"></canvas></div>
             </section>
 
+            <div class="section-title">🥧 Verdeling Top 9</div>
+            <div class="charts-grid" style="margin-bottom: 30px;">
+                <section class="stat-card">
+                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎤 Artiesten</h3>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="artistPieChart"></canvas>
+                    </div>
+                </section>
+                <section class="stat-card">
+                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎵 Songs</h3>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="songPieChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
             <div class="section-title">📉 Algemene Trends</div>
             <section class="stat-card" style="padding: 20px;">
                 <h3 style="font-size: 0.9rem; color: #aaa; margin-bottom: 15px;">Luistergeschiedenis (Totaal)</h3>
@@ -163,10 +193,6 @@
                     <div style="height: 200px;">
                         <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">📅 Weekritme</h3>
                         <canvas id="weekChart"></canvas>
-                    </div>
-                    <div style="height: 200px; position: relative;">
-                        <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎤 Verdeling Top 9</h3>
-                        <canvas id="artistPieChart"></canvas>
                     </div>
                 </div>
             </section>
