@@ -140,6 +140,7 @@ async function loadMusic() {
         renderCalendar();
         renderFunStats();
         updateComparisonChart(); 
+        renderRecapSelector();
     } catch (error) { console.error("Fout bij laden:", error); }
 }
 
@@ -230,6 +231,11 @@ function handleListClick(name, type, poster, albumArtist, elementId) {
     }
 }
 
+// NIEUWE FUNCTIE TOEGEVOEGD OM ERROR TE VERHELPEN
+function handleAlbumClick(poster, artist, elementId) {
+    showAlbumDetails(poster, artist);
+}
+
 function toggleMergeSelection(name, type, poster, albumArtist, elementId) {
     if (selectedForMerge.length > 0 && selectedForMerge[0].type !== type) { alert(`Je kan geen ${type} met een ${selectedForMerge[0].type} mixen.`); return; }
     let item = {};
@@ -310,6 +316,84 @@ async function confirmMerge() {
     toggleMergeMode(); 
 }
 
+// --- RECAP LOGICA ---
+
+function renderRecapSelector() {
+    const selector = document.getElementById('recap-month-select');
+    if(!selector) return;
+    
+    // 1. Alle maanden ophalen en sorteren (oud -> nieuw)
+    let allMonths = Object.keys(monthlyStats).sort();
+
+    // 2. De allereerste maand verwijderen (want vaak incompleet)
+    if (allMonths.length > 0) {
+        allMonths.shift();
+    }
+
+    // 3. Omdraaien zodat nieuwste bovenaan staat voor de dropdown
+    const months = allMonths.reverse();
+    
+    selector.innerHTML = months.map(m => {
+        const [y, mn] = m.split('-');
+        const label = new Intl.DateTimeFormat('nl-NL', { month: 'long', year: 'numeric' }).format(new Date(y, mn-1));
+        return `<option value="${m}">${label}</option>`;
+    }).join('');
+    
+    // Render direct de eerste (dit is nu de nieuwste, min de allereerste)
+    if(months.length > 0) renderRecap();
+}
+
+function renderRecap() {
+    const selector = document.getElementById('recap-month-select');
+    const monthKey = selector.value;
+    const data = monthlyStats[monthKey];
+    
+    if(!data) return;
+
+    // 1. Hero Section (Top Song)
+    const topSong = data.top_songs[0]; // [Artist, Title, Count]
+    if(topSong) {
+        const songInfo = statsData.find(s => s.titel === topSong[1] && s.artiest === topSong[0]);
+        document.getElementById('recap-hero-title').innerText = topSong[1];
+        document.getElementById('recap-hero-artist').innerText = `${topSong[0]} (${topSong[2]} plays)`;
+        const imgEl = document.getElementById('recap-hero-img');
+        
+        const poster = (songInfo && songInfo.poster !== 'img/placeholder.png') ? songInfo.poster : 'https://placehold.co/150x150/222/444?text=🎵';
+        imgEl.src = poster;
+    }
+
+    // 2. Stats
+    document.getElementById('recap-total-plays').innerText = data.total_listens;
+    document.getElementById('recap-unique-songs').innerText = data.unique_songs || '-';
+    document.getElementById('recap-unique-artists').innerText = data.unique_artists || '-';
+
+    // 3. Lijstjes
+    const songsEl = document.getElementById('recap-top-songs');
+    songsEl.innerHTML = data.top_songs.slice(0, 5).map((s, idx) => {
+        const songName = `${s[1]} - ${s[0]}`;
+        const info = statsData.find(x => x.titel === s[1] && x.artiest === s[0]);
+        const escapedName = escapeStr(songName);
+        const elementId = `recap-song-${idx}`;
+        const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
+        
+        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${poster}', '', '${elementId}')" style="display:flex; align-items:center;">
+            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
+            <img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">
+            <div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[1]}</span><small style="color:#aaa;">${s[0]}</small></div>
+            <span class="point-badge">${s[2]}x</span>
+        </li>`;
+    }).join('');
+
+    const artistsEl = document.getElementById('recap-top-artists');
+    artistsEl.innerHTML = data.top_artists.slice(0, 5).map((a, idx) => {
+        return `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')" style="display:flex; align-items:center;">
+            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
+            <div style="flex-grow:1;">${a[0]}</div>
+            <span class="point-badge">${a[1]}x</span>
+        </li>`;
+    }).join('');
+}
+
 // --- COMPARISON LOGIC ---
 
 function handleComparisonSearch(type) {
@@ -387,7 +471,6 @@ function updateComparisonChart() {
 
     const labels = chartData.history.labels; // Maanden (bijv. "2023-01")
     
-    // Data voorbereiden
     const datasetsCumulative = [];
     const datasetsMonthly = [];
 
@@ -415,7 +498,6 @@ function updateComparisonChart() {
             dataPointsCumulative.push(runningTotal);
         });
 
-        // Dataset 1: Cumulatief (Race)
         datasetsCumulative.push({
             label: item.label,
             data: dataPointsCumulative,
@@ -425,18 +507,16 @@ function updateComparisonChart() {
             fill: false
         });
 
-        // Dataset 2: Per Maand (Trend)
         datasetsMonthly.push({
             label: item.label,
             data: dataPointsMonthly,
-            backgroundColor: color + '88', // Iets transparanter voor bars
+            backgroundColor: color + '88', 
             borderColor: color,
             borderWidth: 1,
             tension: 0.3
         });
     });
 
-    // Chart 1: Race (Line)
     charts['comparison'] = new Chart(ctx, {
         type: 'line',
         data: { labels: labels.map(l => l.substring(2)), datasets: datasetsCumulative },
@@ -447,7 +527,6 @@ function updateComparisonChart() {
         }
     });
 
-    // Chart 2: Per Maand (Bar)
     charts['comparisonMonthly'] = new Chart(ctxMonthly, {
         type: 'bar',
         data: { labels: labels.map(l => l.substring(2)), datasets: datasetsMonthly },
@@ -477,7 +556,6 @@ function renderFunStats() {
 // --- RENDER FUNCTIES (STANDAARD) ---
 
 function renderCharts() {
-    // 1. Hoofdgrafiek
     const ctxHist = document.getElementById('listeningChart').getContext('2d');
     if (charts['history']) charts['history'].destroy();
     
@@ -505,34 +583,23 @@ function renderCharts() {
 
     const ctxArtist = document.getElementById('artistPieChart').getContext('2d');
     if (charts['artist']) charts['artist'].destroy();
-    charts['artist'] = new Chart(ctxArtist, { type: 'doughnut', data: { labels: chartData.artists.labels, datasets: [{ data: chartData.artists.values, backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#333'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, cutout: '70%' } });
-
-    // 3. GROEIGRAFIEKEN (STATS TAB)
-    const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
-    
-    const ctxSongsGrowth = document.getElementById('topSongsGrowthChart');
-    if (ctxSongsGrowth && chartData.growth) {
-        if (charts['songsGrowth']) charts['songsGrowth'].destroy();
-        const datasets = Object.keys(chartData.growth.songs).map((key, i) => ({
-            label: key, data: chartData.growth.songs[key], borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.3, pointRadius: 0
-        }));
-        charts['songsGrowth'] = new Chart(ctxSongsGrowth.getContext('2d'), {
-            type: 'line', data: { labels: chartData.growth.labels.map(l => { const [y, m] = l.split('-'); return `${m}/${y.slice(2)}`; }), datasets: datasets },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#555', font:{size:9} }, grid:{display:false} }, y: { grid:{color:'#222'} } }, interaction: { mode: 'index', intersect: false } }
-        });
-    }
-
-    const ctxArtistsGrowth = document.getElementById('topArtistsGrowthChart');
-    if (ctxArtistsGrowth && chartData.growth) {
-        if (charts['artistsGrowth']) charts['artistsGrowth'].destroy();
-        const datasets = Object.keys(chartData.growth.artists).map((key, i) => ({
-            label: key, data: chartData.growth.artists[key], borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.3, pointRadius: 0
-        }));
-        charts['artistsGrowth'] = new Chart(ctxArtistsGrowth.getContext('2d'), {
-            type: 'line', data: { labels: chartData.growth.labels.map(l => { const [y, m] = l.split('-'); return `${m}/${y.slice(2)}`; }), datasets: datasets },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#555', font:{size:9} }, grid:{display:false} }, y: { grid:{color:'#222'} } }, interaction: { mode: 'index', intersect: false } }
-        });
-    }
+    charts['artist'] = new Chart(ctxArtist, { 
+        type: 'doughnut', 
+        data: { 
+            labels: chartData.artists.labels, 
+            datasets: [{ 
+                data: chartData.artists.values, 
+                backgroundColor: ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'], 
+                borderWidth: 0 
+            }] 
+        }, 
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } } }, 
+            cutout: '70%' 
+        } 
+    });
 }
 
 function renderStatsDashboard() {
@@ -574,7 +641,7 @@ function renderStatsDashboard() {
     const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); });
     const obsessions = [], explorers = [];
     Object.entries(artistGroups).forEach(([artist, songs]) => {
-        if (songs.length === 1 && songs[0].count > 50) obsessions.push([`${songs[0].titel} (${artist})`, songs[0].count, songs[0].poster]);
+        if (songs.length === 1 && songs[0].count > 50) obsessions.push([`${songs[0].titel} - ${artist}`, songs[0].count, songs[0].poster]);
         if (songs.length >= 9) explorers.push([artist, songs.length, null]);
     });
     renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 9), 'x', 'song');
@@ -693,14 +760,17 @@ function showTop100(category, isBack = false) {
     else if (category.includes('streaks')) { const key = category.split('streaks-')[1].replace('-', '_'); items = streakData[key].map(s => [s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', s.period]); }
     else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
     else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
-    else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} (${a})`, songs[0].count, songs[0].poster, 'song']); }
+    else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} - ${a}`, songs[0].count, songs[0].poster, 'song']); }
     else if (category === 'explorers') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']); }
 
     container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period], index) => {
         const escapedName = escapeStr(name);
         const elementId = `top100-${index}`;
         let actualType = type; let albumArtist = '';
-        if (name.startsWith('Album van ')) { actualType = 'album'; albumArtist = extraInfo; } // fix for extraInfo context if needed
+        if (name.startsWith('Album van ')) { 
+            actualType = 'album'; 
+            albumArtist = name.replace('Album van ', ''); 
+        } 
         const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted);">${period}</small>` : '';
@@ -710,6 +780,24 @@ function showTop100(category, isBack = false) {
                     <span class="point-badge">${val}${unit||''}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
+}
+
+function addToHistory(viewType, args) {
+    modalHistory.push({ type: viewType, args: Array.from(args) });
+}
+
+function closeModal() {
+    modalHistory.pop();
+    if (modalHistory.length > 0) {
+        const prev = modalHistory[modalHistory.length - 1]; 
+        if (prev.type === 'artist') showArtistDetails(...prev.args, true);
+        else if (prev.type === 'album') showAlbumDetails(...prev.args, true);
+        else if (prev.type === 'song') showSongSpotlight(...prev.args, true);
+        else if (prev.type === 'list') showTop100(...prev.args, true);
+    } else {
+        document.getElementById('modal').classList.add('hidden');
+        modalHistory = [];
+    }
 }
 
 function calculateMonthlyHighlights(year, month) {
@@ -742,7 +830,7 @@ function renderCalendar() {
     if (!grid) return; grid.innerHTML = '';
     const year = currentViewDate.getFullYear(), month = currentViewDate.getMonth();
     monthDisplay.innerText = new Intl.DateTimeFormat('nl-NL', { month: 'long', year: 'numeric' }).format(currentViewDate);
-    calculateMonthlyHighlights(year, month);
+    // calculateMonthlyHighlights verwijderd
     const firstDay = new Date(year, month, 1).getDay(), offset = firstDay === 0 ? 6 : firstDay - 1;
     for (let i = 0; i < offset; i++) { grid.appendChild(document.createElement('div')); }
     for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
@@ -808,12 +896,35 @@ function calculateStreak() {
         document.getElementById('streak-count').innerText = 0;
         return;
     }
-    let streak = 0; 
-    for (let i = 0; i < dates.length - 1; i++) { 
-        if (Math.floor((new Date(dates[i]) - new Date(dates[i+1])) / 86400000) === 1) streak++; 
-        else break; 
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    
+    // Streak blijft geldig als je gisteren OF vandaag geluisterd hebt.
+    const lastListenDate = dates[0];
+    if (lastListenDate !== todayStr && lastListenDate !== yesterdayStr) {
+        document.getElementById('streak-count').innerText = 0;
+        return;
     }
-    document.getElementById('streak-count').innerText = streak + 1;
+    
+    let streak = 1; 
+    for (let i = 0; i < dates.length - 1; i++) { 
+        const current = new Date(dates[i]);
+        const previous = new Date(dates[i+1]);
+        
+        // Verschil in dagen berekenen
+        const diffTime = Math.abs(current - previous);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        
+        if (diffDays === 1) {
+            streak++;
+        } else {
+            break; 
+        }
+    }
+    document.getElementById('streak-count').innerText = streak;
 }
 
 function openDagDetails(date, songs) { const container = document.getElementById('day-top-three-container'); document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }); container.innerHTML = songs.slice(0, 5).map((s, i) => `<div class="search-item" onclick="showSongSpotlight('${escapeStr(s.titel)} - ${escapeStr(s.artiest)}') " style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:8px; cursor:pointer;"><span style="font-weight:800; color:var(--spotify-green); margin-right:15px; width:15px;">${i+1}</span><img src="${s.poster}" style="width:45px; height:45px; border-radius:8px; margin-right:15px;"><div class="search-item-info"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div></div>`).join(''); document.getElementById('modal').classList.remove('hidden'); }
@@ -821,15 +932,21 @@ function switchTab(tabName) {
     document.getElementById('view-calendar').classList.toggle('hidden', tabName !== 'calendar'); 
     document.getElementById('view-stats').classList.toggle('hidden', tabName !== 'stats'); 
     document.getElementById('view-graphs').classList.toggle('hidden', tabName !== 'graphs');
+    document.getElementById('view-recap').classList.toggle('hidden', tabName !== 'recap');
+    
     document.getElementById('btn-calendar').classList.toggle('active', tabName === 'calendar'); 
     document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats');
     document.getElementById('btn-graphs').classList.toggle('active', tabName === 'graphs');
+    document.getElementById('btn-recap').classList.toggle('active', tabName === 'recap');
     
     if (tabName === 'calendar') renderCalendar(); 
     else if (tabName === 'stats') renderStatsDashboard();
     else if (tabName === 'graphs') {
         renderCharts();
         updateComparisonChart(); 
+    }
+    else if (tabName === 'recap') {
+        renderRecapSelector();
     }
 }
 function applyCalendarFilter(artist) { activeFilter = artist; document.getElementById('modal').classList.add('hidden'); switchTab('calendar'); document.getElementById('resetFilter').classList.remove('hidden'); renderCalendar(); }

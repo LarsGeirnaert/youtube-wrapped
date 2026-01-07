@@ -11,7 +11,7 @@ def clean_music_data(artist, title):
 
     # 2. Verwijder alles na //
     title = re.sub(r'\s*//.*', '', title)
-    
+
     # 3. Basis opschoning
     title = re.sub(r'^Je hebt naar\s+', '', title)
     title = re.sub(r'\s+gekeken$', '', title)
@@ -25,7 +25,7 @@ def clean_music_data(artist, title):
         artist_cand, title_cand = parts[0].strip(), parts[1].strip()
         if artist_cand and title_cand:
             artist, title = artist_cand, title_cand
-    
+
     # 5. Verwijder junk woorden
     junk = ['VEVO', '- Topic', 'Official', 'Records', 'Music', 'Channel', '!K7', 'Lyrics', 'Audio', 'Video']
     for word in junk:
@@ -34,7 +34,7 @@ def clean_music_data(artist, title):
         title = pattern.sub('', title).strip()
 
     # 6. Standaardiseer hoofdletters (Title Case)
-    artist = artist.strip().title() 
+    artist = artist.strip().title()
     if title:
         title = title.strip()
         title = title.title()
@@ -63,7 +63,7 @@ def generate_smart_top5():
                     key = f"{orig_a.lower()}|{orig_t.lower()}"
                     corrections[key] = c['target']
             print(f"🔧 {len(corrections)} correctieregels geladen.")
-        except Exception as e: 
+        except Exception as e:
             print(f"⚠️ Fout bij laden corrections.json: {e}")
 
     if not os.path.exists('kijkgeschiedenis.json'):
@@ -74,10 +74,10 @@ def generate_smart_top5():
         history = json.load(f)
 
     days_dict, all_listens, monthly_stats = {}, Counter(), {}
-    song_history_dates = {} 
+    song_history_dates = {}
     monthly_counts = Counter()
     all_dates_found = set()
-    
+
     # Tellers voor grafieken
     hourly_counts = Counter()
     weekday_counts = Counter()
@@ -90,10 +90,10 @@ def generate_smart_top5():
         is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
         if not is_music or 'title' not in entry: continue
 
-        time_str = entry['time'] 
+        time_str = entry['time']
         datum_str = time_str[:10]
         m_key = datum_str[:7]
-        
+
         try:
             dt_obj = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
             hourly_counts[dt_obj.hour] += 1
@@ -119,7 +119,7 @@ def generate_smart_top5():
 
         if datum_str not in days_dict: days_dict[datum_str] = []
         days_dict[datum_str].append(song_key)
-        
+
         all_listens[song_key] += 1
         monthly_counts[m_key] += 1
         artist_counts[a] += 1
@@ -142,7 +142,7 @@ def generate_smart_top5():
         if len(sorted_dates) < 20: continue
         for i in range(len(sorted_dates) - 1):
             gap = (sorted_dates[i+1] - sorted_dates[i]).days
-            if gap >= 30: 
+            if gap >= 30:
                 before = len([d for d in sorted_dates if d <= sorted_dates[i]])
                 after = len([d for d in sorted_dates if d >= sorted_dates[i+1]])
                 if before >= 10 and after >= 10:
@@ -158,8 +158,8 @@ def generate_smart_top5():
     # 2. FUN STATS
     busiest_day_date = daily_total_plays.most_common(1)[0] if daily_total_plays else ("-", 0)
     total_tracks = sum(all_listens.values())
-    estimated_minutes = total_tracks * 3.5 
-    
+    estimated_minutes = total_tracks * 3.5
+
     discovery_rates = {}
     seen_artists = set()
     for m in sorted(monthly_stats.keys()):
@@ -182,7 +182,7 @@ def generate_smart_top5():
     top_9_songs_keys = [k for k, v in all_listens.most_common(9)]
     song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_9_songs_keys}
     song_running_totals = {k: 0 for k in top_9_songs_keys}
-    
+
     top_9_artists_keys = [k for k, v in artist_counts.most_common(9)]
     artist_growth_data = {k: [] for k in top_9_artists_keys}
     artist_running_totals = {k: 0 for k in top_9_artists_keys}
@@ -194,7 +194,7 @@ def generate_smart_top5():
             count = monthly_stats.get(m, {}).get('songs', {}).get(s_key, 0)
             song_running_totals[s_key] += count
             song_growth_data[f"{s_key[1]} - {s_key[0]}"].append(song_running_totals[s_key])
-        
+
         for a_key in top_9_artists_keys:
             count = monthly_stats.get(m, {}).get('artists', {}).get(a_key, 0)
             artist_running_totals[a_key] += count
@@ -209,7 +209,7 @@ def generate_smart_top5():
 
     chart_data = {
         "history": {
-            "labels": sorted(monthly_counts.keys()), 
+            "labels": sorted(monthly_counts.keys()),
             "values": [monthly_counts[m] for m in sorted(monthly_counts.keys())]
         },
         "hours": {
@@ -239,7 +239,9 @@ def generate_smart_top5():
             "artist_details": {a: s.most_common() for a, s in d["artist_song_details"].items()},
             "total_listens": sum(d["artists"].values()),
             "artist_counts": dict(d["artists"]),
-            "song_counts": {f"{s[1]}|{s[0]}": count for s, count in d["songs"].items()} 
+            "song_counts": {f"{s[1]}|{s[0]}": count for s, count in d["songs"].items()},
+            "unique_artists": len(d["artists"]),
+            "unique_songs": len(d["songs"])
         }
     with open('monthly_stats.json', 'w', encoding='utf-8') as f: json.dump(json_monthly, f, indent=2, ensure_ascii=False)
 
@@ -252,7 +254,7 @@ def generate_smart_top5():
 
     for d in sorted_days:
         current_date_obj = datetime.strptime(d, "%Y-%m-%d")
-        month_ago_date_obj = current_date_obj - timedelta(days=30)
+        month_ago_date_obj = current_date_obj - timedelta(days=7) # AANGEPAST NAAR 7 DAGEN
         today_counter = Counter(days_dict[d])
 
         def get_momentum_score(song_key):

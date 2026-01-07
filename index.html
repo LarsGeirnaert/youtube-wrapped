@@ -24,6 +24,20 @@
         
         .charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
         @media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+        
+        /* Recap Styles */
+        #recap-month-select {
+            background: #222; color: white; padding: 15px 25px; border-radius: 50px; 
+            border: 1px solid #444; font-family: inherit; font-size: 1.1rem; cursor: pointer;
+            width: 100%; max-width: 300px; margin-bottom: 30px; text-align: center; display: block; margin-left: auto; margin-right: auto;
+        }
+        #recap-month-select:hover { border-color: var(--spotify-green); }
+        .recap-hero {
+            background: linear-gradient(135deg, rgba(29,185,84,0.1), rgba(0,0,0,0));
+            padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; margin-bottom: 30px;
+        }
+        .recap-hero img { width: 150px; height: 150px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -32,6 +46,7 @@
             <h1>Mijn Muziek <span>Dagboek</span></h1>
             <nav class="tab-nav">
                 <button onclick="switchTab('calendar')" id="btn-calendar" class="active">📅 Kalender</button>
+                <button onclick="switchTab('recap')" id="btn-recap">⏪ Maandoverzicht</button>
                 <button onclick="switchTab('stats')" id="btn-stats">📊 Statistieken</button>
                 <button onclick="switchTab('graphs')" id="btn-graphs">📈 Grafieken</button>
             </nav>
@@ -56,25 +71,42 @@
                 <div class="weekdays-grid"><div>Ma</div><div>Di</div><div>Wo</div><div>Do</div><div>Vr</div><div>Za</div><div>Zo</div></div>
                 <div id="calendarGrid" class="calendar-grid"></div>
             </main>
+        </div>
+
+        <div id="view-recap" class="hidden">
+            <select id="recap-month-select" onchange="renderRecap()"></select>
             
-            <div class="section-title">✨ Maandelijkse Highlights</div>
-            <section id="monthly-highlights" class="stat-card">
-                <div class="highlights-grid">
-                    <div class="highlight-item">
-                        <span class="label clickable-header" onclick="showTop100('month-songs')">Top Songs ➔</span>
-                        <ul id="month-songs-list" class="ranking-list small-list"></ul>
+            <div id="recap-content">
+                <div class="recap-hero">
+                    <h3 style="color:#aaa; text-transform:uppercase; font-size:0.8rem; margin-bottom:10px;">Top van de Maand</h3>
+                    <img id="recap-hero-img" src="data:,">
+                    <h2 id="recap-hero-title" style="font-size:1.8rem; margin-bottom:5px;">-</h2>
+                    <p id="recap-hero-artist" style="color:var(--spotify-green); font-weight:bold;">-</p>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 30px;">
+                    <div class="stat-card tiny">
+                        <div id="recap-total-plays" class="big-number" style="font-size:2rem;">0</div><p>Plays</p>
                     </div>
-                    <div class="highlight-item">
-                        <span class="label clickable-header" onclick="showTop100('month-artists')">Top Artiesten ➔</span>
-                        <ul id="month-artists-list" class="ranking-list small-list"></ul>
+                    <div class="stat-card tiny">
+                        <div id="recap-unique-songs" class="big-number" style="color:var(--accent-blue); font-size:2rem;">0</div><p>Unieke Songs</p>
                     </div>
-                    <div class="highlight-item total-circle">
-                        <span class="label">Totaal</span>
-                        <div id="month-total-listens-count" class="big-number">0</div>
-                        <p>beurten</p>
+                    <div class="stat-card tiny">
+                        <div id="recap-unique-artists" class="big-number" style="color:#e91e63; font-size:2rem;">0</div><p>Artiesten</p>
                     </div>
                 </div>
-            </section>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 style="color:#aaa; font-size:0.8rem; margin-bottom:15px; text-transform:uppercase;">Top 5 Songs</h3>
+                        <ol id="recap-top-songs" class="ranking-list"></ol>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="color:#aaa; font-size:0.8rem; margin-bottom:15px; text-transform:uppercase;">Top 5 Artiesten</h3>
+                        <ol id="recap-top-artists" class="ranking-list"></ol>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="view-graphs" class="hidden">
