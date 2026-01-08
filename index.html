@@ -23,7 +23,11 @@
         .radio-item input { margin-right: 10px; accent-color: var(--spotify-green); transform: scale(1.2); }
         
         .charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
-        @media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+        .charts-grid.two-columns { grid-template-columns: 1fr 1fr; } /* FIX VOOR 50% */
+        @media (max-width: 900px) { 
+            .charts-grid { grid-template-columns: 1fr; } 
+            .charts-grid.two-columns { grid-template-columns: 1fr; }
+        }
         
         /* Recap Styles */
         #recap-month-select {
@@ -190,7 +194,7 @@
                 <h3 style="font-size: 0.9rem; color: #aaa; margin-bottom: 15px;">Luistergeschiedenis (Totaal)</h3>
                 <div style="height: 250px;"><canvas id="listeningChart"></canvas></div>
                 
-                <div class="charts-grid">
+                <div class="charts-grid two-columns">
                     <div style="height: 200px;">
                         <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🕒 Luistermomenten</h3>
                         <canvas id="hoursChart"></canvas>
@@ -204,6 +208,24 @@
         </div>
 
         <div id="view-stats" class="hidden">
+            <section id="monthly-highlights" class="stat-card" style="margin-bottom: 20px; border-color: rgba(29, 185, 84, 0.2);">
+                <div class="highlights-grid">
+                    <div class="highlight-item">
+                        <span class="label clickable-header" onclick="showTop100('songs')">Top Songs ➔</span>
+                        <ul id="top-songs-list-small" class="ranking-list small-list"></ul>
+                    </div>
+                    <div class="highlight-item">
+                        <span class="label clickable-header" onclick="showTop100('artists')">Top Artiesten ➔</span>
+                        <ul id="top-artists-list-small" class="ranking-list small-list"></ul>
+                    </div>
+                    <div class="highlight-item total-circle">
+                        <span class="label">Totaal</span>
+                        <div id="total-listens-count" class="big-number">0</div>
+                        <p>beurten</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="stat-card" style="margin-bottom: 20px; border-color: rgba(255, 165, 0, 0.3);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div style="display:flex; align-items:center; gap:10px;">

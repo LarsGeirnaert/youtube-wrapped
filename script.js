@@ -489,7 +489,7 @@ function updateComparisonChart() {
             fill: false
         });
 
-        // AANGEPAST: Line chart style (line in plaats van bar)
+        // AANGEPAST: Line chart
         datasetsMonthly.push({
             label: item.label,
             data: dataPointsMonthly,
@@ -512,9 +512,9 @@ function updateComparisonChart() {
         }
     });
 
-    // AANGEPAST: Type line ipv bar
+    // AANGEPAST: Line chart type
     charts['comparisonMonthly'] = new Chart(ctxMonthly, {
-        type: 'line',
+        type: 'line', 
         data: { labels: labels.map(l => l.substring(2)), datasets: datasetsMonthly },
         options: {
             responsive: true, maintainAspectRatio: false,
@@ -602,24 +602,26 @@ function renderRepertoireGrowthChart(artistName) {
     });
 }
 
+// NIEUWE FUNCTIE: Maandelijkse trend
 function renderRepertoireMonthlyChart(artistName) {
     const ctx = document.getElementById('repertoireMonthlyChart').getContext('2d');
     if (charts['repertoireMonthly']) charts['repertoireMonthly'].destroy();
 
-    // 1. Haal de Top 5 songs op van deze artiest
+    // Top 5 songs van deze artiest
     const songs = statsData.filter(s => s.artiest === artistName)
                            .sort((a, b) => b.count - a.count)
                            .slice(0, 5);
 
-    const labels = chartData.history.labels; // De maanden (bijv. "2023-01")
+    const labels = chartData.history.labels.map(l => {
+        const [y, m] = l.split('-'); 
+        return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
+    });
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'];
 
     const datasets = songs.map((song, i) => {
-        const dataPoints = labels.map(month => {
+        const dataPoints = chartData.history.labels.map(month => {
             let count = 0;
-            // De sleutel is "Titel|Artiest"
             const key = `${song.titel}|${song.artiest}`;
-            
             if (monthlyStats[month] && monthlyStats[month].song_counts) {
                 count = monthlyStats[month].song_counts[key] || 0;
             }
@@ -635,31 +637,25 @@ function renderRepertoireMonthlyChart(artistName) {
             tension: 0.4,
             pointRadius: 0,
             pointHoverRadius: 4,
-            fill: false // Geen fill voor duidelijkheid
+            fill: false 
         };
     });
 
     charts['repertoireMonthly'] = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels.map(l => {
-                const [y, m] = l.split('-'); 
-                return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
-            }),
+            labels: labels,
             datasets: datasets
         },
         options: {
             responsive: true, maintainAspectRatio: false,
             plugins: { 
-                legend: { 
-                    display: true, // Nu wel een legenda omdat er meerdere lijnen zijn
-                    labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } }
-                },
+                legend: { display: true, labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } } },
                 tooltip: { mode: 'index', intersect: false }
             },
             scales: {
                 y: { beginAtZero: true, grid: { color: '#333' }, ticks: { color: '#777' } },
-                x: { grid: { display: false }, ticks: { color: '#777' } }
+                x: { grid: { display: false }, ticks: { color: '#777', maxTicksLimit: 10 } }
             },
             interaction: { mode: 'index', intersect: false }
         }
@@ -701,6 +697,7 @@ function renderCharts() {
 
     if (!chartData.hours) return;
 
+    // --- AANGEPAST NAAR LIJNGRAFIEKEN ---
     const ctxHours = document.getElementById('hoursChart').getContext('2d');
     if (charts['hours']) charts['hours'].destroy();
     charts['hours'] = new Chart(ctxHours, {
@@ -790,6 +787,7 @@ function renderSongPieChart() {
 }
 
 function renderStatsDashboard() {
+    // --- AANGEPAST NAAR TOP 10 ---
     const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
     const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
@@ -1022,10 +1020,25 @@ function renderCalendar() {
     for (let i = 0; i < offset; i++) { grid.appendChild(document.createElement('div')); }
     for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const songs = musicData.filter(d => d.datum === dateStr);
+        // HIER AANGEPAST: Filter eerst op datum
+        let songs = musicData.filter(d => d.datum === dateStr);
+        
+        // DAN filter op artiest als filter actief is
+        if (activeFilter) {
+            songs = songs.filter(s => s.artiest === activeFilter);
+        }
+
         const cell = document.createElement('div'); cell.className = 'calendar-day';
-        if (songs.length > 0) { cell.classList.add('has-data'); cell.innerHTML = `<span class="day-number">${day}</span><img src="${songs[0].poster}">`; cell.onclick = () => openDagDetails(dateStr, songs); }
-        else cell.innerHTML = `<span class="day-number">${day}</span>`;
+        if (songs.length > 0) { 
+            cell.classList.add('has-data'); 
+            // Gebruik de poster van het eerste liedje van DIE artiest op DIE dag
+            cell.innerHTML = `<span class="day-number">${day}</span><img src="${songs[0].poster}">`; 
+            cell.onclick = () => openDagDetails(dateStr, songs); 
+        } else { 
+             // Als er een filter actief is, maak lege dagen dan extra duidelijk 'leeg'
+            if (activeFilter) cell.style.opacity = "0.3"; 
+            cell.innerHTML = `<span class="day-number">${day}</span>`;
+        }
         grid.appendChild(cell);
     }
 }
