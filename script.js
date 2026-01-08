@@ -489,13 +489,16 @@ function updateComparisonChart() {
             fill: false
         });
 
+        // AANGEPAST: Line chart style (line in plaats van bar)
         datasetsMonthly.push({
             label: item.label,
             data: dataPointsMonthly,
-            backgroundColor: color + '88', 
+            backgroundColor: color + '22', 
             borderColor: color,
             borderWidth: 1,
-            tension: 0.3
+            fill: true,
+            tension: 0.4,
+            pointRadius: 3
         });
     });
 
@@ -509,8 +512,9 @@ function updateComparisonChart() {
         }
     });
 
+    // AANGEPAST: Type line ipv bar
     charts['comparisonMonthly'] = new Chart(ctxMonthly, {
-        type: 'bar',
+        type: 'line',
         data: { labels: labels.map(l => l.substring(2)), datasets: datasetsMonthly },
         options: {
             responsive: true, maintainAspectRatio: false,
@@ -548,13 +552,13 @@ function showRepertoireChart(artistName) {
     document.getElementById('repertoire-search').value = '';
     document.getElementById('repertoire-results').classList.add('hidden');
     document.getElementById('repertoire-chart-container').classList.remove('hidden');
-    document.getElementById('repertoire-title').innerText = `Analyse: ${artistName}`;
+    document.getElementById('repertoire-title').innerText = `Top 5 van ${artistName}`;
 
     // 1. Teken de Groeigrafiek
     renderRepertoireGrowthChart(artistName);
     
-    // 2. Teken de Weekgrafiek (Nieuw)
-    renderRepertoireWeekChart(artistName);
+    // 2. Teken de Maandelijkse Trend (AANGEPAST: Was Weekritme)
+    renderRepertoireMonthlyChart(artistName);
 }
 
 function renderRepertoireGrowthChart(artistName) {
@@ -598,48 +602,66 @@ function renderRepertoireGrowthChart(artistName) {
     });
 }
 
-function renderRepertoireWeekChart(artistName) {
-    const ctx = document.getElementById('repertoireWeekChart').getContext('2d');
-    if (charts['repertoireWeek']) charts['repertoireWeek'].destroy();
+function renderRepertoireMonthlyChart(artistName) {
+    const ctx = document.getElementById('repertoireMonthlyChart').getContext('2d');
+    if (charts['repertoireMonthly']) charts['repertoireMonthly'].destroy();
 
-    // Filter alle luistermomenten voor deze artiest uit de ruwe data
-    const artistListens = musicData.filter(d => d.artiest === artistName);
-    
-    // Tel plays per weekdag (0=Zondag, 1=Maandag, etc.)
-    const weekdayCounts = Array(7).fill(0);
-    artistListens.forEach(listen => {
-        const date = new Date(listen.datum);
-        const dayIndex = date.getDay(); // 0 (Sun) - 6 (Sat)
-        weekdayCounts[dayIndex]++;
+    // 1. Haal de Top 5 songs op van deze artiest
+    const songs = statsData.filter(s => s.artiest === artistName)
+                           .sort((a, b) => b.count - a.count)
+                           .slice(0, 5);
+
+    const labels = chartData.history.labels; // De maanden (bijv. "2023-01")
+    const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'];
+
+    const datasets = songs.map((song, i) => {
+        const dataPoints = labels.map(month => {
+            let count = 0;
+            // De sleutel is "Titel|Artiest"
+            const key = `${song.titel}|${song.artiest}`;
+            
+            if (monthlyStats[month] && monthlyStats[month].song_counts) {
+                count = monthlyStats[month].song_counts[key] || 0;
+            }
+            return count;
+        });
+
+        return {
+            label: song.titel,
+            data: dataPoints,
+            borderColor: colors[i % colors.length],
+            backgroundColor: colors[i % colors.length] + '22',
+            borderWidth: 2,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            fill: false // Geen fill voor duidelijkheid
+        };
     });
 
-    // Verschuif zodat Maandag (index 1) vooraan staat: [Ma, Di, Wo, Do, Vr, Za, Zo]
-    const orderedCounts = [
-        weekdayCounts[1], weekdayCounts[2], weekdayCounts[3], weekdayCounts[4],
-        weekdayCounts[5], weekdayCounts[6], weekdayCounts[0]
-    ];
-
-    charts['repertoireWeek'] = new Chart(ctx, {
-        type: 'line', // LIJNGRAFIEK zoals gevraagd
+    charts['repertoireMonthly'] = new Chart(ctx, {
+        type: 'line',
         data: {
-            labels: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
-            datasets: [{
-                label: 'Plays',
-                data: orderedCounts,
-                borderColor: '#ff9800', // Oranje kleur
-                backgroundColor: 'rgba(255, 152, 0, 0.2)',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4
-            }]
+            labels: labels.map(l => {
+                const [y, m] = l.split('-'); 
+                return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
+            }),
+            datasets: datasets
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { 
+                legend: { 
+                    display: true, // Nu wel een legenda omdat er meerdere lijnen zijn
+                    labels: { color: '#ccc', boxWidth: 10, font: { size: 10 } }
+                },
+                tooltip: { mode: 'index', intersect: false }
+            },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#333' }, ticks: { color: '#777', stepSize: 1 } },
+                y: { beginAtZero: true, grid: { color: '#333' }, ticks: { color: '#777' } },
                 x: { grid: { display: false }, ticks: { color: '#777' } }
-            }
+            },
+            interaction: { mode: 'index', intersect: false }
         }
     });
 }
@@ -679,11 +701,10 @@ function renderCharts() {
 
     if (!chartData.hours) return;
 
-    // --- AANGEPAST NAAR LIJNGRAFIEKEN ---
     const ctxHours = document.getElementById('hoursChart').getContext('2d');
     if (charts['hours']) charts['hours'].destroy();
     charts['hours'] = new Chart(ctxHours, {
-        type: 'line', // Was 'bar'
+        type: 'line',
         data: {
             labels: chartData.hours.labels,
             datasets: [{
@@ -704,7 +725,7 @@ function renderCharts() {
     const ctxWeek = document.getElementById('weekChart').getContext('2d');
     if (charts['week']) charts['week'].destroy();
     charts['week'] = new Chart(ctxWeek, {
-        type: 'line', // Was 'bar'
+        type: 'line',
         data: {
             labels: chartData.weekdays.labels,
             datasets: [{
@@ -769,7 +790,6 @@ function renderSongPieChart() {
 }
 
 function renderStatsDashboard() {
-    // --- AANGEPAST NAAR TOP 10 (was slice(0,9)) ---
     const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
     const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
