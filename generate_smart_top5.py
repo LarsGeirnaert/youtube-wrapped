@@ -68,8 +68,8 @@ def generate_smart_top5():
     monthly_counts = Counter()
     all_dates_found = set()
     
-    # Index voor de kalender filter
-    calendar_index = {}
+    # Tijdelijke opslag voor kalender details: dag -> artiest -> Counter(songs)
+    temp_calendar_data = {}
 
     hourly_counts = Counter()
     weekday_counts = Counter()
@@ -108,21 +108,14 @@ def generate_smart_top5():
         # Poster ophalen
         poster = poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")
 
-        # Uitgebreide kalender index
-        if datum_str not in calendar_index: calendar_index[datum_str] = {}
-        
-        if a not in calendar_index[datum_str]:
-            # Maak nieuw entry aan voor deze artiest op deze dag
-            calendar_index[datum_str][a] = { "poster": poster, "songs": [] }
-        
-        # Voeg liedje toe aan de lijst (max 5 unieke liedjes per dag per artiest opslaan)
-        current_songs = calendar_index[datum_str][a]["songs"]
-        if t not in current_songs:
-            if len(current_songs) < 5:
-                current_songs.append(t)
-            # Update poster als we nog een placeholder hadden
-            if calendar_index[datum_str][a]["poster"] == "img/placeholder.png" and poster != "img/placeholder.png":
-                calendar_index[datum_str][a]["poster"] = poster
+        # Kalender data verzamelen
+        if datum_str not in temp_calendar_data: temp_calendar_data[datum_str] = {}
+        if a not in temp_calendar_data[datum_str]: temp_calendar_data[datum_str][a] = Counter()
+        temp_calendar_data[datum_str][a][t] += 1
+
+        # Cache de poster voor deze artiest/titel combi als we die nog niet hebben
+        if (a.lower(), t.lower()) not in poster_cache and poster != "img/placeholder.png":
+             poster_cache[(a.lower(), t.lower())] = poster
 
         if song_key not in song_history_dates: song_history_dates[song_key] = []
         song_history_dates[song_key].append(datetime.strptime(datum_str, "%Y-%m-%d"))
@@ -145,7 +138,27 @@ def generate_smart_top5():
 
     # --- EXPORTS ---
 
-    # Calendar Index Opslaan
+    # Calendar Index Genereren (Top 5 songs per artiest per dag)
+    calendar_index = {}
+    for dag, artiesten in temp_calendar_data.items():
+        calendar_index[dag] = {}
+        for artiest, songs_counter in artiesten.items():
+            # Haal de top 5 meest beluisterde nummers van deze artiest op deze dag
+            top_songs = [s[0] for s in songs_counter.most_common(5)]
+            
+            # Zoek een poster (probeer de populairste song eerst)
+            best_poster = "img/placeholder.png"
+            for s in top_songs:
+                p = poster_cache.get((artiest.lower(), s.lower()))
+                if p and p != "img/placeholder.png":
+                    best_poster = p
+                    break
+            
+            calendar_index[dag][artiest] = {
+                "poster": best_poster,
+                "songs": top_songs
+            }
+
     with open('calendar_index.json', 'w', encoding='utf-8') as f:
         json.dump(calendar_index, f, indent=2, ensure_ascii=False)
 
@@ -192,7 +205,7 @@ def generate_smart_top5():
         "unique_songs": len(all_listens)
     }
 
-    # 3. Chart Data (Top 10) - AANGEPAST NAAR 10
+    # 3. Chart Data (Top 10)
     top_10_songs_keys = [k for k, v in all_listens.most_common(10)]
     song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_10_songs_keys}
     song_running_totals = {k: 0 for k in top_10_songs_keys}
@@ -270,7 +283,7 @@ def generate_smart_top5():
     stats_out = [{"artiest": a, "titel": t, "count": c, "poster": poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")} for (a, t), c in all_listens.items()]
     with open('stats.json', 'w', encoding='utf-8') as f: json.dump(stats_out, f, indent=2, ensure_ascii=False)
 
-    # 5. Momentum Top 5
+    # 5. Momentum Top 5 (Voor de normale kalender weergave)
     final_data = []
     sorted_days = sorted(days_dict.keys(), reverse=True)
 
@@ -341,7 +354,7 @@ def generate_smart_top5():
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)
 
-    print("✅ Klaar! Top 10 en kalender index gegenereerd.")
+    print("✅ Klaar! Indexen gegenereerd.")
 
 if __name__ == "__main__":
     generate_smart_top5()
