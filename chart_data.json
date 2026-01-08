@@ -125,7 +125,8 @@
       "Coldplay",
       "Tame Impala",
       "Roxy Dekker",
-      "Arctic Monkeys"
+      "Arctic Monkeys",
+      "Nirvana"
     ],
     "values": [
       1406,
@@ -136,7 +137,8 @@
       480,
       464,
       430,
-      422
+      422,
+      393
     ]
   },
   "songs": {
@@ -149,7 +151,8 @@
       "Gaan We Weg? - Roxy Dekker",
       "Losing My Religion - R.E.M.",
       "Don'T Look Back In Anger - Oasis",
-      "Sad! - Xxxtentacion"
+      "Sad! - Xxxtentacion",
+      "Circles - Post Malone"
     ],
     "values": [
       209,
@@ -160,7 +163,8 @@
       174,
       158,
       156,
-      155
+      155,
+      154
     ]
   },
   "fun_stats": {
@@ -375,6 +379,26 @@
         139,
         152,
         155
+      ],
+      "Circles - Post Malone": [
+        1,
+        16,
+        27,
+        35,
+        44,
+        49,
+        54,
+        63,
+        76,
+        89,
+        98,
+        109,
+        118,
+        121,
+        128,
+        140,
+        151,
+        154
       ]
     },
     "artists": {
@@ -557,6 +581,26 @@
         364,
         408,
         422
+      ],
+      "Nirvana": [
+        0,
+        18,
+        41,
+        63,
+        73,
+        85,
+        95,
+        104,
+        124,
+        162,
+        187,
+        211,
+        260,
+        279,
+        312,
+        338,
+        382,
+        393
       ]
     }
   }

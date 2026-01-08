@@ -68,6 +68,9 @@ def generate_smart_top5():
     monthly_counts = Counter()
     all_dates_found = set()
     
+    # Index voor de kalender filter
+    calendar_index = {}
+
     hourly_counts = Counter()
     weekday_counts = Counter()
     artist_counts = Counter()
@@ -102,6 +105,25 @@ def generate_smart_top5():
         all_dates_found.add(datum_str)
         song_key = (a, t)
 
+        # Poster ophalen
+        poster = poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")
+
+        # Uitgebreide kalender index
+        if datum_str not in calendar_index: calendar_index[datum_str] = {}
+        
+        if a not in calendar_index[datum_str]:
+            # Maak nieuw entry aan voor deze artiest op deze dag
+            calendar_index[datum_str][a] = { "poster": poster, "songs": [] }
+        
+        # Voeg liedje toe aan de lijst (max 5 unieke liedjes per dag per artiest opslaan)
+        current_songs = calendar_index[datum_str][a]["songs"]
+        if t not in current_songs:
+            if len(current_songs) < 5:
+                current_songs.append(t)
+            # Update poster als we nog een placeholder hadden
+            if calendar_index[datum_str][a]["poster"] == "img/placeholder.png" and poster != "img/placeholder.png":
+                calendar_index[datum_str][a]["poster"] = poster
+
         if song_key not in song_history_dates: song_history_dates[song_key] = []
         song_history_dates[song_key].append(datetime.strptime(datum_str, "%Y-%m-%d"))
 
@@ -122,6 +144,10 @@ def generate_smart_top5():
         monthly_stats[m_key]["artist_song_details"][a][t] += 1
 
     # --- EXPORTS ---
+
+    # Calendar Index Opslaan
+    with open('calendar_index.json', 'w', encoding='utf-8') as f:
+        json.dump(calendar_index, f, indent=2, ensure_ascii=False)
 
     # 1. Comebacks
     comebacks = []
@@ -166,40 +192,40 @@ def generate_smart_top5():
         "unique_songs": len(all_listens)
     }
 
-    # 3. Chart Data (Top 9)
-    top_9_songs_keys = [k for k, v in all_listens.most_common(9)]
-    song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_9_songs_keys}
-    song_running_totals = {k: 0 for k in top_9_songs_keys}
+    # 3. Chart Data (Top 10) - AANGEPAST NAAR 10
+    top_10_songs_keys = [k for k, v in all_listens.most_common(10)]
+    song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_10_songs_keys}
+    song_running_totals = {k: 0 for k in top_10_songs_keys}
     
-    top_9_artists_keys = [k for k, v in artist_counts.most_common(9)]
-    artist_growth_data = {k: [] for k in top_9_artists_keys}
-    artist_running_totals = {k: 0 for k in top_9_artists_keys}
+    top_10_artists_keys = [k for k, v in artist_counts.most_common(10)]
+    artist_growth_data = {k: [] for k in top_10_artists_keys}
+    artist_running_totals = {k: 0 for k in top_10_artists_keys}
 
     sorted_months = sorted(monthly_counts.keys())
 
     for m in sorted_months:
-        for s_key in top_9_songs_keys:
+        for s_key in top_10_songs_keys:
             count = monthly_stats.get(m, {}).get('songs', {}).get(s_key, 0)
             song_running_totals[s_key] += count
             song_growth_data[f"{s_key[1]} - {s_key[0]}"].append(song_running_totals[s_key])
         
-        for a_key in top_9_artists_keys:
+        for a_key in top_10_artists_keys:
             count = monthly_stats.get(m, {}).get('artists', {}).get(a_key, 0)
             artist_running_totals[a_key] += count
             artist_growth_data[a_key].append(artist_running_totals[a_key])
 
-    # Pie Chart Data for Artists
-    top_9_artists_chart = artist_counts.most_common(9)
+    # Pie Chart Data for Artists (Top 10)
+    top_10_artists_chart = artist_counts.most_common(10)
     artist_chart_data = {
-        "labels": [x[0] for x in top_9_artists_chart],
-        "values": [x[1] for x in top_9_artists_chart]
+        "labels": [x[0] for x in top_10_artists_chart],
+        "values": [x[1] for x in top_10_artists_chart]
     }
 
-    # Pie Chart Data for Songs
-    top_9_songs_chart = all_listens.most_common(9)
+    # Pie Chart Data for Songs (Top 10)
+    top_10_songs_chart = all_listens.most_common(10)
     song_chart_data = {
-        "labels": [f"{x[0][1]} - {x[0][0]}" for x in top_9_songs_chart],
-        "values": [x[1] for x in top_9_songs_chart]
+        "labels": [f"{x[0][1]} - {x[0][0]}" for x in top_10_songs_chart],
+        "values": [x[1] for x in top_10_songs_chart]
     }
 
     chart_data = {
@@ -216,7 +242,7 @@ def generate_smart_top5():
             "values": [weekday_counts[i] for i in range(7)]
         },
         "artists": artist_chart_data,
-        "songs": song_chart_data, # Added songs data
+        "songs": song_chart_data,
         "fun_stats": fun_stats,
         "growth": {
             "labels": sorted_months,
@@ -315,7 +341,7 @@ def generate_smart_top5():
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)
 
-    print("✅ Klaar! Top 9 berekend.")
+    print("✅ Klaar! Top 10 en kalender index gegenereerd.")
 
 if __name__ == "__main__":
     generate_smart_top5()
