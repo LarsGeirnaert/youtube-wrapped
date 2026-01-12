@@ -28,3 +28,8 @@ Thumbs.db
 
 # --- NODE.JS (indien van toepassing) ---
 node_modules/
+stats.json
+monthly_stats.json
+comebacks.json
+chart_data.json
+calendar_index.json

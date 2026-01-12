@@ -34,6 +34,9 @@ def clean_music_data(artist, title):
     return artist, title
 
 def generate_smart_top5():
+    # --- CONFIGURATIE ---
+    MIN_DURATION_SECONDS = 15  # Nummers korter dan dit worden genegeerd (geskipt)
+
     poster_cache = {}
     if os.path.exists('stats.json'):
         with open('stats.json', 'r', encoding='utf-8') as f:
@@ -63,44 +66,91 @@ def generate_smart_top5():
     with open('kijkgeschiedenis.json', 'r', encoding='utf-8') as f:
         history = json.load(f)
 
+    # --- STAP 1: VOORBEREIDEN & FILTEREN OP SKIPS ---
+    print(f"🚀 Data analyseren en skips (< {MIN_DURATION_SECONDS}s) verwijderen...")
+    
+    raw_candidates = []
+
+    for entry in history:
+        is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
+        if not is_music or 'title' not in entry: continue
+
+        # Tijd parsen
+        time_str = entry['time']
+        try:
+            dt_obj = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
+        except:
+            continue
+
+        # Naam opschonen
+        raw_artist = entry.get('subtitles', [{'name': 'Onbekend'}])[0]['name']
+        a, t = clean_music_data(raw_artist, entry['title'])
+        if not t or t.startswith('http'): continue
+
+        # Correcties toepassen
+        check_key = f"{a.lower()}|{t.lower()}"
+        if check_key in corrections:
+            target = corrections[check_key]
+            a = target['artiest']
+            t = target['titel']
+
+        raw_candidates.append({
+            'dt': dt_obj,
+            'artiest': a,
+            'titel': t,
+            'time_str': time_str # Bewaren voor originele logica
+        })
+
+    # Sorteer chronologisch (Oud -> Nieuw) om tijdsverschil te berekenen
+    raw_candidates.sort(key=lambda x: x['dt'])
+
+    filtered_history = []
+    skipped_count = 0
+
+    for i in range(len(raw_candidates)):
+        current_item = raw_candidates[i]
+        
+        # Bereken duur door naar het VOLGENDE item te kijken
+        if i < len(raw_candidates) - 1:
+            next_item = raw_candidates[i+1]
+            duration = (next_item['dt'] - current_item['dt']).total_seconds()
+            
+            # FILTER LOGICA: Als het verschil kleiner is dan 15 seconden -> Skip
+            if duration < MIN_DURATION_SECONDS:
+                skipped_count += 1
+                continue 
+        
+        # Als we hier zijn, is het liedje lang genoeg (of het is het allerlaatste liedje)
+        filtered_history.append(current_item)
+
+    print(f"✂️ {skipped_count} geskipte nummers verwijderd.")
+    print(f"✅ {len(filtered_history)} geldige luisterbeurten over.")
+
+
+    # --- STAP 2: STATISTIEKEN BOUWEN MET GEFILTERDE DATA ---
+    
     days_dict, all_listens, monthly_stats = {}, Counter(), {}
     song_history_dates = {} 
     monthly_counts = Counter()
     all_dates_found = set()
-    
-    # Tijdelijke opslag voor kalender details: dag -> artiest -> Counter(songs)
-    temp_calendar_data = {}
+    temp_calendar_data = {} # Voor kalender index
 
     hourly_counts = Counter()
     weekday_counts = Counter()
     artist_counts = Counter()
     daily_total_plays = Counter()
 
-    print("🚀 Data verwerken (Momentum Methode)...")
-
-    for entry in history:
-        is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
-        if not is_music or 'title' not in entry: continue
-
-        time_str = entry['time'] 
-        datum_str = time_str[:10]
-        m_key = datum_str[:7]
+    # Nu itereren we over de GEFILTERDE lijst
+    for item in filtered_history:
+        dt_obj = item['dt']
+        a = item['artiest']
+        t = item['titel']
         
-        try:
-            dt_obj = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
-            hourly_counts[dt_obj.hour] += 1
-            weekday_counts[dt_obj.weekday()] += 1
-        except: pass
-
-        raw_artist = entry.get('subtitles', [{'name': 'Onbekend'}])[0]['name']
-        a, t = clean_music_data(raw_artist, entry['title'])
-        if not t or t.startswith('http'): continue
-
-        check_key = f"{a.lower()}|{t.lower()}"
-        if check_key in corrections:
-            target = corrections[check_key]
-            a = target['artiest']
-            t = target['titel']
+        datum_str = dt_obj.strftime("%Y-%m-%d")
+        m_key = dt_obj.strftime("%Y-%m")
+        
+        hourly_counts[dt_obj.hour] += 1
+        weekday_counts[dt_obj.weekday()] += 1
 
         all_dates_found.add(datum_str)
         song_key = (a, t)
@@ -113,12 +163,13 @@ def generate_smart_top5():
         if a not in temp_calendar_data[datum_str]: temp_calendar_data[datum_str][a] = Counter()
         temp_calendar_data[datum_str][a][t] += 1
 
-        # Cache de poster voor deze artiest/titel combi als we die nog niet hebben
+        # Cache de poster
         if (a.lower(), t.lower()) not in poster_cache and poster != "img/placeholder.png":
              poster_cache[(a.lower(), t.lower())] = poster
 
+        # Stats opbouwen
         if song_key not in song_history_dates: song_history_dates[song_key] = []
-        song_history_dates[song_key].append(datetime.strptime(datum_str, "%Y-%m-%d"))
+        song_history_dates[song_key].append(dt_obj)
 
         if datum_str not in days_dict: days_dict[datum_str] = []
         days_dict[datum_str].append(song_key)
@@ -136,28 +187,23 @@ def generate_smart_top5():
             monthly_stats[m_key]["artist_song_details"][a] = Counter()
         monthly_stats[m_key]["artist_song_details"][a][t] += 1
 
-    # --- EXPORTS ---
+    # --- EXPORTS (Hetzelfde als voorheen) ---
 
-    # Calendar Index Genereren (Top 5 songs per artiest per dag)
+    # Calendar Index Genereren
     calendar_index = {}
     for dag, artiesten in temp_calendar_data.items():
         calendar_index[dag] = {}
         for artiest, songs_counter in artiesten.items():
-            # Haal de top 5 meest beluisterde nummers van deze artiest op deze dag
-            top_songs = [s[0] for s in songs_counter.most_common(5)]
+            most_played_song = songs_counter.most_common(1)[0][0]
+            main_poster = poster_cache.get((artiest.lower(), most_played_song.lower()), "img/placeholder.png")
             
-            # Zoek een poster (probeer de populairste song eerst)
-            best_poster = "img/placeholder.png"
-            for s in top_songs:
-                p = poster_cache.get((artiest.lower(), s.lower()))
-                if p and p != "img/placeholder.png":
-                    best_poster = p
-                    break
+            top_songs_list = []
+            for s_tuple in songs_counter.most_common(5):
+                s_title = s_tuple[0]
+                s_poster = poster_cache.get((artiest.lower(), s_title.lower()), "img/placeholder.png")
+                top_songs_list.append({ "titel": s_title, "poster": s_poster })
             
-            calendar_index[dag][artiest] = {
-                "poster": best_poster,
-                "songs": top_songs
-            }
+            calendar_index[dag][artiest] = { "poster": main_poster, "songs": top_songs_list }
 
     with open('calendar_index.json', 'w', encoding='utf-8') as f:
         json.dump(calendar_index, f, indent=2, ensure_ascii=False)
@@ -185,7 +231,7 @@ def generate_smart_top5():
     # 2. Fun Stats
     busiest_day_date = daily_total_plays.most_common(1)[0] if daily_total_plays else ("-", 0)
     total_tracks = sum(all_listens.values())
-    estimated_minutes = total_tracks * 3.5 
+    estimated_minutes = total_tracks * 3.5 # Gemiddeld 3.5 minuut per liedje (gefilterd)
     
     discovery_rates = {}
     seen_artists = set()
@@ -227,41 +273,20 @@ def generate_smart_top5():
             artist_running_totals[a_key] += count
             artist_growth_data[a_key].append(artist_running_totals[a_key])
 
-    # Pie Chart Data for Artists (Top 10)
+    # Pie Chart Data
     top_10_artists_chart = artist_counts.most_common(10)
-    artist_chart_data = {
-        "labels": [x[0] for x in top_10_artists_chart],
-        "values": [x[1] for x in top_10_artists_chart]
-    }
-
-    # Pie Chart Data for Songs (Top 10)
+    artist_chart_data = { "labels": [x[0] for x in top_10_artists_chart], "values": [x[1] for x in top_10_artists_chart] }
     top_10_songs_chart = all_listens.most_common(10)
-    song_chart_data = {
-        "labels": [f"{x[0][1]} - {x[0][0]}" for x in top_10_songs_chart],
-        "values": [x[1] for x in top_10_songs_chart]
-    }
+    song_chart_data = { "labels": [f"{x[0][1]} - {x[0][0]}" for x in top_10_songs_chart], "values": [x[1] for x in top_10_songs_chart] }
 
     chart_data = {
-        "history": {
-            "labels": sorted(monthly_counts.keys()), 
-            "values": [monthly_counts[m] for m in sorted(monthly_counts.keys())]
-        },
-        "hours": {
-            "labels": [f"{i}:00" for i in range(24)],
-            "values": [hourly_counts[i] for i in range(24)]
-        },
-        "weekdays": {
-            "labels": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
-            "values": [weekday_counts[i] for i in range(7)]
-        },
+        "history": { "labels": sorted(monthly_counts.keys()), "values": [monthly_counts[m] for m in sorted(monthly_counts.keys())] },
+        "hours": { "labels": [f"{i}:00" for i in range(24)], "values": [hourly_counts[i] for i in range(24)] },
+        "weekdays": { "labels": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"], "values": [weekday_counts[i] for i in range(7)] },
         "artists": artist_chart_data,
         "songs": song_chart_data,
         "fun_stats": fun_stats,
-        "growth": {
-            "labels": sorted_months,
-            "songs": song_growth_data,
-            "artists": artist_growth_data
-        }
+        "growth": { "labels": sorted_months, "songs": song_growth_data, "artists": artist_growth_data }
     }
     with open('chart_data.json', 'w', encoding='utf-8') as f: json.dump(chart_data, f, indent=2, ensure_ascii=False)
 
@@ -283,40 +308,31 @@ def generate_smart_top5():
     stats_out = [{"artiest": a, "titel": t, "count": c, "poster": poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")} for (a, t), c in all_listens.items()]
     with open('stats.json', 'w', encoding='utf-8') as f: json.dump(stats_out, f, indent=2, ensure_ascii=False)
 
-    # 5. Momentum Top 5 (Voor de normale kalender weergave)
+    # 5. Momentum Top 5
     final_data = []
     sorted_days = sorted(days_dict.keys(), reverse=True)
-
     for d in sorted_days:
         current_date_obj = datetime.strptime(d, "%Y-%m-%d")
         month_ago_date_obj = current_date_obj - timedelta(days=7) 
         today_counter = Counter(days_dict[d])
-
         def get_momentum_score(song_key):
             dates = song_history_dates.get(song_key, [])
             score = 0
             for listen_date in dates:
-                if month_ago_date_obj <= listen_date <= current_date_obj:
-                    score += 1
+                if month_ago_date_obj <= listen_date <= current_date_obj: score += 1
             return score
-
         unique_songs_today = list(today_counter.keys())
         unique_songs_today.sort(key=lambda s: (today_counter[s], get_momentum_score(s)), reverse=True)
-
         for song_key in unique_songs_today[:5]:
             artiest, titel = song_key
             poster = poster_cache.get((artiest.lower(), titel.lower()), "img/placeholder.png")
-            final_data.append({
-                "datum": d, "titel": titel, "artiest": artiest, "poster": poster
-            })
-
+            final_data.append({ "datum": d, "titel": titel, "artiest": artiest, "poster": poster })
     with open('data.json', 'w', encoding='utf-8') as f: json.dump(final_data, f, indent=2, ensure_ascii=False)
 
     # 6. Streaks
     if not all_dates_found: 
         print("✅ Klaar! (Geen streaks)")
         return
-        
     last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
     song_dates_set, artist_dates_set = {}, {}
     for d, songs in days_dict.items():
@@ -336,10 +352,7 @@ def generate_smart_top5():
                 curr_s = 1
         if curr_s > max_s: max_s = curr_s
         is_current = sorted_dates[-1] == reference_date
-        return {
-            "max": max_s, "period": "-", 
-            "current": curr_s if is_current else 0, "current_period": "-"
-        }
+        return { "max": max_s, "period": "-", "current": curr_s if is_current else 0, "current_period": "-" }
 
     s_top, s_curr, a_top, a_curr = [], [], [], []
     for k, v in song_dates_set.items():
@@ -354,7 +367,7 @@ def generate_smart_top5():
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)
 
-    print("✅ Klaar! Indexen gegenereerd.")
+    print("✅ Klaar! Skip-filter toegepast & Indexen gegenereerd.")
 
 if __name__ == "__main__":
     generate_smart_top5()
