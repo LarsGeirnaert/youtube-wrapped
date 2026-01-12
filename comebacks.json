@@ -42,17 +42,17 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Mumford And Sons",
-    "titel": "Little Lion Man",
-    "gap": 70,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5d/dd/77/5ddd77b5-0331-5ce2-ac33-901e3aad85bd/0044003151451_Cover.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
     "artiest": "Netsky",
     "titel": "Running Low",
     "gap": 70,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/0d/c4/ef/0dc4efde-1fbd-992e-a257-a00673de96c2/0617465586354.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Mumford And Sons",
+    "titel": "Little Lion Man",
+    "gap": 70,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5d/dd/77/5ddd77b5-0331-5ce2-ac33-901e3aad85bd/0044003151451_Cover.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -105,17 +105,17 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Rixton",
-    "titel": "Me And My Broken Heart",
-    "gap": 60,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/f5/3d5ef5fc-442f-8023-1861-15a0b9906718/00602537979899.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
     "artiest": "Dire Straits",
     "titel": "Sultans Of Swing",
     "gap": 60,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music/47/c3/21/mzi.ciyzkqao.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Rixton",
+    "titel": "Me And My Broken Heart",
+    "gap": 60,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/f5/3d5ef5fc-442f-8023-1861-15a0b9906718/00602537979899.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -147,17 +147,17 @@
     "periode": "2024 ➔ 2025"
   },
   {
-    "artiest": "Owl City",
-    "titel": "Fireflies",
-    "gap": 47,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/3f/66/c23f6607-cc64-1cac-84fe-5295d9efe8c3/09UMGIM22612.rgb.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
     "artiest": "Nirvana",
     "titel": "Smells Like Teen Spirit",
     "gap": 47,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Owl City",
+    "titel": "Fireflies",
+    "gap": 47,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/3f/66/c23f6607-cc64-1cac-84fe-5295d9efe8c3/09UMGIM22612.rgb.jpg/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
   },
   {
@@ -203,6 +203,13 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Eagles",
+    "titel": "Hotel California",
+    "gap": 41,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "Eminem",
     "titel": "Mockingbird",
     "gap": 41,
@@ -210,11 +217,18 @@
     "periode": "2024 ➔ 2025"
   },
   {
-    "artiest": "Eagles",
-    "titel": "Hotel California",
-    "gap": 41,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
+    "artiest": "Bastille",
+    "titel": "Pompeii",
+    "gap": 40,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e6/d8/61/e6d86177-ae8c-e84e-dfcc-0042687066ed/13UAAIM41955.rgb.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Adele",
+    "titel": "Rolling In The Deep",
+    "gap": 40,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
   },
   {
     "artiest": "Katy Perry",
@@ -231,24 +245,10 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Adele",
-    "titel": "Rolling In The Deep",
-    "gap": 40,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/d8/e3/f9/d8e3f9ea-d6fe-9a1b-9f13-109983d3062e/191404113868.png/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
     "artiest": "Michael Jackson",
     "titel": "Billie Jean",
     "gap": 40,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "Bastille",
-    "titel": "Pompeii",
-    "gap": 40,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e6/d8/61/e6d86177-ae8c-e84e-dfcc-0042687066ed/13UAAIM41955.rgb.jpg/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
   },
   {
@@ -350,13 +350,6 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Arctic Monkeys",
-    "titel": "Snap Out Of It",
-    "gap": 37,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/cc/0f/2d/cc0f2d02-5ff1-10e7-eea2-76863a55dbad/887828031795.png/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
     "artiest": "Nirvana",
     "titel": "Lithium",
     "gap": 37,
@@ -364,17 +357,10 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Metallica",
-    "titel": "Nothing Else Matters",
-    "gap": 36,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Lost Frequencies",
-    "titel": "Are You With Me",
-    "gap": 36,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/07/81/14/078114c0-5ff9-6088-9208-d28d20fb0508/8718522109102.png/600x600bb.jpg",
+    "artiest": "Arctic Monkeys",
+    "titel": "Snap Out Of It",
+    "gap": 37,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/cc/0f/2d/cc0f2d02-5ff1-10e7-eea2-76863a55dbad/887828031795.png/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
   },
   {
@@ -385,6 +371,20 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Lost Frequencies",
+    "titel": "Are You With Me",
+    "gap": 36,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/07/81/14/078114c0-5ff9-6088-9208-d28d20fb0508/8718522109102.png/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Metallica",
+    "titel": "Nothing Else Matters",
+    "gap": 36,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "Amy Winehouse",
     "titel": "Back To Black",
     "gap": 36,
@@ -392,10 +392,10 @@
     "periode": "2024 ➔ 2024"
   },
   {
-    "artiest": "Dolly Parton",
-    "titel": "Jolene",
+    "artiest": "Nirvana",
+    "titel": "Come As You Are",
     "gap": 35,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/0b/f8/1e/0bf81e88-de6e-aba3-9fd4-e7407bfbcc31/886445438048.jpg/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -406,11 +406,11 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Dotan",
-    "titel": "Home",
+    "artiest": "Dolly Parton",
+    "titel": "Jolene",
     "gap": 35,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/63/16/83/63168351-ef9c-0aa0-444e-ef3c2437d3cd/cover.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/0b/f8/1e/0bf81e88-de6e-aba3-9fd4-e7407bfbcc31/886445438048.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
   },
   {
     "artiest": "Netsky",
@@ -420,17 +420,10 @@
     "periode": "2024 ➔ 2025"
   },
   {
-    "artiest": "Nirvana",
-    "titel": "Come As You Are",
+    "artiest": "Dotan",
+    "titel": "Home",
     "gap": 35,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Arctic Monkeys",
-    "titel": "Do I Wanna Know?",
-    "gap": 34,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/cc/0f/2d/cc0f2d02-5ff1-10e7-eea2-76863a55dbad/887828031795.png/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/63/16/83/63168351-ef9c-0aa0-444e-ef3c2437d3cd/cover.jpg/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
   },
   {
@@ -441,11 +434,11 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "The Black Keys",
-    "titel": "Lonely Boy",
+    "artiest": "Coolio",
+    "titel": "Gangsta'S Paradise",
     "gap": 34,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/23/0b/c2230b5f-e753-e9b0-c032-b9ea0713450f/016998513262.png/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
   },
   {
     "artiest": "Nico & Vinz",
@@ -462,18 +455,11 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Coolio",
-    "titel": "Gangsta'S Paradise",
+    "artiest": "Arctic Monkeys",
+    "titel": "Do I Wanna Know?",
     "gap": 34,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/23/0b/c2230b5f-e753-e9b0-c032-b9ea0713450f/016998513262.png/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/cc/0f/2d/cc0f2d02-5ff1-10e7-eea2-76863a55dbad/887828031795.png/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "Red Hot Chili Peppers",
-    "titel": "Snow",
-    "gap": 34,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/24/8e/2a248e94-2b8e-3745-906a-084837c0d547/mzi.xeoqdinh.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
   },
   {
     "artiest": "Wheatus",
@@ -481,6 +467,20 @@
     "gap": 34,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/f7/c3/33/f7c333e4-b2b5-b49d-1406-f51bdac6a8aa/mzi.bllmhdje.jpg/600x600bb.jpg",
     "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "The Black Keys",
+    "titel": "Lonely Boy",
+    "gap": 34,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Red Hot Chili Peppers",
+    "titel": "Snow",
+    "gap": 34,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/24/8e/2a248e94-2b8e-3745-906a-084837c0d547/mzi.xeoqdinh.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
   },
   {
     "artiest": "Lil Wayne",
@@ -504,13 +504,6 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Aerosmith",
-    "titel": "Dream On",
-    "gap": 33,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/e2/87/d9/e287d987-7b92-7749-737f-b5b8a6913f88/22UM1IM38560.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
     "artiest": "David Guetta",
     "titel": "This One'S For You",
     "gap": 33,
@@ -518,38 +511,10 @@
     "periode": "2024 ➔ 2025"
   },
   {
-    "artiest": "Pearl Jam",
-    "titel": "Black",
-    "gap": 33,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
     "artiest": "Travis Scott",
     "titel": "Sicko Mode",
     "gap": 33,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/49/8f/e7498f65-df8f-bead-d6e3-2a8d4d642a79/886447235317.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Green Day",
-    "titel": "Boulevard Of Broken Dreams",
-    "gap": 33,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/55/e7/45/55e74530-6fce-28f8-a5ef-37ead76757d0/093624838494_02.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "Glass Animals",
-    "titel": "Heat Waves",
-    "gap": 33,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/da/8b/77/da8b7731-6f4f-eacf-5e74-8b23389eefa1/20UMGIM03371.rgb.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "R.E.M.",
-    "titel": "Losing My Religion",
-    "gap": 33,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d4/9c/f6/d49cf63f-a412-5737-9392-1576c297b475/00888072396272.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -567,6 +532,41 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "R.E.M.",
+    "titel": "Losing My Religion",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d4/9c/f6/d49cf63f-a412-5737-9392-1576c297b475/00888072396272.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Pearl Jam",
+    "titel": "Black",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Aerosmith",
+    "titel": "Dream On",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/e2/87/d9/e287d987-7b92-7749-737f-b5b8a6913f88/22UM1IM38560.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Glass Animals",
+    "titel": "Heat Waves",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/da/8b/77/da8b7731-6f4f-eacf-5e74-8b23389eefa1/20UMGIM03371.rgb.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Green Day",
+    "titel": "Boulevard Of Broken Dreams",
+    "gap": 33,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/55/e7/45/55e74530-6fce-28f8-a5ef-37ead76757d0/093624838494_02.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
     "artiest": "Onbekend",
     "titel": "Https:",
     "gap": 33,
@@ -581,6 +581,27 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Fueled By Ramen",
+    "titel": "Twenty One Pilots: Heathens",
+    "gap": 32,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8e/e2/89/8ee28904-0821-610d-5011-a61845f62756/075679926951.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Rihanna",
+    "titel": "Where Have You Been",
+    "gap": 32,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/ac/51/45/ac51452d-c03f-94fb-6f3b-4f18b7beee53/11UMGIM38934.rgb.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Imagine Dragons",
+    "titel": "It'S Time",
+    "gap": 32,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1f/fa/09/1ffa092f-f52f-4a66-7d10-4cc5982dc747/12UMGIM46901.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "Gigi D'Agostino",
     "titel": "L'Amour Toujours",
     "gap": 32,
@@ -588,24 +609,17 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Of Monsters And Men",
+    "titel": "Little Talks",
+    "gap": 32,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a3/a8/c2/a3a8c2ee-79ca-f4f0-8adb-0060e04432fd/12UMGIM10062.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "Clean Bandit",
     "titel": "Symphony",
     "gap": 32,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/3b/26/be/3b26bed0-2f02-0a84-b899-04d82fa27cbc/190295552596.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Eminem",
-    "titel": "Lose Yourself",
-    "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/08/23/fc/0823fcd9-cb44-695b-32bf-b3bf51d9f800/00606949351229.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Editors",
-    "titel": "Papillon",
-    "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/90/1d/dc/901ddc5b-2343-5e00-3cfa-bbac668da099/cover.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -623,32 +637,11 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Imagine Dragons",
-    "titel": "It'S Time",
+    "artiest": "Oasis",
+    "titel": "Wonderwall",
     "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1f/fa/09/1ffa092f-f52f-4a66-7d10-4cc5982dc747/12UMGIM46901.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Of Monsters And Men",
-    "titel": "Little Talks",
-    "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a3/a8/c2/a3a8c2ee-79ca-f4f0-8adb-0060e04432fd/12UMGIM10062.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Rihanna",
-    "titel": "Where Have You Been",
-    "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/ac/51/45/ac51452d-c03f-94fb-6f3b-4f18b7beee53/11UMGIM38934.rgb.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "Fueled By Ramen",
-    "titel": "Twenty One Pilots: Heathens",
-    "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8e/e2/89/8ee28904-0821-610d-5011-a61845f62756/075679926951.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2024"
   },
   {
     "artiest": "Lady Gaga",
@@ -658,52 +651,31 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Oasis",
-    "titel": "Wonderwall",
+    "artiest": "Eminem",
+    "titel": "Lose Yourself",
     "gap": 32,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2024"
-  },
-  {
-    "artiest": "Coldplay",
-    "titel": "Adventure Of A Lifetime",
-    "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c8/0a/6d/c80a6df9-e55a-fb83-0311-f4776984ac67/mzm.lasidxkv.jpg/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/08/23/fc/0823fcd9-cb44-695b-32bf-b3bf51d9f800/00606949351229.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Green Day",
-    "titel": "Basket Case",
-    "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/88/83/e7/8883e74b-1b7c-0725-09de-21e4e00d54b5/093624915713.jpg/600x600bb.jpg",
+    "artiest": "Editors",
+    "titel": "Papillon",
+    "gap": 32,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/90/1d/dc/901ddc5b-2343-5e00-3cfa-bbac668da099/cover.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Linkin Park",
-    "titel": "In The End",
-    "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/53/a7/7f/53a77fab-c54c-a57b-8130-248fc12d0c80/093624948995.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Stromae",
-    "titel": "Alors On Danse",
-    "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a4/42/c6/a442c65a-8f55-720a-fa6b-a5805a6f3303/10UMGIM14302.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Jay-Z",
-    "titel": "Numb / Encore",
-    "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8c/b2/85/8cb28589-a74d-1961-894c-6d7662ee90da/mzi.eaqqjnzg.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
   },
   {
     "artiest": "Nirvana",
     "titel": "The Man Who Sold The World",
     "gap": 31,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/46/24/33/462433f9-ee74-2d60-4538-859826a7bed7/00720642472729.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Coldplay",
+    "titel": "Adventure Of A Lifetime",
+    "gap": 31,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c8/0a/6d/c80a6df9-e55a-fb83-0311-f4776984ac67/mzm.lasidxkv.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -714,10 +686,10 @@
     "periode": "2025 ➔ 2025"
   },
   {
-    "artiest": "Xxxtentacion",
-    "titel": "Numb",
+    "artiest": "Linkin Park",
+    "titel": "In The End",
     "gap": 31,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/f0/b0/21/f0b021d2-8bfb-e2ff-93f9-17c64147f971/18UMGIM14845.rgb.jpg/600x600bb.jpg",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/53/a7/7f/53a77fab-c54c-a57b-8130-248fc12d0c80/093624948995.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -735,94 +707,38 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Xxxtentacion",
+    "titel": "Numb",
+    "gap": 31,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/f0/b0/21/f0b021d2-8bfb-e2ff-93f9-17c64147f971/18UMGIM14845.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Jay-Z",
+    "titel": "Numb / Encore",
+    "gap": 31,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8c/b2/85/8cb28589-a74d-1961-894c-6d7662ee90da/mzi.eaqqjnzg.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
+    "artiest": "Stromae",
+    "titel": "Alors On Danse",
+    "gap": 31,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a4/42/c6/a442c65a-8f55-720a-fa6b-a5805a6f3303/10UMGIM14302.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Green Day",
+    "titel": "Basket Case",
+    "gap": 31,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/88/83/e7/8883e74b-1b7c-0725-09de-21e4e00d54b5/093624915713.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "Robin Schulz",
     "titel": "Speechless",
     "gap": 31,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ec/3d/13/ec3d1306-898a-96f9-2036-68dfe803d90c/190295105266.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Fleetwood Mac",
-    "titel": "The Chain",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/eb/dc/2aebdc18-c2c0-0fdd-fb85-07538a925700/603497925766.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Red Hot Chili Peppers",
-    "titel": "Californication",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4c/86/1d/4c861dab-5428-f3b7-8068-82bb69db5e89/093624932130.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "The Killers",
-    "titel": "Mr. Brightside",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/11/64/9c/11649c80-2066-dba8-77a9-df7eecae26c1/17UM1IM06937.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "J. Cole",
-    "titel": "She Knows",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/da/52/41/da52415b-d0ac-d61f-422c-e84bf5ef8162/20UMGIM66000.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Green Day",
-    "titel": "American Idiot",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d7/28/99/d7289920-c9f3-9f78-b63b-7ea753d64766/093624838494_04.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Loreen",
-    "titel": "Tattoo",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/50/32/fd/5032fddc-e486-956d-a503-7ec6d17af848/22UM1IM46463.rgb.jpg/600x600bb.jpg",
-    "periode": "2024 ➔ 2025"
-  },
-  {
-    "artiest": "3 Doors Down",
-    "titel": "Kryptonite",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/61/2a/58/612a58ca-af10-cc8f-07ef-b3368ebc9564/07UMGIM12238.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Juice Wrld",
-    "titel": "Robbery",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/62/10/cf/6210cf4a-be77-3d97-218d-834f68bb33b3/19UMGIM16006.rgb.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Hozier",
-    "titel": "Take Me To Church",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5e/1b/f1/5e1bf1de-e5f1-e73e-0752-e7882b4f2d57/886444718820.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Adele",
-    "titel": "Skyfall",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b3/fe/cf/b3fecf76-0359-8e14-0651-4b101fc68a3f/886443673632.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "The Smiths",
-    "titel": "There Is A Light That Never Goes Out",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1a/e8/70/1ae870c3-b402-096b-c4c4-8022af5a2ed9/745099189662.jpg/600x600bb.jpg",
-    "periode": "2025 ➔ 2025"
-  },
-  {
-    "artiest": "Green Day",
-    "titel": "Holiday",
-    "gap": 30,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0e/17/f0/0e17f011-aadf-d4d1-1c7e-b61ce39f968b/093624947301.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {
@@ -833,6 +749,55 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Adele",
+    "titel": "Skyfall",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b3/fe/cf/b3fecf76-0359-8e14-0651-4b101fc68a3f/886443673632.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Green Day",
+    "titel": "American Idiot",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d7/28/99/d7289920-c9f3-9f78-b63b-7ea753d64766/093624838494_04.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Hozier",
+    "titel": "Take Me To Church",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5e/1b/f1/5e1bf1de-e5f1-e73e-0752-e7882b4f2d57/886444718820.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "J. Cole",
+    "titel": "She Knows",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/da/52/41/da52415b-d0ac-d61f-422c-e84bf5ef8162/20UMGIM66000.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Juice Wrld",
+    "titel": "Robbery",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/62/10/cf/6210cf4a-be77-3d97-218d-834f68bb33b3/19UMGIM16006.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "3 Doors Down",
+    "titel": "Kryptonite",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/61/2a/58/612a58ca-af10-cc8f-07ef-b3368ebc9564/07UMGIM12238.rgb.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Loreen",
+    "titel": "Tattoo",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/50/32/fd/5032fddc-e486-956d-a503-7ec6d17af848/22UM1IM46463.rgb.jpg/600x600bb.jpg",
+    "periode": "2024 ➔ 2025"
+  },
+  {
     "artiest": "The Killers",
     "titel": "Somebody Told Me",
     "gap": 30,
@@ -840,10 +805,45 @@
     "periode": "2025 ➔ 2025"
   },
   {
+    "artiest": "Green Day",
+    "titel": "Holiday",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0e/17/f0/0e17f011-aadf-d4d1-1c7e-b61ce39f968b/093624947301.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Red Hot Chili Peppers",
+    "titel": "Californication",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4c/86/1d/4c861dab-5428-f3b7-8068-82bb69db5e89/093624932130.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
     "artiest": "The Fray",
     "titel": "How To Save A Life",
     "gap": 30,
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/cf/89/16/cf891622-f572-1b42-6bb9-0e973e063e35/TheFray_HowToSaveALife_G010000754032B_F_001_RGB.jpeg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "The Smiths",
+    "titel": "There Is A Light That Never Goes Out",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1a/e8/70/1ae870c3-b402-096b-c4c4-8022af5a2ed9/745099189662.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "Fleetwood Mac",
+    "titel": "The Chain",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/eb/dc/2aebdc18-c2c0-0fdd-fb85-07538a925700/603497925766.jpg/600x600bb.jpg",
+    "periode": "2025 ➔ 2025"
+  },
+  {
+    "artiest": "The Killers",
+    "titel": "Mr. Brightside",
+    "gap": 30,
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/11/64/9c/11649c80-2066-dba8-77a9-df7eecae26c1/17UM1IM06937.rgb.jpg/600x600bb.jpg",
     "periode": "2025 ➔ 2025"
   },
   {

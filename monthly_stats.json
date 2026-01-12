@@ -2,1519 +2,1033 @@
   "2026-01": {
     "top_songs": [
       [
-        "Radiohead",
-        "Street Spirit",
-        7
+        "Tame Impala",
+        "Dracula",
+        11
       ],
       [
-        "Tame Impala",
-        "Let It Happen",
-        7
+        "Pommelien Thijs",
+        "Ben Je Klaar?",
+        11
+      ],
+      [
+        "Blink-182",
+        "All The Small Things",
+        10
       ],
       [
         "Pixies",
         "Where Is My Mind?",
+        10
+      ],
+      [
+        "Radiohead",
+        "Street Spirit",
+        10
+      ],
+      [
+        "Radiohead",
+        "No Surprises",
+        10
+      ],
+      [
+        "Tame Impala",
+        "Let It Happen",
+        10
+      ],
+      [
+        "Pommelien Thijs",
+        "Ik Moet Gaan",
+        9
+      ],
+      [
+        "Abba",
+        "The Winner Takes It All",
+        9
+      ],
+      [
+        "Simple Minds",
+        "Don'T You",
+        9
+      ],
+      [
+        "The War On Drugs",
+        "Red Eyes",
+        9
+      ],
+      [
+        "Lorde",
+        "Green Light",
+        8
+      ],
+      [
+        "Bee Gees",
+        "Tragedy",
+        8
+      ],
+      [
+        "Netsky",
+        "Running Low",
+        8
+      ],
+      [
+        "Red Hot Chili Peppers",
+        "Under The Bridge",
+        8
+      ],
+      [
+        "Lp",
+        "Lost On You",
+        8
+      ],
+      [
+        "Scorpions",
+        "Wind Of Change",
+        8
+      ],
+      [
+        "Green Day",
+        "Good Riddance",
+        8
+      ],
+      [
+        "The War On Drugs",
+        "Pain",
+        8
+      ],
+      [
+        "The Weeknd",
+        "Timeless",
+        8
+      ],
+      [
+        "Pearl Jam",
+        "Black",
+        8
+      ],
+      [
+        "Oasis",
+        "Champagne Supernova",
+        7
+      ],
+      [
+        "Michael Sembello",
+        "Maniac",
+        7
+      ],
+      [
+        "Lost Frequencies",
+        "Reality",
+        7
+      ],
+      [
+        "Pommelien Thijs",
+        "Erop Of Eronder",
+        7
+      ],
+      [
+        "Pearl Jam",
+        "Alive",
+        7
+      ],
+      [
+        "Glass Animals",
+        "I Don'T Wanna Talk",
+        7
+      ],
+      [
+        "Franz Ferdinand",
+        "Take Me Out",
+        7
+      ],
+      [
+        "Xxxtentacion",
+        "Numb",
+        7
+      ],
+      [
+        "Radiohead",
+        "Creep",
+        7
+      ],
+      [
+        "Coolio",
+        "Gangsta'S Paradise",
+        7
+      ],
+      [
+        "Travis Scott",
+        "Sicko Mode",
+        7
+      ],
+      [
+        "Stromae",
+        "Tous Les Mêmes",
+        7
+      ],
+      [
+        "Metallica",
+        "Nothing Else Matters",
+        7
+      ],
+      [
+        "Tame Impala",
+        "Borderline",
+        7
+      ],
+      [
+        "Kate Bush",
+        "Running Up That Hill",
+        7
+      ],
+      [
+        "Mika",
+        "Relax, Take It Easy",
+        7
+      ],
+      [
+        "The Weeknd",
+        "I Feel It Coming",
+        7
+      ],
+      [
+        "Juice Wrld",
+        "Robbery",
+        7
+      ],
+      [
+        "Tove Lo",
+        "Habits",
+        7
+      ],
+      [
+        "Joy Division",
+        "Love Will Tear Us Apart",
+        7
+      ],
+      [
+        "Stromae",
+        "Alors On Danse",
+        7
+      ],
+      [
+        "J. Cole",
+        "No Role Modelz",
+        7
+      ],
+      [
+        "John Newman",
+        "Love Me Again",
+        7
+      ],
+      [
+        "Arctic Monkeys",
+        "Do I Wanna Know?",
+        7
+      ],
+      [
+        "Aerosmith",
+        "Dream On",
         7
       ],
       [
         "Maroon 5",
         "Payphone",
+        7
+      ],
+      [
+        "Taylor Swift",
+        "The Fate Of Ophelia",
         6
       ],
       [
-        "Lost Frequencies",
-        "Reality",
+        "Katy Perry",
+        "Hot N Cold",
         6
       ],
       [
-        "The War On Drugs",
-        "Red Eyes",
+        "Ed Sheeran",
+        "Castle On The Hill",
         6
-      ],
-      [
-        "Pearl Jam",
-        "Black",
-        6
-      ],
-      [
-        "Blink-182",
-        "All The Small Things",
-        6
-      ],
-      [
-        "Simple Minds",
-        "Don'T You",
-        6
-      ],
-      [
-        "Pommelien Thijs",
-        "Ben Je Klaar?",
-        6
-      ],
-      [
-        "Radiohead",
-        "No Surprises",
-        6
-      ],
-      [
-        "Juice Wrld",
-        "Robbery",
-        6
-      ],
-      [
-        "Scorpions",
-        "Wind Of Change",
-        6
-      ],
-      [
-        "Abba",
-        "The Winner Takes It All",
-        6
-      ],
-      [
-        "The War On Drugs",
-        "Pain",
-        6
-      ],
-      [
-        "Tame Impala",
-        "Dracula",
-        6
-      ],
-      [
-        "Kate Bush",
-        "Running Up That Hill",
-        5
-      ],
-      [
-        "Arctic Monkeys",
-        "Do I Wanna Know?",
-        5
-      ],
-      [
-        "Passenger",
-        "Let Her Go",
-        5
-      ],
-      [
-        "John Newman",
-        "Love Me Again",
-        5
-      ],
-      [
-        "Aerosmith",
-        "Dream On",
-        5
-      ],
-      [
-        "J. Cole",
-        "No Role Modelz",
-        5
-      ],
-      [
-        "Lp",
-        "Lost On You",
-        5
-      ],
-      [
-        "The Black Keys",
-        "Lonely Boy",
-        5
-      ],
-      [
-        "The Kid Laroi",
-        "Without You",
-        5
-      ],
-      [
-        "Lorde",
-        "Green Light",
-        5
-      ],
-      [
-        "Green Day",
-        "Good Riddance",
-        5
-      ],
-      [
-        "Rammstein",
-        "Sonne",
-        5
-      ],
-      [
-        "Pommelien Thijs",
-        "Ik Moet Gaan",
-        5
-      ],
-      [
-        "Stromae",
-        "Alors On Danse",
-        5
-      ],
-      [
-        "3 Doors Down",
-        "Kryptonite",
-        5
-      ],
-      [
-        "Hozier",
-        "Take Me To Church",
-        5
-      ],
-      [
-        "The Weeknd",
-        "I Feel It Coming",
-        5
-      ],
-      [
-        "Coolio",
-        "Gangsta'S Paradise",
-        5
-      ],
-      [
-        "Tame Impala",
-        "The Less I Know The Better",
-        5
-      ],
-      [
-        "Michael Sembello",
-        "Maniac",
-        5
-      ],
-      [
-        "The Weeknd",
-        "Timeless",
-        5
-      ],
-      [
-        "The Smiths",
-        "There Is A Light That Never Goes Out",
-        5
-      ],
-      [
-        "Red Hot Chili Peppers",
-        "Otherside",
-        4
-      ],
-      [
-        "Kygo",
-        "Firestone",
-        4
-      ],
-      [
-        "Linkin Park",
-        "In The End",
-        4
-      ],
-      [
-        "Michael Jackson",
-        "Beat It",
-        4
-      ],
-      [
-        "Red Hot Chili Peppers",
-        "Californication",
-        4
-      ],
-      [
-        "Metallica",
-        "Nothing Else Matters",
-        4
-      ],
-      [
-        "The Killers",
-        "Mr. Brightside",
-        4
-      ],
-      [
-        "The Lumineers",
-        "Ho Hey",
-        4
-      ],
-      [
-        "Pitbull",
-        "Feel This Moment",
-        4
-      ],
-      [
-        "Oscar And The Wolf",
-        "Warrior",
-        4
-      ],
-      [
-        "Adele",
-        "Someone Like You",
-        4
-      ],
-      [
-        "Clean Bandit",
-        "Symphony",
-        4
-      ],
-      [
-        "The Verve",
-        "Bitter Sweet Symphony",
-        4
-      ],
-      [
-        "Mgmt",
-        "Little Dark Age",
-        4
-      ],
-      [
-        "David Guetta",
-        "This One'S For You",
-        4
-      ],
-      [
-        "Ynw Melly",
-        "Murder On My Mind",
-        4
-      ],
-      [
-        "Editors",
-        "Smokers Outside The Hospital Doors",
-        4
-      ],
-      [
-        "Sean Paul",
-        "She Doesn'T Mind",
-        4
-      ],
-      [
-        "Dolly Parton",
-        "Jolene",
-        4
-      ],
-      [
-        "Tame Impala",
-        "Borderline",
-        4
-      ],
-      [
-        "Red Hot Chili Peppers",
-        "Under The Bridge",
-        4
-      ],
-      [
-        "Oasis",
-        "Champagne Supernova",
-        4
-      ],
-      [
-        "Arctic Monkeys",
-        "I Wanna Be Yours",
-        4
-      ],
-      [
-        "Dua Lipa",
-        "Love Again",
-        4
-      ],
-      [
-        "Franz Ferdinand",
-        "Take Me Out",
-        4
-      ],
-      [
-        "Jay-Z",
-        "Numb / Encore",
-        4
-      ],
-      [
-        "Travis Scott",
-        "Sicko Mode",
-        4
-      ],
-      [
-        "Glass Animals",
-        "Heat Waves",
-        4
-      ],
-      [
-        "David Bowie",
-        "Starman",
-        4
-      ],
-      [
-        "Lykke Li",
-        "I Follow Rivers",
-        4
-      ],
-      [
-        "Mgmt",
-        "Time To Pretend",
-        4
-      ],
-      [
-        "Radiohead",
-        "Creep",
-        4
-      ],
-      [
-        "Beyoncé",
-        "Halo",
-        4
       ],
       [
         "Nirvana",
         "Smells Like Teen Spirit",
-        4
-      ],
-      [
-        "Depeche Mode",
-        "Enjoy The Silence",
-        4
-      ],
-      [
-        "Xxxtentacion",
-        "Numb",
-        4
-      ],
-      [
-        "Editors",
-        "No Sound But The Wind",
-        4
-      ],
-      [
-        "Netsky",
-        "Running Low",
-        4
-      ],
-      [
-        "Pommelien Thijs",
-        "Erop Of Eronder",
-        4
-      ],
-      [
-        "Mika",
-        "Relax, Take It Easy",
-        4
-      ],
-      [
-        "The Kid Laroi",
-        "Baby I'M Back",
-        4
-      ],
-      [
-        "Adele",
-        "Skyfall",
-        4
-      ],
-      [
-        "The War On Drugs",
-        "Under The Pressure",
-        4
-      ],
-      [
-        "Florence + The Machine",
-        "Spectrum",
-        4
-      ],
-      [
-        "Netsky",
-        "Come Alive -",
-        4
-      ],
-      [
-        "Roxy Dekker",
-        "Gaan We Weg?",
-        4
-      ],
-      [
-        "Stromae",
-        "Tous Les Mêmes",
-        4
-      ],
-      [
-        "The Smiths",
-        "Bigmouth Strikes Again",
-        4
-      ],
-      [
-        "Dire Straits",
-        "Sultans Of Swing",
-        4
-      ],
-      [
-        "Vance Joy",
-        "Riptide",
-        4
-      ],
-      [
-        "Rihanna",
-        "Where Have You Been",
-        4
-      ],
-      [
-        "24Kgoldn",
-        "Mood",
-        4
-      ],
-      [
-        "The Smiths",
-        "Heaven Knows I'M Miserable Now",
-        4
-      ],
-      [
-        "Bee Gees",
-        "Tragedy",
-        4
-      ],
-      [
-        "Pommelien Thijs",
-        "Atlas",
-        4
-      ],
-      [
-        "Joy Division",
-        "Love Will Tear Us Apart",
-        4
-      ],
-      [
-        "Post Malone",
-        "Rockstar",
-        4
+        6
       ],
       [
         "Dua Lipa",
         "Levitating",
-        4
+        6
+      ],
+      [
+        "Depeche Mode",
+        "Enjoy The Silence",
+        6
+      ],
+      [
+        "Kaleo",
+        "Way Down We Go",
+        6
+      ],
+      [
+        "Goose",
+        "Synrise",
+        6
+      ],
+      [
+        "Bruno Mars",
+        "Locked Out Of Heaven",
+        6
+      ],
+      [
+        "Oscar And The Wolf",
+        "Warrior",
+        6
+      ],
+      [
+        "M83",
+        "Midnight City",
+        6
+      ],
+      [
+        "Lykke Li",
+        "I Follow Rivers",
+        6
+      ],
+      [
+        "Rihanna",
+        "Where Have You Been",
+        6
+      ],
+      [
+        "Jay-Z",
+        "Numb / Encore",
+        6
+      ],
+      [
+        "Dire Straits",
+        "Sultans Of Swing",
+        6
+      ],
+      [
+        "Manic Street Preachers",
+        "Motorcycle Emptiness",
+        6
+      ],
+      [
+        "Hozier",
+        "Take Me To Church",
+        6
+      ],
+      [
+        "Arctic Monkeys",
+        "505",
+        6
+      ],
+      [
+        "Dolly Parton",
+        "Jolene",
+        6
+      ],
+      [
+        "3 Doors Down",
+        "Kryptonite",
+        6
+      ],
+      [
+        "The Verve",
+        "Bitter Sweet Symphony",
+        6
+      ],
+      [
+        "Ynw Melly",
+        "Murder On My Mind",
+        6
+      ],
+      [
+        "Red Hot Chili Peppers",
+        "Californication",
+        6
+      ],
+      [
+        "Mgmt",
+        "Little Dark Age",
+        6
+      ],
+      [
+        "Passenger",
+        "Let Her Go",
+        6
+      ],
+      [
+        "The Smiths",
+        "There Is A Light That Never Goes Out",
+        6
+      ],
+      [
+        "Adele",
+        "Someone Like You",
+        6
+      ],
+      [
+        "The War On Drugs",
+        "Under The Pressure",
+        6
+      ],
+      [
+        "Dua Lipa",
+        "Love Again",
+        6
+      ],
+      [
+        "Rammstein",
+        "Sonne",
+        6
+      ],
+      [
+        "Tame Impala",
+        "The Less I Know The Better",
+        6
+      ],
+      [
+        "The Black Keys",
+        "Lonely Boy",
+        6
+      ],
+      [
+        "Michael Jackson",
+        "Beat It",
+        5
+      ],
+      [
+        "David Bowie",
+        "Starman",
+        5
+      ],
+      [
+        "Gigi Perez",
+        "Sailor Song",
+        5
+      ],
+      [
+        "Post Malone",
+        "Rockstar",
+        5
+      ],
+      [
+        "Adele",
+        "Rolling In The Deep",
+        5
+      ],
+      [
+        "David Guetta",
+        "This One'S For You",
+        5
+      ],
+      [
+        "Mgmt",
+        "Time To Pretend",
+        5
+      ],
+      [
+        "The Cranberries",
+        "Zombie",
+        5
+      ],
+      [
+        "Kygo",
+        "Firestone",
+        5
+      ],
+      [
+        "Adele",
+        "Skyfall",
+        5
+      ],
+      [
+        "Lost Frequencies",
+        "Are You With Me",
+        5
+      ],
+      [
+        "Nf",
+        "Lie",
+        5
+      ],
+      [
+        "Amy Macdonald",
+        "This Is The Life",
+        5
+      ],
+      [
+        "Green Day",
+        "American Idiot",
+        5
       ],
       [
         "Red Hot Chili Peppers",
         "Scar Tissue",
-        3
+        5
       ],
       [
-        "Gigi D'Agostino",
-        "L'Amour Toujours",
-        3
+        "Linkin Park",
+        "In The End",
+        5
+      ],
+      [
+        "The Lumineers",
+        "Ho Hey",
+        5
+      ],
+      [
+        "Pitbull",
+        "Give Me Everything",
+        5
+      ],
+      [
+        "The Chainsmokers",
+        "Something Just Like This",
+        5
       ],
       [
         "Fleetwood Mac",
-        "The Chain",
-        3
+        "Go Your Own Way",
+        5
       ],
       [
-        "Future",
-        "Mask Off",
-        3
+        "Jay-Z & Kanye West",
+        "Ni**as In Paris",
+        5
       ]
     ],
     "top_artists": [
       [
         "Tame Impala",
-        27
-      ],
-      [
-        "Radiohead",
-        24
-      ],
-      [
-        "The Weeknd",
-        22
+        39
       ],
       [
         "Pommelien Thijs",
-        21
+        38
+      ],
+      [
+        "Radiohead",
+        36
       ],
       [
         "Red Hot Chili Peppers",
-        20
+        30
+      ],
+      [
+        "The Weeknd",
+        29
       ],
       [
         "The War On Drugs",
-        20
+        27
       ],
       [
         "Green Day",
-        17
+        24
       ],
       [
         "Coldplay",
-        16
+        22
       ],
       [
         "Adele",
-        16
-      ],
-      [
-        "Arctic Monkeys",
-        14
+        22
       ],
       [
         "Xxxtentacion",
-        13
+        21
       ],
       [
-        "The Smiths",
-        13
-      ],
-      [
-        "Stromae",
-        12
-      ],
-      [
-        "Dua Lipa",
-        12
-      ],
-      [
-        "Mgmt",
-        11
-      ],
-      [
-        "Editors",
-        11
+        "Arctic Monkeys",
+        20
       ],
       [
         "Nirvana",
-        11
+        19
       ],
       [
-        "Lost Frequencies",
-        9
+        "Dua Lipa",
+        18
       ],
       [
-        "Pearl Jam",
-        9
-      ],
-      [
-        "The Kid Laroi",
-        9
+        "Stromae",
+        17
       ],
       [
         "Oasis",
-        9
+        15
+      ],
+      [
+        "Mgmt",
+        15
+      ],
+      [
+        "Pearl Jam",
+        15
       ],
       [
         "Muse",
-        8
+        15
       ],
       [
-        "Maroon 5",
-        8
-      ],
-      [
-        "J. Cole",
-        8
-      ],
-      [
-        "Juice Wrld",
-        8
-      ],
-      [
-        "Pixies",
-        8
-      ],
-      [
-        "Katy Perry",
-        8
+        "The Smiths",
+        15
       ],
       [
         "Netsky",
-        8
+        13
       ],
       [
-        "Lady Gaga",
-        8
+        "Katy Perry",
+        13
       ],
       [
-        "Eminem",
-        7
+        "Editors",
+        13
       ],
       [
-        "Linkin Park",
-        7
-      ],
-      [
-        "Florence + The Machine",
-        7
-      ],
-      [
-        "Post Malone",
-        7
-      ],
-      [
-        "Pitbull",
-        7
-      ],
-      [
-        "Travis Scott",
-        7
+        "Lost Frequencies",
+        12
       ],
       [
         "Glass Animals",
-        7
+        12
       ],
       [
-        "Scorpions",
-        7
+        "Travis Scott",
+        11
       ],
       [
-        "Fleetwood Mac",
-        6
+        "Pixies",
+        11
       ],
       [
-        "Michael Jackson",
-        6
+        "Eminem",
+        11
       ],
       [
-        "The Killers",
-        6
+        "J. Cole",
+        11
       ],
       [
-        "Blink-182",
-        6
-      ],
-      [
-        "Simple Minds",
-        6
-      ],
-      [
-        "Abba",
-        6
-      ],
-      [
-        "Rihanna",
-        6
-      ],
-      [
-        "Kate Bush",
-        5
-      ],
-      [
-        "Kygo",
-        5
-      ],
-      [
-        "Passenger",
-        5
-      ],
-      [
-        "John Newman",
-        5
-      ],
-      [
-        "Aerosmith",
-        5
-      ],
-      [
-        "Interpol",
-        5
-      ],
-      [
-        "Lp",
-        5
-      ],
-      [
-        "David Guetta",
-        5
-      ],
-      [
-        "The Black Keys",
-        5
-      ],
-      [
-        "Lorde",
-        5
-      ],
-      [
-        "Rammstein",
-        5
-      ],
-      [
-        "3 Doors Down",
-        5
-      ],
-      [
-        "Hozier",
-        5
-      ],
-      [
-        "Coolio",
-        5
+        "Maroon 5",
+        11
       ],
       [
         "Depeche Mode",
-        5
+        10
       ],
       [
-        "Michael Sembello",
-        5
+        "Blink-182",
+        10
       ],
       [
-        "Metallica",
-        4
+        "Pitbull",
+        10
       ],
       [
-        "The Lumineers",
-        4
+        "Juice Wrld",
+        10
       ],
       [
-        "Oscar And The Wolf",
-        4
+        "The Kid Laroi",
+        10
       ],
       [
-        "Clean Bandit",
-        4
+        "The Killers",
+        10
       ],
       [
-        "The Verve",
-        4
+        "Lady Gaga",
+        10
       ],
       [
-        "Ynw Melly",
-        4
+        "Lorde",
+        9
       ],
       [
-        "Sean Paul",
-        4
+        "Post Malone",
+        9
       ],
       [
-        "Kendrick Lamar",
-        4
+        "Florence + The Machine",
+        9
       ],
       [
-        "Dolly Parton",
-        4
+        "Linkin Park",
+        9
       ],
       [
-        "Franz Ferdinand",
-        4
+        "Scorpions",
+        9
       ],
       [
-        "Jay-Z",
-        4
+        "Abba",
+        9
       ],
       [
-        "David Bowie",
-        4
-      ],
-      [
-        "Lykke Li",
-        4
-      ],
-      [
-        "Beyoncé",
-        4
-      ],
-      [
-        "Mika",
-        4
-      ],
-      [
-        "Roxy Dekker",
-        4
-      ],
-      [
-        "Dire Straits",
-        4
-      ],
-      [
-        "Vance Joy",
-        4
-      ],
-      [
-        "24Kgoldn",
-        4
+        "Simple Minds",
+        9
       ],
       [
         "Bee Gees",
-        4
+        8
+      ],
+      [
+        "Lp",
+        8
+      ],
+      [
+        "Fleetwood Mac",
+        8
+      ],
+      [
+        "Rihanna",
+        8
+      ],
+      [
+        "Kendrick Lamar",
+        8
+      ],
+      [
+        "Interpol",
+        8
+      ],
+      [
+        "Michael Sembello",
+        7
+      ],
+      [
+        "Michael Jackson",
+        7
+      ],
+      [
+        "Franz Ferdinand",
+        7
+      ],
+      [
+        "Coolio",
+        7
+      ],
+      [
+        "Metallica",
+        7
+      ],
+      [
+        "Kate Bush",
+        7
+      ],
+      [
+        "Mika",
+        7
+      ],
+      [
+        "Tove Lo",
+        7
       ],
       [
         "Joy Division",
-        4
+        7
       ],
       [
-        "Gigi D'Agostino",
-        3
+        "John Newman",
+        7
       ],
       [
-        "Future",
-        3
+        "Aerosmith",
+        7
       ],
       [
-        "Tool",
-        3
+        "Taylor Swift",
+        6
       ],
       [
-        "Owl City",
-        3
+        "Ed Sheeran",
+        6
       ],
       [
-        "Nico & Vinz",
-        3
+        "David Guetta",
+        6
       ],
       [
-        "Mumford And Sons",
-        3
-      ],
-      [
-        "Survivor",
-        3
+        "Kygo",
+        6
       ],
       [
         "Kaleo",
-        3
+        6
       ],
       [
-        "The Rolling Stones",
-        3
-      ],
-      [
-        "Calvin Harris",
-        3
+        "Goose",
+        6
       ],
       [
         "Bruno Mars",
-        3
+        6
       ],
       [
-        "Gorki",
-        3
+        "Oscar And The Wolf",
+        6
       ],
       [
-        "Glints",
-        3
+        "M83",
+        6
       ],
       [
-        "Young The Giant",
-        3
+        "Lykke Li",
+        6
       ],
       [
-        "Elton John",
-        3
+        "Jay-Z",
+        6
       ],
       [
-        "The Chainsmokers",
-        3
+        "Dire Straits",
+        6
       ],
       [
-        "Roddy Ricch",
-        3
+        "Manic Street Preachers",
+        6
       ],
       [
-        "Sevdaliza",
-        3
+        "Hozier",
+        6
+      ],
+      [
+        "Dolly Parton",
+        6
+      ],
+      [
+        "3 Doors Down",
+        6
+      ],
+      [
+        "The Verve",
+        6
+      ],
+      [
+        "Ynw Melly",
+        6
+      ],
+      [
+        "Passenger",
+        6
+      ],
+      [
+        "Roxy Dekker",
+        6
+      ],
+      [
+        "Rammstein",
+        6
+      ],
+      [
+        "The Black Keys",
+        6
+      ],
+      [
+        "David Bowie",
+        5
       ],
       [
         "Gigi Perez",
-        3
+        5
+      ],
+      [
+        "The Cranberries",
+        5
+      ],
+      [
+        "Nf",
+        5
+      ],
+      [
+        "Amy Macdonald",
+        5
+      ],
+      [
+        "The Lumineers",
+        5
+      ],
+      [
+        "The Chainsmokers",
+        5
+      ],
+      [
+        "Jay-Z & Kanye West",
+        5
+      ],
+      [
+        "Tool",
+        5
+      ],
+      [
+        "Elton John",
+        5
+      ],
+      [
+        "Sean Paul",
+        5
+      ],
+      [
+        "Ghost",
+        5
+      ],
+      [
+        "Clean Bandit",
+        5
+      ],
+      [
+        "24Kgoldn",
+        5
+      ],
+      [
+        "Zara Larsson",
+        5
+      ],
+      [
+        "Beyoncé",
+        5
+      ],
+      [
+        "Vance Joy",
+        5
+      ],
+      [
+        "Bazart",
+        4
       ]
     ],
     "artist_details": {
-      "Radiohead": [
+      "Lorde": [
         [
-          "Street Spirit",
+          "Green Light",
+          8
+        ],
+        [
+          "Team",
+          1
+        ]
+      ],
+      "Bazart": [
+        [
+          "Goud",
+          4
+        ]
+      ],
+      "Survivor": [
+        [
+          "Eye Of The Tiger",
+          4
+        ]
+      ],
+      "Bee Gees": [
+        [
+          "Tragedy",
+          8
+        ]
+      ],
+      "Oasis": [
+        [
+          "Champagne Supernova",
           7
         ],
         [
-          "No Surprises",
-          6
-        ],
-        [
-          "Creep",
+          "Don'T Look Back In Anger",
           4
         ],
         [
-          "Let Down",
-          3
-        ],
-        [
-          "Karma Police",
-          1
-        ],
-        [
-          "Paranoid Android",
-          1
-        ],
-        [
-          "Exit",
-          1
-        ],
-        [
-          "Fake Plastic Trees",
-          1
-        ]
-      ],
-      "Kate Bush": [
-        [
-          "Running Up That Hill",
-          5
-        ]
-      ],
-      "Muse": [
-        [
-          "Starlight",
+          "Wonderwall",
           2
         ],
         [
-          "Madness",
+          "Live Forever",
           1
         ],
         [
-          "Time Is Running Out",
-          1
-        ],
-        [
-          "Hysteria",
-          1
-        ],
-        [
-          "Supermassive Black Hole",
-          1
-        ],
-        [
-          "Knights Of Cydonia",
-          1
-        ],
-        [
-          "Uprising",
+          "Stop Crying Your Heart Out",
           1
         ]
       ],
-      "Red Hot Chili Peppers": [
+      "Michael Sembello": [
         [
-          "Otherside",
-          4
-        ],
-        [
-          "Californication",
-          4
-        ],
-        [
-          "Under The Bridge",
-          4
-        ],
-        [
-          "Scar Tissue",
-          3
-        ],
-        [
-          "Snow",
-          3
-        ],
-        [
-          "Can'T Stop",
-          2
-        ]
-      ],
-      "Coldplay": [
-        [
-          "Clocks",
-          3
-        ],
-        [
-          "The Scientist",
-          3
-        ],
-        [
-          "Viva La Vida",
-          3
-        ],
-        [
-          "Adventure Of A Lifetime",
-          2
-        ],
-        [
-          "A Sky Full Of Stars",
-          2
-        ],
-        [
-          "Paradise",
-          1
-        ],
-        [
-          "Hymn For The Weekend",
-          1
-        ],
-        [
-          "Yellow",
-          1
-        ]
-      ],
-      "Kygo": [
-        [
-          "Firestone",
-          4
-        ],
-        [
-          "Stole The Show",
-          1
-        ]
-      ],
-      "Green Day": [
-        [
-          "Good Riddance",
-          5
-        ],
-        [
-          "American Idiot",
-          3
-        ],
-        [
-          "Holiday",
-          3
-        ],
-        [
-          "Basket Case",
-          2
-        ],
-        [
-          "Boulevard Of Broken Dreams",
-          2
-        ],
-        [
-          "Wake Me Up When September Ends",
-          2
-        ]
-      ],
-      "Eminem": [
-        [
-          "Lose Yourself",
-          3
-        ],
-        [
-          "Mockingbird",
-          2
-        ],
-        [
-          "Stan",
-          2
-        ]
-      ],
-      "Gigi D'Agostino": [
-        [
-          "L'Amour Toujours",
-          3
-        ]
-      ],
-      "Linkin Park": [
-        [
-          "In The End",
-          4
-        ],
-        [
-          "Numb",
-          3
-        ]
-      ],
-      "Fleetwood Mac": [
-        [
-          "The Chain",
-          3
-        ],
-        [
-          "Go Your Own Way",
-          3
-        ]
-      ],
-      "Cutting Crew": [
-        [
-          "Died In Your Arms",
-          1
-        ]
-      ],
-      "The Beach Boys": [
-        [
-          "California Dreamin'",
-          1
-        ]
-      ],
-      "Tears For Fears": [
-        [
-          "Everybody Wants To Rule The World",
-          2
+          "Maniac",
+          7
         ]
       ],
       "Michael Jackson": [
         [
           "Beat It",
-          4
+          5
         ],
         [
           "Billie Jean",
           2
         ]
       ],
-      "Future": [
+      "Taylor Swift": [
         [
-          "Mask Off",
-          3
-        ]
-      ],
-      "Arctic Monkeys": [
-        [
-          "Do I Wanna Know?",
-          5
-        ],
-        [
-          "I Wanna Be Yours",
-          4
-        ],
-        [
-          "505",
-          3
-        ],
-        [
-          "Snap Out Of It",
-          2
-        ]
-      ],
-      "Florence + The Machine": [
-        [
-          "Spectrum",
-          4
-        ],
-        [
-          "Dog Days Are Over",
-          3
-        ]
-      ],
-      "Maroon 5": [
-        [
-          "Payphone",
-          6
-        ],
-        [
-          "Maps",
-          2
-        ]
-      ],
-      "Lost Frequencies": [
-        [
-          "Reality",
-          6
-        ],
-        [
-          "Are You With Me",
-          3
-        ]
-      ],
-      "Metallica": [
-        [
-          "Nothing Else Matters",
-          4
-        ]
-      ],
-      "The Killers": [
-        [
-          "Mr. Brightside",
-          4
-        ],
-        [
-          "Somebody Told Me",
-          2
-        ]
-      ],
-      "Passenger": [
-        [
-          "Let Her Go",
-          5
-        ]
-      ],
-      "John Newman": [
-        [
-          "Love Me Again",
-          5
-        ]
-      ],
-      "Post Malone": [
-        [
-          "Rockstar",
-          4
-        ],
-        [
-          "Circles",
-          3
-        ]
-      ],
-      "The Lumineers": [
-        [
-          "Ho Hey",
-          4
-        ]
-      ],
-      "Aerosmith": [
-        [
-          "Dream On",
-          5
-        ]
-      ],
-      "Pitbull": [
-        [
-          "Feel This Moment",
-          4
-        ],
-        [
-          "Give Me Everything",
-          3
-        ]
-      ],
-      "The War On Drugs": [
-        [
-          "Red Eyes",
-          6
-        ],
-        [
-          "Pain",
-          6
-        ],
-        [
-          "Under The Pressure",
-          4
-        ],
-        [
-          "Strangest Thing",
-          2
-        ],
-        [
-          "I Don'T Live Here Anymore",
-          1
-        ],
-        [
-          "Thinking Of A Place",
-          1
-        ]
-      ],
-      "Oscar And The Wolf": [
-        [
-          "Warrior",
-          4
-        ]
-      ],
-      "Interpol": [
-        [
-          "Evil",
-          3
-        ],
-        [
-          "C'Mere",
-          1
-        ],
-        [
-          "Pace Is The Trick",
-          1
-        ]
-      ],
-      "J. Cole": [
-        [
-          "No Role Modelz",
-          5
-        ],
-        [
-          "She Knows",
-          3
-        ]
-      ],
-      "Lp": [
-        [
-          "Lost On You",
-          5
-        ]
-      ],
-      "Adele": [
-        [
-          "Someone Like You",
-          4
-        ],
-        [
-          "Skyfall",
-          4
-        ],
-        [
-          "Love In The Dark",
-          3
-        ],
-        [
-          "Rolling In The Deep",
-          3
-        ],
-        [
-          "Set Fire To The Rain",
-          2
-        ]
-      ],
-      "Clean Bandit": [
-        [
-          "Symphony",
-          4
-        ]
-      ],
-      "The Verve": [
-        [
-          "Bitter Sweet Symphony",
-          4
-        ]
-      ],
-      "Tool": [
-        [
-          "Schism",
-          3
-        ]
-      ],
-      "Mgmt": [
-        [
-          "Little Dark Age",
-          4
-        ],
-        [
-          "Time To Pretend",
-          4
-        ],
-        [
-          "Kids",
-          3
-        ]
-      ],
-      "David Guetta": [
-        [
-          "This One'S For You",
-          4
-        ],
-        [
-          "Titanium Ft. Sia",
-          1
-        ]
-      ],
-      "The Black Keys": [
-        [
-          "Lonely Boy",
-          5
-        ]
-      ],
-      "Ynw Melly": [
-        [
-          "Murder On My Mind",
-          4
-        ]
-      ],
-      "Owl City": [
-        [
-          "Fireflies",
-          3
-        ]
-      ],
-      "Nico & Vinz": [
-        [
-          "Am I Wrong",
-          3
-        ]
-      ],
-      "Pearl Jam": [
-        [
-          "Black",
-          6
-        ],
-        [
-          "Alive",
-          3
-        ]
-      ],
-      "The Kid Laroi": [
-        [
-          "Without You",
-          5
-        ],
-        [
-          "Baby I'M Back",
-          4
-        ]
-      ],
-      "Editors": [
-        [
-          "Smokers Outside The Hospital Doors",
-          4
-        ],
-        [
-          "No Sound But The Wind",
-          4
-        ],
-        [
-          "Papillon",
-          3
-        ]
-      ],
-      "Sean Paul": [
-        [
-          "She Doesn'T Mind",
-          4
-        ]
-      ],
-      "Kendrick Lamar": [
-        [
-          "Pride.",
-          2
-        ],
-        [
-          "Humble.",
-          2
-        ]
-      ],
-      "Dolly Parton": [
-        [
-          "Jolene",
-          4
-        ]
-      ],
-      "Lorde": [
-        [
-          "Green Light",
-          5
-        ]
-      ],
-      "Blink-182": [
-        [
-          "All The Small Things",
+          "The Fate Of Ophelia",
           6
         ]
       ],
-      "Simple Minds": [
+      "Conan Gray": [
         [
-          "Don'T You",
-          6
+          "Memories",
+          4
         ]
       ],
-      "Pommelien Thijs": [
+      "David Bowie": [
         [
-          "Ben Je Klaar?",
+          "Starman",
+          5
+        ]
+      ],
+      "Netsky": [
+        [
+          "Running Low",
+          8
+        ],
+        [
+          "Come Alive -",
+          5
+        ]
+      ],
+      "Katy Perry": [
+        [
+          "Hot N Cold",
           6
         ],
         [
-          "Ik Moet Gaan",
-          5
-        ],
-        [
-          "Erop Of Eronder",
+          "Firework",
           4
         ],
         [
-          "Atlas",
-          4
-        ],
-        [
-          "Ongewoon",
-          2
+          "The One That Got Away",
+          3
         ]
       ],
       "Tame Impala": [
         [
-          "Let It Happen",
-          7
-        ],
-        [
           "Dracula",
-          6
+          11
         ],
         [
-          "The Less I Know The Better",
-          5
+          "Let It Happen",
+          10
         ],
         [
           "Borderline",
-          4
+          7
+        ],
+        [
+          "The Less I Know The Better",
+          6
         ],
         [
           "Gossip",
@@ -1537,248 +1051,656 @@
           1
         ]
       ],
-      "Mumford And Sons": [
+      "Ed Sheeran": [
         [
-          "Little Lion Man",
-          3
-        ]
-      ],
-      "Kings Of Leon": [
-        [
-          "Sex On Fire",
-          2
-        ]
-      ],
-      "Rammstein": [
-        [
-          "Sonne",
-          5
-        ]
-      ],
-      "Survivor": [
-        [
-          "Eye Of The Tiger",
-          3
-        ]
-      ],
-      "Oasis": [
-        [
-          "Champagne Supernova",
-          4
-        ],
-        [
-          "Don'T Look Back In Anger",
-          3
-        ],
-        [
-          "Stop Crying Your Heart Out",
-          1
-        ],
-        [
-          "Wonderwall",
-          1
-        ]
-      ],
-      "Kaleo": [
-        [
-          "Way Down We Go",
-          3
+          "Castle On The Hill",
+          6
         ]
       ],
       "The Rolling Stones": [
         [
           "Paint It, Black",
-          3
+          4
         ]
       ],
-      "Justin Bieber": [
+      "Nirvana": [
         [
-          "Beauty And A Beat",
-          2
-        ]
-      ],
-      "Stromae": [
-        [
-          "Alors On Danse",
-          5
+          "Smells Like Teen Spirit",
+          6
         ],
         [
-          "Tous Les Mêmes",
+          "The Man Who Sold The World",
           4
         ],
         [
-          "Papaoutai",
+          "Come As You Are",
+          4
+        ],
+        [
+          "Lithium",
+          3
+        ],
+        [
+          "Something In The Way",
+          1
+        ],
+        [
+          "Heart-Shaped Box",
+          1
+        ]
+      ],
+      "Gigi Perez": [
+        [
+          "Sailor Song",
+          5
+        ]
+      ],
+      "Coldplay": [
+        [
+          "Viva La Vida",
+          5
+        ],
+        [
+          "Adventure Of A Lifetime",
+          4
+        ],
+        [
+          "The Scientist",
+          4
+        ],
+        [
+          "A Sky Full Of Stars",
+          3
+        ],
+        [
+          "Clocks",
+          3
+        ],
+        [
+          "Paradise",
+          1
+        ],
+        [
+          "Hymn For The Weekend",
+          1
+        ],
+        [
+          "Yellow",
+          1
+        ]
+      ],
+      "Xxxtentacion": [
+        [
+          "Numb",
+          7
+        ],
+        [
+          "True Love",
+          5
+        ],
+        [
+          "Sad!",
+          4
+        ],
+        [
+          "Revenge",
+          4
+        ],
+        [
+          "Hope",
+          1
+        ]
+      ],
+      "James Arthur": [
+        [
+          "Car'S Outside",
           3
         ]
       ],
-      "Calvin Harris": [
+      "Lost Frequencies": [
         [
-          "One Kiss",
+          "Reality",
+          7
+        ],
+        [
+          "Are You With Me",
+          5
+        ]
+      ],
+      "Daft Punk": [
+        [
+          "Instant Crush",
+          3
+        ],
+        [
+          "Get Lucky",
+          1
+        ]
+      ],
+      "Bastille": [
+        [
+          "Pompeii",
+          2
+        ]
+      ],
+      "Post Malone": [
+        [
+          "Rockstar",
+          5
+        ],
+        [
+          "Circles",
+          4
+        ]
+      ],
+      "Adele": [
+        [
+          "Someone Like You",
+          6
+        ],
+        [
+          "Rolling In The Deep",
+          5
+        ],
+        [
+          "Skyfall",
+          5
+        ],
+        [
+          "Love In The Dark",
+          4
+        ],
+        [
+          "Set Fire To The Rain",
+          2
+        ]
+      ],
+      "Olly Alexander (Years & Years)": [
+        [
+          "King",
           3
         ]
       ],
-      "Bruno Mars": [
+      "David Guetta": [
         [
-          "Locked Out Of Heaven",
-          3
+          "This One'S For You",
+          5
+        ],
+        [
+          "Titanium Ft. Sia",
+          1
         ]
       ],
       "Lil Nas X": [
         [
           "Industry Baby",
-          2
+          4
+        ]
+      ],
+      "Roddy Ricch": [
+        [
+          "The Box",
+          4
+        ]
+      ],
+      "Mgmt": [
+        [
+          "Little Dark Age",
+          6
+        ],
+        [
+          "Time To Pretend",
+          5
+        ],
+        [
+          "Kids",
+          4
+        ]
+      ],
+      "Pommelien Thijs": [
+        [
+          "Ben Je Klaar?",
+          11
+        ],
+        [
+          "Ik Moet Gaan",
+          9
+        ],
+        [
+          "Erop Of Eronder",
+          7
+        ],
+        [
+          "Ongewoon",
+          5
+        ],
+        [
+          "Atlas",
+          5
+        ],
+        [
+          "Roekeloos",
+          1
+        ]
+      ],
+      "The Cranberries": [
+        [
+          "Zombie",
+          5
+        ]
+      ],
+      "Travis Scott": [
+        [
+          "Sicko Mode",
+          7
+        ],
+        [
+          "Fe!N",
+          4
         ]
       ],
       "Dua Lipa": [
         [
-          "Love Again",
-          4
+          "Levitating",
+          6
         ],
         [
-          "Levitating",
-          4
+          "Love Again",
+          6
         ],
         [
           "New Rules",
-          3
+          5
         ],
         [
           "Be The One",
           1
         ]
       ],
-      "Gorki": [
+      "Kygo": [
         [
-          "Mia",
+          "Firestone",
+          5
+        ],
+        [
+          "Stole The Show",
+          1
+        ]
+      ],
+      "Red Hot Chili Peppers": [
+        [
+          "Under The Bridge",
+          8
+        ],
+        [
+          "Californication",
+          6
+        ],
+        [
+          "Scar Tissue",
+          5
+        ],
+        [
+          "Otherside",
+          5
+        ],
+        [
+          "Can'T Stop",
+          3
+        ],
+        [
+          "Snow",
           3
         ]
       ],
-      "Loreen": [
+      "Lp": [
         [
-          "Tattoo",
-          2
+          "Lost On You",
+          8
         ]
       ],
-      "3 Doors Down": [
+      "Depeche Mode": [
         [
-          "Kryptonite",
+          "Enjoy The Silence",
+          6
+        ],
+        [
+          "Personal Jesus",
+          4
+        ]
+      ],
+      "Nf": [
+        [
+          "Lie",
           5
         ]
       ],
-      "Glints": [
+      "Florence + The Machine": [
         [
-          "Housewife",
-          3
+          "Spectrum",
+          5
+        ],
+        [
+          "Dog Days Are Over",
+          4
         ]
       ],
-      "Dotan": [
+      "Kaleo": [
         [
-          "Home",
+          "Way Down We Go",
+          6
+        ]
+      ],
+      "Amy Macdonald": [
+        [
+          "This Is The Life",
+          5
+        ]
+      ],
+      "Green Day": [
+        [
+          "Good Riddance",
+          8
+        ],
+        [
+          "American Idiot",
+          5
+        ],
+        [
+          "Holiday",
+          4
+        ],
+        [
+          "Wake Me Up When September Ends",
+          3
+        ],
+        [
+          "Basket Case",
           2
+        ],
+        [
+          "Boulevard Of Broken Dreams",
+          2
+        ]
+      ],
+      "Goose": [
+        [
+          "Synrise",
+          6
+        ]
+      ],
+      "Bruno Mars": [
+        [
+          "Locked Out Of Heaven",
+          6
+        ]
+      ],
+      "Oscar And The Wolf": [
+        [
+          "Warrior",
+          6
+        ]
+      ],
+      "Blink-182": [
+        [
+          "All The Small Things",
+          10
+        ]
+      ],
+      "Pearl Jam": [
+        [
+          "Black",
+          8
+        ],
+        [
+          "Alive",
+          7
+        ]
+      ],
+      "Linkin Park": [
+        [
+          "In The End",
+          5
+        ],
+        [
+          "Numb",
+          4
+        ]
+      ],
+      "Glass Animals": [
+        [
+          "I Don'T Wanna Talk",
+          7
+        ],
+        [
+          "Heat Waves",
+          5
+        ]
+      ],
+      "The Lumineers": [
+        [
+          "Ho Hey",
+          5
         ]
       ],
       "Franz Ferdinand": [
         [
           "Take Me Out",
-          4
+          7
         ]
       ],
-      "Young The Giant": [
+      "Pitbull": [
         [
-          "Mind Over Matter",
-          3
-        ]
-      ],
-      "Elton John": [
-        [
-          "I'M Still Standing",
-          3
-        ]
-      ],
-      "Juice Wrld": [
-        [
-          "Robbery",
-          6
+          "Give Me Everything",
+          5
         ],
         [
-          "Lucid Dreams",
-          2
+          "Feel This Moment",
+          5
         ]
       ],
-      "Jay-Z": [
+      "Nle Choppa": [
         [
-          "Numb / Encore",
-          4
-        ]
-      ],
-      "Travis Scott": [
-        [
-          "Sicko Mode",
-          4
-        ],
-        [
-          "Fe!N",
+          "Capo",
           3
         ]
       ],
       "The Chainsmokers": [
         [
           "Something Just Like This",
+          5
+        ]
+      ],
+      "Fueled By Ramen": [
+        [
+          "Twenty One Pilots: Heathens",
+          4
+        ]
+      ],
+      "Fleetwood Mac": [
+        [
+          "Go Your Own Way",
+          5
+        ],
+        [
+          "The Chain",
           3
         ]
       ],
-      "Nirvana": [
+      "M83": [
         [
-          "Smells Like Teen Spirit",
-          4
+          "Midnight City",
+          6
+        ]
+      ],
+      "Lykke Li": [
+        [
+          "I Follow Rivers",
+          6
+        ]
+      ],
+      "Rihanna": [
+        [
+          "Where Have You Been",
+          6
         ],
         [
-          "The Man Who Sold The World",
-          3
-        ],
-        [
-          "Lithium",
-          2
-        ],
-        [
-          "Heart-Shaped Box",
+          "Diamonds",
           1
         ],
         [
-          "Come As You Are",
+          "Stay",
           1
         ]
       ],
-      "Glass Animals": [
+      "Jay-Z": [
         [
-          "Heat Waves",
+          "Numb / Encore",
+          6
+        ]
+      ],
+      "Dire Straits": [
+        [
+          "Sultans Of Swing",
+          6
+        ]
+      ],
+      "Jay-Z & Kanye West": [
+        [
+          "Ni**as In Paris",
+          5
+        ]
+      ],
+      "Pixies": [
+        [
+          "Where Is My Mind?",
+          10
+        ],
+        [
+          "All I Think About Now",
+          1
+        ]
+      ],
+      "Radiohead": [
+        [
+          "Street Spirit",
+          10
+        ],
+        [
+          "No Surprises",
+          10
+        ],
+        [
+          "Creep",
+          7
+        ],
+        [
+          "Let Down",
+          5
+        ],
+        [
+          "Karma Police",
+          1
+        ],
+        [
+          "Paranoid Android",
+          1
+        ],
+        [
+          "Exit",
+          1
+        ],
+        [
+          "Fake Plastic Trees",
+          1
+        ]
+      ],
+      "Coolio": [
+        [
+          "Gangsta'S Paradise",
+          7
+        ]
+      ],
+      "Manic Street Preachers": [
+        [
+          "Motorcycle Emptiness",
+          6
+        ]
+      ],
+      "Tom Odell": [
+        [
+          "Another Love",
+          4
+        ]
+      ],
+      "Kendrick Lamar": [
+        [
+          "Humble.",
           4
         ],
         [
-          "I Don'T Wanna Talk",
-          3
-        ]
-      ],
-      "Roddy Ricch": [
-        [
-          "The Box",
-          3
+          "Pride.",
+          4
         ]
       ],
       "Hozier": [
         [
           "Take Me To Church",
-          5
+          6
+        ]
+      ],
+      "The Neighbourhood": [
+        [
+          "Sweater Weather",
+          2
+        ]
+      ],
+      "Stromae": [
+        [
+          "Tous Les Mêmes",
+          7
+        ],
+        [
+          "Alors On Danse",
+          7
+        ],
+        [
+          "Papaoutai",
+          3
+        ]
+      ],
+      "Eminem": [
+        [
+          "Stan",
+          4
+        ],
+        [
+          "Lose Yourself",
+          4
+        ],
+        [
+          "Mockingbird",
+          3
+        ]
+      ],
+      "Metallica": [
+        [
+          "Nothing Else Matters",
+          7
         ]
       ],
       "The Weeknd": [
         [
-          "I Feel It Coming",
-          5
+          "Timeless",
+          8
         ],
         [
-          "Timeless",
-          5
+          "I Feel It Coming",
+          7
+        ],
+        [
+          "Starboy",
+          3
         ],
         [
           "Save Your Tears",
@@ -1793,130 +1715,640 @@
           3
         ],
         [
-          "Starboy",
-          2
-        ],
-        [
           "The Hills",
-          1
+          2
         ]
       ],
-      "David Bowie": [
+      "Tool": [
         [
-          "Starman",
+          "Schism",
+          5
+        ]
+      ],
+      "Imagine Dragons": [
+        [
+          "It'S Time",
           4
         ]
       ],
-      "Sevdaliza": [
+      "Juice Wrld": [
         [
-          "Alibi",
+          "Robbery",
+          7
+        ],
+        [
+          "Lucid Dreams",
           3
         ]
       ],
-      "Hooverphonic": [
+      "J. Cole": [
         [
-          "Amalfi",
-          2
-        ]
-      ],
-      "Gigi Perez": [
+          "No Role Modelz",
+          7
+        ],
         [
-          "Sailor Song",
-          3
-        ]
-      ],
-      "Lykke Li": [
-        [
-          "I Follow Rivers",
+          "She Knows",
           4
         ]
       ],
       "Scorpions": [
         [
           "Wind Of Change",
-          6
+          8
         ],
         [
           "Still Loving You",
           1
         ]
       ],
-      "Lil Peep": [
+      "Kate Bush": [
         [
-          "Falling Down",
-          3
-        ]
-      ],
-      "Pixies": [
-        [
-          "Where Is My Mind?",
+          "Running Up That Hill",
           7
-        ],
-        [
-          "All I Think About Now",
-          1
-        ]
-      ],
-      "Daft Punk": [
-        [
-          "Instant Crush",
-          2
-        ],
-        [
-          "Get Lucky",
-          1
         ]
       ],
       "Abba": [
         [
           "The Winner Takes It All",
+          9
+        ]
+      ],
+      "Mika": [
+        [
+          "Relax, Take It Easy",
+          7
+        ]
+      ],
+      "Justin Bieber": [
+        [
+          "Beauty And A Beat",
+          3
+        ]
+      ],
+      "Nico & Vinz": [
+        [
+          "Am I Wrong",
+          4
+        ]
+      ],
+      "Hooverphonic": [
+        [
+          "Amalfi",
+          3
+        ]
+      ],
+      "Elton John": [
+        [
+          "I'M Still Standing",
+          5
+        ]
+      ],
+      "Arctic Monkeys": [
+        [
+          "Do I Wanna Know?",
+          7
+        ],
+        [
+          "505",
+          6
+        ],
+        [
+          "I Wanna Be Yours",
+          4
+        ],
+        [
+          "Snap Out Of It",
+          2
+        ],
+        [
+          "Fluorescent Adolescent",
+          1
+        ]
+      ],
+      "Dolly Parton": [
+        [
+          "Jolene",
           6
         ]
       ],
-      "The Cranberries": [
+      "Sean Paul": [
         [
-          "Zombie",
+          "She Doesn'T Mind",
+          5
+        ]
+      ],
+      "The Kid Laroi": [
+        [
+          "Baby I'M Back",
+          5
+        ],
+        [
+          "Without You",
+          5
+        ]
+      ],
+      "Empire! Empire! (I Was A Lonely Estate)": [
+        [
+          "How To Make Love Stay",
+          1
+        ]
+      ],
+      "Interpol": [
+        [
+          "Evil",
+          5
+        ],
+        [
+          "Untitled",
+          1
+        ],
+        [
+          "C'Mere",
+          1
+        ],
+        [
+          "Pace Is The Trick",
+          1
+        ]
+      ],
+      "The Killers": [
+        [
+          "Somebody Told Me",
+          5
+        ],
+        [
+          "Mr. Brightside",
+          4
+        ],
+        [
+          "Human",
+          1
+        ]
+      ],
+      "The Cure": [
+        [
+          "A Letter To Elise",
+          1
+        ]
+      ],
+      "Keane": [
+        [
+          "Somewhere Only We Know",
+          4
+        ]
+      ],
+      "Muse": [
+        [
+          "Uprising",
+          5
+        ],
+        [
+          "Starlight",
+          4
+        ],
+        [
+          "Resistance",
+          1
+        ],
+        [
+          "Madness",
+          1
+        ],
+        [
+          "Time Is Running Out",
+          1
+        ],
+        [
+          "Hysteria",
+          1
+        ],
+        [
+          "Supermassive Black Hole",
+          1
+        ],
+        [
+          "Knights Of Cydonia",
+          1
+        ]
+      ],
+      "3 Doors Down": [
+        [
+          "Kryptonite",
+          6
+        ]
+      ],
+      "Gigi D'Agostino": [
+        [
+          "L'Amour Toujours",
+          4
+        ]
+      ],
+      "Loreen": [
+        [
+          "Tattoo",
           3
         ]
       ],
-      "R.E.M.": [
+      "Eagles": [
         [
-          "Losing My Religion",
-          3
+          "Hotel California",
+          4
+        ]
+      ],
+      "The War On Drugs": [
+        [
+          "Red Eyes",
+          9
+        ],
+        [
+          "Pain",
+          8
+        ],
+        [
+          "Under The Pressure",
+          6
+        ],
+        [
+          "Strangest Thing",
+          2
+        ],
+        [
+          "I Don'T Live Here Anymore",
+          1
+        ],
+        [
+          "Thinking Of A Place",
+          1
+        ]
+      ],
+      "Tove Lo": [
+        [
+          "Habits",
+          7
+        ]
+      ],
+      "Joy Division": [
+        [
+          "Love Will Tear Us Apart",
+          7
+        ]
+      ],
+      "Of Monsters And Men": [
+        [
+          "Little Talks",
+          4
+        ]
+      ],
+      "Ghost": [
+        [
+          "Mary On A Cross",
+          5
+        ]
+      ],
+      "Simple Minds": [
+        [
+          "Don'T You",
+          9
+        ]
+      ],
+      "The Verve": [
+        [
+          "Bitter Sweet Symphony",
+          6
+        ]
+      ],
+      "Clean Bandit": [
+        [
+          "Symphony",
+          5
+        ]
+      ],
+      "24Kgoldn": [
+        [
+          "Mood",
+          5
+        ]
+      ],
+      "The Goo Goo Dolls": [
+        [
+          "Iris",
+          4
+        ]
+      ],
+      "Glints": [
+        [
+          "Housewife",
+          4
+        ]
+      ],
+      "Maroon 5": [
+        [
+          "Payphone",
+          7
+        ],
+        [
+          "Maps",
+          4
+        ]
+      ],
+      "Zara Larsson": [
+        [
+          "Lush Life",
+          5
+        ]
+      ],
+      "Ynw Melly": [
+        [
+          "Murder On My Mind",
+          6
         ]
       ],
       "Beyoncé": [
         [
           "Halo",
+          5
+        ]
+      ],
+      "Nickelback": [
+        [
+          "How You Remind Me",
           4
         ]
       ],
-      "Xxxtentacion": [
+      "R.E.M.": [
         [
-          "Numb",
+          "Losing My Religion",
+          4
+        ]
+      ],
+      "Editors": [
+        [
+          "Smokers Outside The Hospital Doors",
+          5
+        ],
+        [
+          "No Sound But The Wind",
           4
         ],
         [
-          "Sad!",
+          "Papillon",
           3
         ],
         [
-          "True Love",
-          3
-        ],
-        [
-          "Revenge",
-          2
-        ],
-        [
-          "Hope",
+          "Munich",
           1
         ]
       ],
-      "Coolio": [
+      "John Newman": [
         [
-          "Gangsta'S Paradise",
+          "Love Me Again",
+          7
+        ]
+      ],
+      "Rixton": [
+        [
+          "Me And My Broken Heart",
+          4
+        ]
+      ],
+      "Passenger": [
+        [
+          "Let Her Go",
+          6
+        ]
+      ],
+      "The Fray": [
+        [
+          "How To Save A Life",
+          4
+        ]
+      ],
+      "The Smiths": [
+        [
+          "There Is A Light That Never Goes Out",
+          6
+        ],
+        [
+          "Bigmouth Strikes Again",
           5
+        ],
+        [
+          "Heaven Knows I'M Miserable Now",
+          4
+        ]
+      ],
+      "Lady Gaga": [
+        [
+          "Poker Face",
+          4
+        ],
+        [
+          "Bad Romance",
+          3
+        ],
+        [
+          "Judas",
+          2
+        ],
+        [
+          "Die With A Smile",
+          1
+        ]
+      ],
+      "Nicki Minaj": [
+        [
+          "Starships",
+          4
+        ]
+      ],
+      "Sevdaliza": [
+        [
+          "Alibi",
+          4
+        ]
+      ],
+      "Bruce Springsteen": [
+        [
+          "Dancing In The Dark",
+          4
+        ]
+      ],
+      "Aerosmith": [
+        [
+          "Dream On",
+          7
+        ]
+      ],
+      "Wheatus": [
+        [
+          "Teenage Dirtbag",
+          3
+        ]
+      ],
+      "Gorki": [
+        [
+          "Mia",
+          4
+        ]
+      ],
+      "Blanche": [
+        [
+          "City Lights",
+          3
+        ]
+      ],
+      "Lustrum U.V.S.V./N.V.V.S.U.": [
+        [
+          "Lotje",
+          1
+        ]
+      ],
+      "Natasha Bedingfield": [
+        [
+          "Unwritten",
+          1
+        ]
+      ],
+      "Roxy Dekker": [
+        [
+          "Gaan We Weg?",
+          5
+        ],
+        [
+          "Hoe Het Is",
+          1
+        ]
+      ],
+      "Gracie Abrams": [
+        [
+          "That’S So True",
+          1
+        ]
+      ],
+      "Billy Joel": [
+        [
+          "Piano Man",
+          2
+        ]
+      ],
+      "Chappell Roan": [
+        [
+          "Pink Pony Club",
+          1
+        ]
+      ],
+      "Sam Fender": [
+        [
+          "People Watching",
+          1
+        ]
+      ],
+      "Kavinsky": [
+        [
+          "Odd Look Ft. The Weeknd",
+          1
+        ]
+      ],
+      "Rammstein": [
+        [
+          "Sonne",
+          6
+        ]
+      ],
+      "Young The Giant": [
+        [
+          "Mind Over Matter",
+          4
+        ]
+      ],
+      "Vance Joy": [
+        [
+          "Riptide",
+          5
+        ]
+      ],
+      "David Kushner": [
+        [
+          "Daylight",
+          4
+        ]
+      ],
+      "The Black Keys": [
+        [
+          "Lonely Boy",
+          6
+        ]
+      ],
+      "Lil Peep": [
+        [
+          "Falling Down",
+          4
+        ]
+      ],
+      "Band Of Horses": [
+        [
+          "The Funeral",
+          1
+        ]
+      ],
+      "Djo": [
+        [
+          "End Of Beginning",
+          3
+        ]
+      ],
+      "Cutting Crew": [
+        [
+          "Died In Your Arms",
+          1
+        ]
+      ],
+      "The Beach Boys": [
+        [
+          "California Dreamin'",
+          1
+        ]
+      ],
+      "Tears For Fears": [
+        [
+          "Everybody Wants To Rule The World",
+          2
+        ]
+      ],
+      "Future": [
+        [
+          "Mask Off",
+          3
+        ]
+      ],
+      "Owl City": [
+        [
+          "Fireflies",
+          3
+        ]
+      ],
+      "Mumford And Sons": [
+        [
+          "Little Lion Man",
+          3
+        ]
+      ],
+      "Kings Of Leon": [
+        [
+          "Sex On Fire",
+          2
+        ]
+      ],
+      "Calvin Harris": [
+        [
+          "One Kiss",
+          3
+        ]
+      ],
+      "Dotan": [
+        [
+          "Home",
+          2
         ]
       ],
       "Sapientdream": [
@@ -1925,109 +2357,9 @@
           2
         ]
       ],
-      "Amy Macdonald": [
-        [
-          "This Is The Life",
-          3
-        ]
-      ],
-      "Katy Perry": [
-        [
-          "Firework",
-          3
-        ],
-        [
-          "Hot N Cold",
-          3
-        ],
-        [
-          "The One That Got Away",
-          2
-        ]
-      ],
-      "Manic Street Preachers": [
-        [
-          "Motorcycle Emptiness",
-          2
-        ]
-      ],
-      "Rixton": [
-        [
-          "Me And My Broken Heart",
-          3
-        ]
-      ],
-      "Goose": [
-        [
-          "Synrise",
-          3
-        ]
-      ],
-      "Depeche Mode": [
-        [
-          "Enjoy The Silence",
-          4
-        ],
-        [
-          "Personal Jesus",
-          1
-        ]
-      ],
-      "Netsky": [
-        [
-          "Running Low",
-          4
-        ],
-        [
-          "Come Alive -",
-          4
-        ]
-      ],
-      "Michael Sembello": [
-        [
-          "Maniac",
-          5
-        ]
-      ],
-      "Mika": [
-        [
-          "Relax, Take It Easy",
-          4
-        ]
-      ],
       "Morcheeba": [
         [
           "Elephant Clouds",
-          1
-        ]
-      ],
-      "Taylor Swift": [
-        [
-          "The Fate Of Ophelia",
-          3
-        ]
-      ],
-      "Jay-Z & Kanye West": [
-        [
-          "Ni**as In Paris",
-          2
-        ]
-      ],
-      "Lady Gaga": [
-        [
-          "Poker Face",
-          3
-        ],
-        [
-          "Judas",
-          2
-        ],
-        [
-          "Bad Romance",
-          2
-        ],
-        [
-          "Die With A Smile",
           1
         ]
       ],
@@ -2037,230 +2369,16 @@
           1
         ]
       ],
-      "Nickelback": [
-        [
-          "How You Remind Me",
-          2
-        ]
-      ],
-      "Ed Sheeran": [
-        [
-          "Castle On The Hill",
-          3
-        ]
-      ],
-      "The Goo Goo Dolls": [
-        [
-          "Iris",
-          2
-        ]
-      ],
-      "Roxy Dekker": [
-        [
-          "Gaan We Weg?",
-          4
-        ]
-      ],
-      "The Smiths": [
-        [
-          "There Is A Light That Never Goes Out",
-          5
-        ],
-        [
-          "Bigmouth Strikes Again",
-          4
-        ],
-        [
-          "Heaven Knows I'M Miserable Now",
-          4
-        ]
-      ],
-      "James Arthur": [
-        [
-          "Car'S Outside",
-          2
-        ]
-      ],
-      "Olly Alexander (Years & Years)": [
-        [
-          "King",
-          2
-        ]
-      ],
-      "Imagine Dragons": [
-        [
-          "It'S Time",
-          3
-        ]
-      ],
-      "Of Monsters And Men": [
-        [
-          "Little Talks",
-          2
-        ]
-      ],
-      "Zara Larsson": [
-        [
-          "Lush Life",
-          3
-        ]
-      ],
-      "Dire Straits": [
-        [
-          "Sultans Of Swing",
-          4
-        ]
-      ],
-      "Bruce Springsteen": [
-        [
-          "Dancing In The Dark",
-          3
-        ]
-      ],
-      "Nf": [
-        [
-          "Lie",
-          2
-        ]
-      ],
-      "Vance Joy": [
-        [
-          "Riptide",
-          4
-        ]
-      ],
-      "David Kushner": [
-        [
-          "Daylight",
-          3
-        ]
-      ],
-      "Rihanna": [
-        [
-          "Where Have You Been",
-          4
-        ],
-        [
-          "Diamonds",
-          1
-        ],
-        [
-          "Stay",
-          1
-        ]
-      ],
-      "24Kgoldn": [
-        [
-          "Mood",
-          4
-        ]
-      ],
-      "Blanche": [
-        [
-          "City Lights",
-          2
-        ]
-      ],
-      "The Neighbourhood": [
-        [
-          "Sweater Weather",
-          1
-        ]
-      ],
-      "Tove Lo": [
-        [
-          "Habits",
-          3
-        ]
-      ],
-      "Bee Gees": [
-        [
-          "Tragedy",
-          4
-        ]
-      ],
-      "Joy Division": [
-        [
-          "Love Will Tear Us Apart",
-          4
-        ]
-      ],
-      "Nicki Minaj": [
-        [
-          "Starships",
-          3
-        ]
-      ],
-      "Ghost": [
-        [
-          "Mary On A Cross",
-          3
-        ]
-      ],
       "Ellie Goulding": [
         [
           "Lights",
           2
         ]
       ],
-      "Eagles": [
-        [
-          "Hotel California",
-          3
-        ]
-      ],
       "Maan": [
         [
           "Stiekem",
           3
-        ]
-      ],
-      "Conan Gray": [
-        [
-          "Memories",
-          2
-        ]
-      ],
-      "Bazart": [
-        [
-          "Goud",
-          2
-        ]
-      ],
-      "Nle Choppa": [
-        [
-          "Capo",
-          2
-        ]
-      ],
-      "Fueled By Ramen": [
-        [
-          "Twenty One Pilots: Heathens",
-          3
-        ]
-      ],
-      "M83": [
-        [
-          "Midnight City",
-          3
-        ]
-      ],
-      "The Fray": [
-        [
-          "How To Save A Life",
-          3
-        ]
-      ],
-      "Djo": [
-        [
-          "End Of Beginning",
-          2
-        ]
-      ],
-      "Keane": [
-        [
-          "Somewhere Only We Know",
-          1
         ]
       ],
       "Capital Cities": [
@@ -2329,12 +2447,6 @@
           1
         ]
       ],
-      "Tom Odell": [
-        [
-          "Another Love",
-          1
-        ]
-      ],
       "New Radicals": [
         [
           "You Get What You Give",
@@ -2395,24 +2507,6 @@
           1
         ]
       ],
-      "Wheatus": [
-        [
-          "Teenage Dirtbag",
-          2
-        ]
-      ],
-      "Bastille": [
-        [
-          "Pompeii",
-          1
-        ]
-      ],
-      "Billy Joel": [
-        [
-          "Piano Man",
-          1
-        ]
-      ],
       "Tom Waits": [
         [
           "Martha",
@@ -2426,159 +2520,172 @@
         ]
       ]
     },
-    "total_listens": 841,
-    "unique_artists": 176,
-    "unique_songs": 292,
+    "total_listens": 1237,
+    "unique_artists": 185,
+    "unique_songs": 311,
     "artist_counts": {
-      "Radiohead": 24,
-      "Kate Bush": 5,
-      "Muse": 8,
-      "Red Hot Chili Peppers": 20,
-      "Coldplay": 16,
-      "Kygo": 5,
-      "Green Day": 17,
-      "Eminem": 7,
-      "Gigi D'Agostino": 3,
-      "Linkin Park": 7,
-      "Fleetwood Mac": 6,
+      "Lorde": 9,
+      "Bazart": 4,
+      "Survivor": 4,
+      "Bee Gees": 8,
+      "Oasis": 15,
+      "Michael Sembello": 7,
+      "Michael Jackson": 7,
+      "Taylor Swift": 6,
+      "Conan Gray": 4,
+      "David Bowie": 5,
+      "Netsky": 13,
+      "Katy Perry": 13,
+      "Tame Impala": 39,
+      "Ed Sheeran": 6,
+      "The Rolling Stones": 4,
+      "Nirvana": 19,
+      "Gigi Perez": 5,
+      "Coldplay": 22,
+      "Xxxtentacion": 21,
+      "James Arthur": 3,
+      "Lost Frequencies": 12,
+      "Daft Punk": 4,
+      "Bastille": 2,
+      "Post Malone": 9,
+      "Adele": 22,
+      "Olly Alexander (Years & Years)": 3,
+      "David Guetta": 6,
+      "Lil Nas X": 4,
+      "Roddy Ricch": 4,
+      "Mgmt": 15,
+      "Pommelien Thijs": 38,
+      "The Cranberries": 5,
+      "Travis Scott": 11,
+      "Dua Lipa": 18,
+      "Kygo": 6,
+      "Red Hot Chili Peppers": 30,
+      "Lp": 8,
+      "Depeche Mode": 10,
+      "Nf": 5,
+      "Florence + The Machine": 9,
+      "Kaleo": 6,
+      "Amy Macdonald": 5,
+      "Green Day": 24,
+      "Goose": 6,
+      "Bruno Mars": 6,
+      "Oscar And The Wolf": 6,
+      "Blink-182": 10,
+      "Pearl Jam": 15,
+      "Linkin Park": 9,
+      "Glass Animals": 12,
+      "The Lumineers": 5,
+      "Franz Ferdinand": 7,
+      "Pitbull": 10,
+      "Nle Choppa": 3,
+      "The Chainsmokers": 5,
+      "Fueled By Ramen": 4,
+      "Fleetwood Mac": 8,
+      "M83": 6,
+      "Lykke Li": 6,
+      "Rihanna": 8,
+      "Jay-Z": 6,
+      "Dire Straits": 6,
+      "Jay-Z & Kanye West": 5,
+      "Pixies": 11,
+      "Radiohead": 36,
+      "Coolio": 7,
+      "Manic Street Preachers": 6,
+      "Tom Odell": 4,
+      "Kendrick Lamar": 8,
+      "Hozier": 6,
+      "The Neighbourhood": 2,
+      "Stromae": 17,
+      "Eminem": 11,
+      "Metallica": 7,
+      "The Weeknd": 29,
+      "Tool": 5,
+      "Imagine Dragons": 4,
+      "Juice Wrld": 10,
+      "J. Cole": 11,
+      "Scorpions": 9,
+      "Kate Bush": 7,
+      "Abba": 9,
+      "Mika": 7,
+      "Justin Bieber": 3,
+      "Nico & Vinz": 4,
+      "Hooverphonic": 3,
+      "Elton John": 5,
+      "Arctic Monkeys": 20,
+      "Dolly Parton": 6,
+      "Sean Paul": 5,
+      "The Kid Laroi": 10,
+      "Empire! Empire! (I Was A Lonely Estate)": 1,
+      "Interpol": 8,
+      "The Killers": 10,
+      "The Cure": 1,
+      "Keane": 4,
+      "Muse": 15,
+      "3 Doors Down": 6,
+      "Gigi D'Agostino": 4,
+      "Loreen": 3,
+      "Eagles": 4,
+      "The War On Drugs": 27,
+      "Tove Lo": 7,
+      "Joy Division": 7,
+      "Of Monsters And Men": 4,
+      "Ghost": 5,
+      "Simple Minds": 9,
+      "The Verve": 6,
+      "Clean Bandit": 5,
+      "24Kgoldn": 5,
+      "The Goo Goo Dolls": 4,
+      "Glints": 4,
+      "Maroon 5": 11,
+      "Zara Larsson": 5,
+      "Ynw Melly": 6,
+      "Beyoncé": 5,
+      "Nickelback": 4,
+      "R.E.M.": 4,
+      "Editors": 13,
+      "John Newman": 7,
+      "Rixton": 4,
+      "Passenger": 6,
+      "The Fray": 4,
+      "The Smiths": 15,
+      "Lady Gaga": 10,
+      "Nicki Minaj": 4,
+      "Sevdaliza": 4,
+      "Bruce Springsteen": 4,
+      "Aerosmith": 7,
+      "Wheatus": 3,
+      "Gorki": 4,
+      "Blanche": 3,
+      "Lustrum U.V.S.V./N.V.V.S.U.": 1,
+      "Natasha Bedingfield": 1,
+      "Roxy Dekker": 6,
+      "Gracie Abrams": 1,
+      "Billy Joel": 2,
+      "Chappell Roan": 1,
+      "Sam Fender": 1,
+      "Kavinsky": 1,
+      "Rammstein": 6,
+      "Young The Giant": 4,
+      "Vance Joy": 5,
+      "David Kushner": 4,
+      "The Black Keys": 6,
+      "Lil Peep": 4,
+      "Band Of Horses": 1,
+      "Djo": 3,
       "Cutting Crew": 1,
       "The Beach Boys": 1,
       "Tears For Fears": 2,
-      "Michael Jackson": 6,
       "Future": 3,
-      "Arctic Monkeys": 14,
-      "Florence + The Machine": 7,
-      "Maroon 5": 8,
-      "Lost Frequencies": 9,
-      "Metallica": 4,
-      "The Killers": 6,
-      "Passenger": 5,
-      "John Newman": 5,
-      "Post Malone": 7,
-      "The Lumineers": 4,
-      "Aerosmith": 5,
-      "Pitbull": 7,
-      "The War On Drugs": 20,
-      "Oscar And The Wolf": 4,
-      "Interpol": 5,
-      "J. Cole": 8,
-      "Lp": 5,
-      "Adele": 16,
-      "Clean Bandit": 4,
-      "The Verve": 4,
-      "Tool": 3,
-      "Mgmt": 11,
-      "David Guetta": 5,
-      "The Black Keys": 5,
-      "Ynw Melly": 4,
       "Owl City": 3,
-      "Nico & Vinz": 3,
-      "Pearl Jam": 9,
-      "The Kid Laroi": 9,
-      "Editors": 11,
-      "Sean Paul": 4,
-      "Kendrick Lamar": 4,
-      "Dolly Parton": 4,
-      "Lorde": 5,
-      "Blink-182": 6,
-      "Simple Minds": 6,
-      "Pommelien Thijs": 21,
-      "Tame Impala": 27,
       "Mumford And Sons": 3,
       "Kings Of Leon": 2,
-      "Rammstein": 5,
-      "Survivor": 3,
-      "Oasis": 9,
-      "Kaleo": 3,
-      "The Rolling Stones": 3,
-      "Justin Bieber": 2,
-      "Stromae": 12,
       "Calvin Harris": 3,
-      "Bruno Mars": 3,
-      "Lil Nas X": 2,
-      "Dua Lipa": 12,
-      "Gorki": 3,
-      "Loreen": 2,
-      "3 Doors Down": 5,
-      "Glints": 3,
       "Dotan": 2,
-      "Franz Ferdinand": 4,
-      "Young The Giant": 3,
-      "Elton John": 3,
-      "Juice Wrld": 8,
-      "Jay-Z": 4,
-      "Travis Scott": 7,
-      "The Chainsmokers": 3,
-      "Nirvana": 11,
-      "Glass Animals": 7,
-      "Roddy Ricch": 3,
-      "Hozier": 5,
-      "The Weeknd": 22,
-      "David Bowie": 4,
-      "Sevdaliza": 3,
-      "Hooverphonic": 2,
-      "Gigi Perez": 3,
-      "Lykke Li": 4,
-      "Scorpions": 7,
-      "Lil Peep": 3,
-      "Pixies": 8,
-      "Daft Punk": 3,
-      "Abba": 6,
-      "The Cranberries": 3,
-      "R.E.M.": 3,
-      "Beyoncé": 4,
-      "Xxxtentacion": 13,
-      "Coolio": 5,
       "Sapientdream": 2,
-      "Amy Macdonald": 3,
-      "Katy Perry": 8,
-      "Manic Street Preachers": 2,
-      "Rixton": 3,
-      "Goose": 3,
-      "Depeche Mode": 5,
-      "Netsky": 8,
-      "Michael Sembello": 5,
-      "Mika": 4,
       "Morcheeba": 1,
-      "Taylor Swift": 3,
-      "Jay-Z & Kanye West": 2,
-      "Lady Gaga": 8,
       "Kanye West": 1,
-      "Nickelback": 2,
-      "Ed Sheeran": 3,
-      "The Goo Goo Dolls": 2,
-      "Roxy Dekker": 4,
-      "The Smiths": 13,
-      "James Arthur": 2,
-      "Olly Alexander (Years & Years)": 2,
-      "Imagine Dragons": 3,
-      "Of Monsters And Men": 2,
-      "Zara Larsson": 3,
-      "Dire Straits": 4,
-      "Bruce Springsteen": 3,
-      "Nf": 2,
-      "Vance Joy": 4,
-      "David Kushner": 3,
-      "Rihanna": 6,
-      "24Kgoldn": 4,
-      "Blanche": 2,
-      "The Neighbourhood": 1,
-      "Tove Lo": 3,
-      "Bee Gees": 4,
-      "Joy Division": 4,
-      "Nicki Minaj": 3,
-      "Ghost": 3,
       "Ellie Goulding": 2,
-      "Eagles": 3,
       "Maan": 3,
-      "Conan Gray": 2,
-      "Bazart": 2,
-      "Nle Choppa": 2,
-      "Fueled By Ramen": 3,
-      "M83": 3,
-      "The Fray": 3,
-      "Djo": 2,
-      "Keane": 1,
       "Capital Cities": 1,
       "Rosé": 1,
       "Twenty One Pilots": 1,
@@ -2590,7 +2697,6 @@
       "Thom Yorke": 1,
       "Toto": 1,
       "Jfarrari": 1,
-      "Tom Odell": 1,
       "New Radicals": 2,
       "Sombr": 1,
       "Beach House": 1,
@@ -2601,247 +2707,272 @@
       "Doechii": 1,
       "Gotye": 1,
       "Imany": 1,
-      "Wheatus": 2,
-      "Bastille": 1,
-      "Billy Joel": 1,
       "Tom Waits": 1,
       "Jeff Buckley": 1
     },
     "song_counts": {
-      "Street Spirit|Radiohead": 7,
-      "Running Up That Hill|Kate Bush": 5,
+      "Green Light|Lorde": 8,
+      "Goud|Bazart": 4,
+      "Eye Of The Tiger|Survivor": 4,
+      "Tragedy|Bee Gees": 8,
+      "Champagne Supernova|Oasis": 7,
+      "Maniac|Michael Sembello": 7,
+      "Beat It|Michael Jackson": 5,
+      "The Fate Of Ophelia|Taylor Swift": 6,
+      "Memories|Conan Gray": 4,
+      "Starman|David Bowie": 5,
+      "Running Low|Netsky": 8,
+      "Hot N Cold|Katy Perry": 6,
+      "Dracula|Tame Impala": 11,
+      "Castle On The Hill|Ed Sheeran": 6,
+      "Paint It, Black|The Rolling Stones": 4,
+      "The Man Who Sold The World|Nirvana": 4,
+      "Sailor Song|Gigi Perez": 5,
+      "Adventure Of A Lifetime|Coldplay": 4,
+      "Sad!|Xxxtentacion": 4,
+      "Car'S Outside|James Arthur": 3,
+      "Reality|Lost Frequencies": 7,
+      "Instant Crush|Daft Punk": 3,
+      "Pompeii|Bastille": 2,
+      "Smells Like Teen Spirit|Nirvana": 6,
+      "Rockstar|Post Malone": 5,
+      "Rolling In The Deep|Adele": 5,
+      "King|Olly Alexander (Years & Years)": 3,
+      "This One'S For You|David Guetta": 5,
+      "Industry Baby|Lil Nas X": 4,
+      "The Box|Roddy Ricch": 4,
+      "Time To Pretend|Mgmt": 5,
+      "Ik Moet Gaan|Pommelien Thijs": 9,
+      "Zombie|The Cranberries": 5,
+      "Erop Of Eronder|Pommelien Thijs": 7,
+      "Fe!N|Travis Scott": 4,
+      "Levitating|Dua Lipa": 6,
+      "Firestone|Kygo": 5,
+      "Skyfall|Adele": 5,
+      "Under The Bridge|Red Hot Chili Peppers": 8,
+      "Are You With Me|Lost Frequencies": 5,
+      "Firework|Katy Perry": 4,
+      "Lost On You|Lp": 8,
+      "Enjoy The Silence|Depeche Mode": 6,
+      "Lie|Nf": 5,
+      "A Sky Full Of Stars|Coldplay": 3,
+      "Love In The Dark|Adele": 4,
+      "Dog Days Are Over|Florence + The Machine": 4,
+      "Way Down We Go|Kaleo": 6,
+      "This Is The Life|Amy Macdonald": 5,
+      "American Idiot|Green Day": 5,
+      "Synrise|Goose": 6,
+      "Locked Out Of Heaven|Bruno Mars": 6,
+      "Come As You Are|Nirvana": 4,
+      "Scar Tissue|Red Hot Chili Peppers": 5,
+      "Revenge|Xxxtentacion": 4,
+      "Warrior|Oscar And The Wolf": 6,
+      "All The Small Things|Blink-182": 10,
+      "Alive|Pearl Jam": 7,
+      "In The End|Linkin Park": 5,
+      "Ben Je Klaar?|Pommelien Thijs": 11,
+      "Wake Me Up When September Ends|Green Day": 3,
+      "I Don'T Wanna Talk|Glass Animals": 7,
+      "Ho Hey|The Lumineers": 5,
+      "Take Me Out|Franz Ferdinand": 7,
+      "Give Me Everything|Pitbull": 5,
+      "Capo|Nle Choppa": 3,
+      "Something Just Like This|The Chainsmokers": 5,
+      "Numb|Xxxtentacion": 7,
+      "Twenty One Pilots: Heathens|Fueled By Ramen": 4,
+      "Go Your Own Way|Fleetwood Mac": 5,
+      "Midnight City|M83": 6,
+      "I Follow Rivers|Lykke Li": 6,
+      "Where Have You Been|Rihanna": 6,
+      "Numb / Encore|Jay-Z": 6,
+      "Sultans Of Swing|Dire Straits": 6,
+      "Ni**as In Paris|Jay-Z & Kanye West": 5,
+      "True Love|Xxxtentacion": 5,
+      "Ongewoon|Pommelien Thijs": 5,
+      "Where Is My Mind?|Pixies": 10,
+      "Viva La Vida|Coldplay": 5,
+      "Creep|Radiohead": 7,
+      "Gangsta'S Paradise|Coolio": 7,
+      "Motorcycle Emptiness|Manic Street Preachers": 6,
+      "Sicko Mode|Travis Scott": 7,
+      "New Rules|Dua Lipa": 5,
+      "Another Love|Tom Odell": 4,
+      "Humble.|Kendrick Lamar": 4,
+      "Take Me To Church|Hozier": 6,
+      "Sweater Weather|The Neighbourhood": 2,
+      "Tous Les Mêmes|Stromae": 7,
+      "Stan|Eminem": 4,
+      "Nothing Else Matters|Metallica": 7,
+      "Borderline|Tame Impala": 7,
+      "Street Spirit|Radiohead": 10,
+      "Starboy|The Weeknd": 3,
+      "Schism|Tool": 5,
+      "It'S Time|Imagine Dragons": 4,
+      "Lucid Dreams|Juice Wrld": 3,
+      "She Knows|J. Cole": 4,
+      "Wind Of Change|Scorpions": 8,
+      "Running Up That Hill|Kate Bush": 7,
+      "The Winner Takes It All|Abba": 9,
+      "Relax, Take It Easy|Mika": 7,
+      "Good Riddance|Green Day": 8,
+      "I Feel It Coming|The Weeknd": 7,
+      "Beauty And A Beat|Justin Bieber": 3,
+      "Am I Wrong|Nico & Vinz": 4,
+      "Amalfi|Hooverphonic": 3,
+      "Don'T Look Back In Anger|Oasis": 4,
+      "Robbery|Juice Wrld": 7,
+      "I'M Still Standing|Elton John": 5,
+      "505|Arctic Monkeys": 6,
+      "Jolene|Dolly Parton": 6,
+      "Personal Jesus|Depeche Mode": 4,
+      "She Doesn'T Mind|Sean Paul": 5,
+      "No Surprises|Radiohead": 10,
+      "Baby I'M Back|The Kid Laroi": 5,
+      "How To Make Love Stay|Empire! Empire! (I Was A Lonely Estate)": 1,
+      "Untitled|Interpol": 1,
+      "Live Forever|Oasis": 1,
+      "Fluorescent Adolescent|Arctic Monkeys": 1,
+      "Human|The Killers": 1,
+      "A Letter To Elise|The Cure": 1,
+      "Somewhere Only We Know|Keane": 4,
+      "Resistance|Muse": 1,
+      "Kryptonite|3 Doors Down": 6,
+      "L'Amour Toujours|Gigi D'Agostino": 4,
+      "Tattoo|Loreen": 3,
+      "Hotel California|Eagles": 4,
+      "Pain|The War On Drugs": 8,
+      "Habits|Tove Lo": 7,
+      "Love Will Tear Us Apart|Joy Division": 7,
+      "Little Talks|Of Monsters And Men": 4,
+      "Mary On A Cross|Ghost": 5,
+      "Don'T You|Simple Minds": 9,
+      "Somebody Told Me|The Killers": 5,
+      "Evil|Interpol": 5,
+      "Bitter Sweet Symphony|The Verve": 6,
+      "Alors On Danse|Stromae": 7,
+      "Timeless|The Weeknd": 8,
+      "Symphony|Clean Bandit": 5,
+      "Mood|24Kgoldn": 5,
+      "Iris|The Goo Goo Dolls": 4,
+      "No Role Modelz|J. Cole": 7,
+      "Kids|Mgmt": 4,
+      "Housewife|Glints": 4,
+      "Maps|Maroon 5": 4,
+      "Lush Life|Zara Larsson": 5,
+      "Holiday|Green Day": 4,
+      "Murder On My Mind|Ynw Melly": 6,
+      "Halo|Beyoncé": 5,
+      "Let It Happen|Tame Impala": 10,
+      "How You Remind Me|Nickelback": 4,
+      "Red Eyes|The War On Drugs": 9,
+      "Uprising|Muse": 5,
+      "Losing My Religion|R.E.M.": 4,
+      "Smokers Outside The Hospital Doors|Editors": 5,
+      "Love Me Again|John Newman": 7,
+      "Otherside|Red Hot Chili Peppers": 5,
+      "Californication|Red Hot Chili Peppers": 6,
+      "Numb|Linkin Park": 4,
+      "Me And My Broken Heart|Rixton": 4,
+      "Little Dark Age|Mgmt": 6,
+      "Starlight|Muse": 4,
+      "Let Her Go|Passenger": 6,
+      "How To Save A Life|The Fray": 4,
+      "Wonderwall|Oasis": 2,
+      "There Is A Light That Never Goes Out|The Smiths": 6,
+      "Bigmouth Strikes Again|The Smiths": 5,
+      "Black|Pearl Jam": 8,
+      "Someone Like You|Adele": 6,
+      "Lithium|Nirvana": 3,
+      "Do I Wanna Know?|Arctic Monkeys": 7,
+      "Bad Romance|Lady Gaga": 3,
+      "Team|Lorde": 1,
+      "Starships|Nicki Minaj": 4,
+      "Atlas|Pommelien Thijs": 5,
+      "Alibi|Sevdaliza": 4,
+      "Dancing In The Dark|Bruce Springsteen": 4,
+      "Dream On|Aerosmith": 7,
+      "The One That Got Away|Katy Perry": 3,
+      "Let Down|Radiohead": 5,
+      "Under The Pressure|The War On Drugs": 6,
+      "Teenage Dirtbag|Wheatus": 3,
+      "Poker Face|Lady Gaga": 4,
+      "Mia|Gorki": 4,
+      "Heat Waves|Glass Animals": 5,
+      "Pride.|Kendrick Lamar": 4,
+      "Love Again|Dua Lipa": 6,
+      "City Lights|Blanche": 3,
+      "Circles|Post Malone": 4,
+      "Lotje|Lustrum U.V.S.V./N.V.V.S.U.": 1,
+      "Unwritten|Natasha Bedingfield": 1,
+      "Hoe Het Is|Roxy Dekker": 1,
+      "That’S So True|Gracie Abrams": 1,
+      "Roekeloos|Pommelien Thijs": 1,
+      "Piano Man|Billy Joel": 2,
+      "Pink Pony Club|Chappell Roan": 1,
+      "People Watching|Sam Fender": 1,
+      "Odd Look Ft. The Weeknd|Kavinsky": 1,
+      "Sonne|Rammstein": 6,
+      "Feel This Moment|Pitbull": 5,
+      "Mind Over Matter|Young The Giant": 4,
+      "Riptide|Vance Joy": 5,
+      "Can'T Stop|Red Hot Chili Peppers": 3,
+      "The Hills|The Weeknd": 2,
+      "Mockingbird|Eminem": 3,
+      "Daylight|David Kushner": 4,
+      "Lose Yourself|Eminem": 4,
+      "Come Alive -|Netsky": 5,
+      "Spectrum|Florence + The Machine": 5,
+      "The Less I Know The Better|Tame Impala": 6,
+      "Lonely Boy|The Black Keys": 6,
+      "Gaan We Weg?|Roxy Dekker": 5,
+      "The Scientist|Coldplay": 4,
+      "Payphone|Maroon 5": 7,
+      "Falling Down|Lil Peep": 4,
+      "The Funeral|Band Of Horses": 1,
+      "Something In The Way|Nirvana": 1,
+      "Munich|Editors": 1,
+      "End Of Beginning|Djo": 3,
       "Madness|Muse": 1,
       "Time Is Running Out|Muse": 1,
-      "Starlight|Muse": 2,
       "Hysteria|Muse": 1,
       "Supermassive Black Hole|Muse": 1,
       "Knights Of Cydonia|Muse": 1,
-      "Uprising|Muse": 1,
-      "Otherside|Red Hot Chili Peppers": 4,
-      "Adventure Of A Lifetime|Coldplay": 2,
-      "Firestone|Kygo": 4,
-      "Scar Tissue|Red Hot Chili Peppers": 3,
       "Basket Case|Green Day": 2,
-      "Mockingbird|Eminem": 2,
-      "L'Amour Toujours|Gigi D'Agostino": 3,
-      "In The End|Linkin Park": 4,
       "The Chain|Fleetwood Mac": 3,
       "Died In Your Arms|Cutting Crew": 1,
       "California Dreamin'|The Beach Boys": 1,
       "Everybody Wants To Rule The World|Tears For Fears": 2,
-      "Beat It|Michael Jackson": 4,
       "Mask Off|Future": 3,
-      "Do I Wanna Know?|Arctic Monkeys": 5,
-      "Dog Days Are Over|Florence + The Machine": 3,
-      "Payphone|Maroon 5": 6,
-      "Californication|Red Hot Chili Peppers": 4,
-      "Reality|Lost Frequencies": 6,
-      "Nothing Else Matters|Metallica": 4,
       "Mr. Brightside|The Killers": 4,
-      "Let Her Go|Passenger": 5,
-      "Love Me Again|John Newman": 5,
-      "Circles|Post Malone": 3,
-      "Ho Hey|The Lumineers": 4,
-      "Dream On|Aerosmith": 5,
-      "Feel This Moment|Pitbull": 4,
-      "Red Eyes|The War On Drugs": 6,
-      "Warrior|Oscar And The Wolf": 4,
-      "Evil|Interpol": 3,
-      "No Role Modelz|J. Cole": 5,
-      "Lost On You|Lp": 5,
-      "Someone Like You|Adele": 4,
-      "Symphony|Clean Bandit": 4,
-      "Bitter Sweet Symphony|The Verve": 4,
-      "Schism|Tool": 3,
-      "Little Dark Age|Mgmt": 4,
-      "This One'S For You|David Guetta": 4,
-      "Lonely Boy|The Black Keys": 5,
-      "Murder On My Mind|Ynw Melly": 4,
       "Fireflies|Owl City": 3,
-      "Am I Wrong|Nico & Vinz": 3,
-      "Black|Pearl Jam": 6,
       "Without You|The Kid Laroi": 5,
-      "She Knows|J. Cole": 3,
-      "Smokers Outside The Hospital Doors|Editors": 4,
-      "She Doesn'T Mind|Sean Paul": 4,
-      "Pride.|Kendrick Lamar": 2,
-      "Lose Yourself|Eminem": 3,
-      "Jolene|Dolly Parton": 4,
-      "Are You With Me|Lost Frequencies": 3,
-      "Green Light|Lorde": 5,
-      "All The Small Things|Blink-182": 6,
-      "Don'T You|Simple Minds": 6,
-      "Ben Je Klaar?|Pommelien Thijs": 6,
-      "Let It Happen|Tame Impala": 7,
-      "Good Riddance|Green Day": 5,
       "Little Lion Man|Mumford And Sons": 3,
       "Sex On Fire|Kings Of Leon": 2,
-      "Borderline|Tame Impala": 4,
-      "Sonne|Rammstein": 5,
-      "Under The Bridge|Red Hot Chili Peppers": 4,
-      "Eye Of The Tiger|Survivor": 3,
-      "Champagne Supernova|Oasis": 4,
-      "American Idiot|Green Day": 3,
-      "Ik Moet Gaan|Pommelien Thijs": 5,
-      "Give Me Everything|Pitbull": 3,
-      "Way Down We Go|Kaleo": 3,
-      "Paint It, Black|The Rolling Stones": 3,
-      "Beauty And A Beat|Justin Bieber": 2,
-      "Alors On Danse|Stromae": 5,
       "I Wanna Be Yours|Arctic Monkeys": 4,
       "One Kiss|Calvin Harris": 3,
-      "Kids|Mgmt": 3,
-      "Locked Out Of Heaven|Bruno Mars": 3,
-      "Industry Baby|Lil Nas X": 2,
-      "Love Again|Dua Lipa": 4,
       "Papillon|Editors": 3,
-      "Mia|Gorki": 3,
-      "Tattoo|Loreen": 2,
-      "Kryptonite|3 Doors Down": 5,
-      "No Surprises|Radiohead": 6,
-      "Housewife|Glints": 3,
       "Home|Dotan": 2,
-      "Take Me Out|Franz Ferdinand": 4,
-      "Mind Over Matter|Young The Giant": 3,
-      "I'M Still Standing|Elton John": 3,
       "Clocks|Coldplay": 3,
-      "Robbery|Juice Wrld": 6,
-      "Numb / Encore|Jay-Z": 4,
-      "Sicko Mode|Travis Scott": 4,
-      "Something Just Like This|The Chainsmokers": 3,
-      "The Man Who Sold The World|Nirvana": 3,
       "Boulevard Of Broken Dreams|Green Day": 2,
-      "Heat Waves|Glass Animals": 4,
-      "The Box|Roddy Ricch": 3,
-      "Take Me To Church|Hozier": 5,
-      "I Feel It Coming|The Weeknd": 5,
-      "505|Arctic Monkeys": 3,
-      "Starman|David Bowie": 4,
-      "Alibi|Sevdaliza": 3,
-      "Amalfi|Hooverphonic": 2,
-      "Go Your Own Way|Fleetwood Mac": 3,
-      "Sailor Song|Gigi Perez": 3,
-      "Let Down|Radiohead": 3,
-      "I Follow Rivers|Lykke Li": 4,
-      "Time To Pretend|Mgmt": 4,
-      "Creep|Radiohead": 4,
-      "Wind Of Change|Scorpions": 6,
-      "Falling Down|Lil Peep": 3,
-      "Where Is My Mind?|Pixies": 7,
-      "I Don'T Wanna Talk|Glass Animals": 3,
-      "Instant Crush|Daft Punk": 2,
-      "The Winner Takes It All|Abba": 6,
-      "Zombie|The Cranberries": 3,
-      "Love In The Dark|Adele": 3,
-      "Losing My Religion|R.E.M.": 3,
       "Save Your Tears|The Weeknd": 3,
-      "Alive|Pearl Jam": 3,
-      "Halo|Beyoncé": 4,
-      "Smells Like Teen Spirit|Nirvana": 4,
-      "Sad!|Xxxtentacion": 3,
-      "Gangsta'S Paradise|Coolio": 5,
-      "The Scientist|Coldplay": 3,
       "Past Lives|Sapientdream": 2,
-      "The Less I Know The Better|Tame Impala": 5,
-      "Maps|Maroon 5": 2,
-      "This Is The Life|Amy Macdonald": 3,
-      "The One That Got Away|Katy Perry": 2,
-      "Motorcycle Emptiness|Manic Street Preachers": 2,
-      "Me And My Broken Heart|Rixton": 3,
-      "Firework|Katy Perry": 3,
       "São Paulo|The Weeknd": 3,
-      "Synrise|Goose": 3,
-      "Pain|The War On Drugs": 6,
       "Papaoutai|Stromae": 3,
-      "Enjoy The Silence|Depeche Mode": 4,
-      "Numb|Xxxtentacion": 4,
       "No Sound But The Wind|Editors": 4,
-      "Running Low|Netsky": 4,
-      "Erop Of Eronder|Pommelien Thijs": 4,
-      "Maniac|Michael Sembello": 5,
-      "Relax, Take It Easy|Mika": 4,
-      "Baby I'M Back|The Kid Laroi": 4,
-      "Skyfall|Adele": 4,
-      "Timeless|The Weeknd": 5,
-      "Under The Pressure|The War On Drugs": 4,
-      "Dracula|Tame Impala": 6,
       "Elephant Clouds|Morcheeba": 1,
       "All I Think About Now|Pixies": 1,
-      "The Fate Of Ophelia|Taylor Swift": 3,
-      "Ni**as In Paris|Jay-Z & Kanye West": 2,
       "Snow|Red Hot Chili Peppers": 3,
       "Judas|Lady Gaga": 2,
-      "Spectrum|Florence + The Machine": 4,
-      "A Sky Full Of Stars|Coldplay": 2,
       "Runaway|Kanye West": 1,
-      "How You Remind Me|Nickelback": 2,
-      "Castle On The Hill|Ed Sheeran": 3,
-      "Bad Romance|Lady Gaga": 2,
-      "Come Alive -|Netsky": 4,
       "Hope|Xxxtentacion": 1,
-      "Humble.|Kendrick Lamar": 2,
-      "Numb|Linkin Park": 3,
-      "Iris|The Goo Goo Dolls": 2,
-      "Gaan We Weg?|Roxy Dekker": 4,
-      "There Is A Light That Never Goes Out|The Smiths": 5,
-      "Holiday|Green Day": 3,
-      "Car'S Outside|James Arthur": 2,
-      "King|Olly Alexander (Years & Years)": 2,
-      "Tous Les Mêmes|Stromae": 4,
-      "It'S Time|Imagine Dragons": 3,
-      "Little Talks|Of Monsters And Men": 2,
       "Snap Out Of It|Arctic Monkeys": 2,
-      "Fe!N|Travis Scott": 3,
-      "Wake Me Up When September Ends|Green Day": 2,
-      "Bigmouth Strikes Again|The Smiths": 4,
-      "Lush Life|Zara Larsson": 3,
-      "Sultans Of Swing|Dire Straits": 4,
-      "Dancing In The Dark|Bruce Springsteen": 3,
-      "Viva La Vida|Coldplay": 3,
-      "Personal Jesus|Depeche Mode": 1,
       "Be The One|Dua Lipa": 1,
-      "Lie|Nf": 2,
-      "Riptide|Vance Joy": 4,
-      "Daylight|David Kushner": 3,
-      "Where Have You Been|Rihanna": 4,
-      "Mood|24Kgoldn": 4,
       "Heaven Knows I'M Miserable Now|The Smiths": 4,
-      "City Lights|Blanche": 2,
-      "Sweater Weather|The Neighbourhood": 1,
-      "Habits|Tove Lo": 3,
-      "Lithium|Nirvana": 2,
-      "Stan|Eminem": 2,
-      "Rolling In The Deep|Adele": 3,
-      "Tragedy|Bee Gees": 4,
-      "Atlas|Pommelien Thijs": 4,
       "Set Fire To The Rain|Adele": 2,
-      "Love Will Tear Us Apart|Joy Division": 4,
-      "Starships|Nicki Minaj": 3,
-      "Revenge|Xxxtentacion": 2,
-      "Lucid Dreams|Juice Wrld": 2,
-      "Rockstar|Post Malone": 4,
       "Can'T Feel My Face|The Weeknd": 3,
       "Billie Jean|Michael Jackson": 2,
-      "Mary On A Cross|Ghost": 3,
       "Lights|Ellie Goulding": 2,
-      "Ongewoon|Pommelien Thijs": 2,
-      "Hotel California|Eagles": 3,
       "Stiekem|Maan": 3,
-      "New Rules|Dua Lipa": 3,
-      "Levitating|Dua Lipa": 4,
-      "True Love|Xxxtentacion": 3,
-      "Memories|Conan Gray": 2,
-      "Somebody Told Me|The Killers": 2,
-      "Goud|Bazart": 2,
-      "Capo|Nle Choppa": 2,
-      "Twenty One Pilots: Heathens|Fueled By Ramen": 3,
-      "Midnight City|M83": 3,
-      "How To Save A Life|The Fray": 3,
-      "Poker Face|Lady Gaga": 3,
-      "End Of Beginning|Djo": 2,
-      "Somewhere Only We Know|Keane": 1,
-      "Starboy|The Weeknd": 2,
-      "Don'T Look Back In Anger|Oasis": 3,
       "Safe And Sound|Capital Cities": 1,
       "Apt.|Rosé": 1,
       "Get Lucky|Daft Punk": 1,
@@ -2865,9 +2996,6 @@
       "Yes I'M Changing|Tame Impala": 1,
       "The Moment|Tame Impala": 1,
       "Nangs|Tame Impala": 1,
-      "Another Love|Tom Odell": 1,
-      "Hot N Cold|Katy Perry": 3,
-      "Come As You Are|Nirvana": 1,
       "You Get What You Give|New Radicals": 2,
       "Back To Friends|Sombr": 1,
       "Stop Crying Your Heart Out|Oasis": 1,
@@ -2883,15 +3011,9 @@
       "Somebody That I Used To Know|Gotye": 1,
       "Don'T Be So Shy  /|Imany": 1,
       "Titanium Ft. Sia|David Guetta": 1,
-      "Teenage Dirtbag|Wheatus": 2,
       "Strangest Thing|The War On Drugs": 2,
-      "Wonderwall|Oasis": 1,
-      "The Hills|The Weeknd": 1,
-      "Can'T Stop|Red Hot Chili Peppers": 2,
-      "Pompeii|Bastille": 1,
       "Still Loving You|Scorpions": 1,
       "Paranoid Android|Radiohead": 1,
-      "Piano Man|Billy Joel": 1,
       "Exit|Radiohead": 1,
       "I Don'T Live Here Anymore|The War On Drugs": 1,
       "Fake Plastic Trees|Radiohead": 1,

@@ -13,14 +13,14 @@
       "period": "-"
     },
     {
-      "artiest": "Sevdaliza",
-      "titel": "Alibi",
+      "artiest": "Tame Impala",
+      "titel": "Dracula",
       "streak": 12,
       "period": "-"
     },
     {
-      "artiest": "Tame Impala",
-      "titel": "Dracula",
+      "artiest": "Sevdaliza",
+      "titel": "Alibi",
       "streak": 12,
       "period": "-"
     },
@@ -49,9 +49,9 @@
       "period": "-"
     },
     {
-      "artiest": "Lp",
-      "titel": "Lost On You",
-      "streak": 9,
+      "artiest": "Radiohead",
+      "titel": "No Surprises",
+      "streak": 10,
       "period": "-"
     },
     {
@@ -61,8 +61,8 @@
       "period": "-"
     },
     {
-      "artiest": "Mika",
-      "titel": "Relax, Take It Easy",
+      "artiest": "Lp",
+      "titel": "Lost On You",
       "streak": 9,
       "period": "-"
     },
@@ -73,26 +73,14 @@
       "period": "-"
     },
     {
+      "artiest": "Mika",
+      "titel": "Relax, Take It Easy",
+      "streak": 9,
+      "period": "-"
+    },
+    {
       "artiest": "Lorde",
       "titel": "Green Light",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "artiest": "Mgmt",
-      "titel": "Time To Pretend",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "artiest": "Lil Peep",
-      "titel": "Falling Down",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "artiest": "Glass Animals",
-      "titel": "I Don'T Wanna Talk",
       "streak": 8,
       "period": "-"
     },
@@ -109,8 +97,8 @@
       "period": "-"
     },
     {
-      "artiest": "Pommelien Thijs",
-      "titel": "Ongewoon",
+      "artiest": "Mgmt",
+      "titel": "Time To Pretend",
       "streak": 8,
       "period": "-"
     },
@@ -121,14 +109,62 @@
       "period": "-"
     },
     {
-      "artiest": "Post Malone",
-      "titel": "Circles",
+      "artiest": "Glass Animals",
+      "titel": "I Don'T Wanna Talk",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "artiest": "Pommelien Thijs",
+      "titel": "Ongewoon",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "artiest": "Pixies",
+      "titel": "Where Is My Mind?",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "artiest": "Lil Peep",
+      "titel": "Falling Down",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "artiest": "Blink-182",
+      "titel": "All The Small Things",
       "streak": 7,
       "period": "-"
     },
     {
-      "artiest": "Dua Lipa",
-      "titel": "Love Again",
+      "artiest": "Radiohead",
+      "titel": "Creep",
+      "streak": 7,
+      "period": "-"
+    },
+    {
+      "artiest": "Radiohead",
+      "titel": "Street Spirit",
+      "streak": 7,
+      "period": "-"
+    },
+    {
+      "artiest": "Abba",
+      "titel": "The Winner Takes It All",
+      "streak": 7,
+      "period": "-"
+    },
+    {
+      "artiest": "Eagles",
+      "titel": "Hotel California",
+      "streak": 7,
+      "period": "-"
+    },
+    {
+      "artiest": "The Weeknd",
+      "titel": "Timeless",
       "streak": 7,
       "period": "-"
     },
@@ -145,14 +181,14 @@
       "period": "-"
     },
     {
-      "artiest": "Radiohead",
-      "titel": "Creep",
+      "artiest": "Dua Lipa",
+      "titel": "Love Again",
       "streak": 7,
       "period": "-"
     },
     {
-      "artiest": "Pixies",
-      "titel": "Where Is My Mind?",
+      "artiest": "Post Malone",
+      "titel": "Circles",
       "streak": 7,
       "period": "-"
     },
@@ -169,104 +205,14 @@
       "period": "-"
     },
     {
-      "artiest": "Eagles",
-      "titel": "Hotel California",
-      "streak": 7,
-      "period": "-"
-    },
-    {
       "artiest": "Jopke Van Dobbenburgh",
       "titel": "Lotje",
       "streak": 7,
       "period": "-"
     },
     {
-      "artiest": "Radiohead",
-      "titel": "Street Spirit",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Passenger",
-      "titel": "Let Her Go",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Pitbull",
-      "titel": "Feel This Moment",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Interpol",
-      "titel": "Evil",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "J. Cole",
-      "titel": "No Role Modelz",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Tool",
-      "titel": "Schism",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Pearl Jam",
-      "titel": "Black",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Kendrick Lamar",
-      "titel": "Pride.",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Blink-182",
-      "titel": "All The Small Things",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Radiohead",
-      "titel": "No Surprises",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Glints",
-      "titel": "Housewife",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Hooverphonic",
-      "titel": "Amalfi",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "R.E.M.",
-      "titel": "Losing My Religion",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Katy Perry",
-      "titel": "The One That Got Away",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Manic Street Preachers",
-      "titel": "Motorcycle Emptiness",
+      "artiest": "Bee Gees",
+      "titel": "Tragedy",
       "streak": 6,
       "period": "-"
     },
@@ -283,50 +229,26 @@
       "period": "-"
     },
     {
-      "artiest": "Nickelback",
-      "titel": "How You Remind Me",
+      "artiest": "Coolio",
+      "titel": "Gangsta'S Paradise",
       "streak": 6,
       "period": "-"
     },
     {
-      "artiest": "Roxy Dekker",
-      "titel": "Gaan We Weg?",
+      "artiest": "Manic Street Preachers",
+      "titel": "Motorcycle Emptiness",
       "streak": 6,
       "period": "-"
     },
     {
-      "artiest": "The Smiths",
-      "titel": "There Is A Light That Never Goes Out",
+      "artiest": "Tool",
+      "titel": "Schism",
       "streak": 6,
       "period": "-"
     },
     {
-      "artiest": "Green Day",
-      "titel": "Holiday",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Arctic Monkeys",
-      "titel": "Snap Out Of It",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Vance Joy",
-      "titel": "Riptide",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Blanche",
-      "titel": "City Lights",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Bee Gees",
-      "titel": "Tragedy",
+      "artiest": "Hooverphonic",
+      "titel": "Amalfi",
       "streak": 6,
       "period": "-"
     },
@@ -337,8 +259,98 @@
       "period": "-"
     },
     {
-      "artiest": "New Radicals",
-      "titel": "You Get What You Give",
+      "artiest": "Simple Minds",
+      "titel": "Don'T You",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Interpol",
+      "titel": "Evil",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "J. Cole",
+      "titel": "No Role Modelz",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Glints",
+      "titel": "Housewife",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Green Day",
+      "titel": "Holiday",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Nickelback",
+      "titel": "How You Remind Me",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "R.E.M.",
+      "titel": "Losing My Religion",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Passenger",
+      "titel": "Let Her Go",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "The Smiths",
+      "titel": "There Is A Light That Never Goes Out",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Pearl Jam",
+      "titel": "Black",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Aerosmith",
+      "titel": "Dream On",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Katy Perry",
+      "titel": "The One That Got Away",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Kendrick Lamar",
+      "titel": "Pride.",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Blanche",
+      "titel": "City Lights",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Pitbull",
+      "titel": "Feel This Moment",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Vance Joy",
+      "titel": "Riptide",
       "streak": 6,
       "period": "-"
     },
@@ -349,110 +361,32 @@
       "period": "-"
     },
     {
-      "artiest": "Red Hot Chili Peppers",
-      "titel": "Scar Tissue",
+      "artiest": "Roxy Dekker",
+      "titel": "Gaan We Weg?",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Arctic Monkeys",
+      "titel": "Snap Out Of It",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "New Radicals",
+      "titel": "You Get What You Give",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "artiest": "Bazart",
+      "titel": "Goud",
       "streak": 5,
       "period": "-"
     },
     {
-      "artiest": "Green Day",
-      "titel": "Basket Case",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Future",
-      "titel": "Mask Off",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Maroon 5",
-      "titel": "Payphone",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Aerosmith",
-      "titel": "Dream On",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Clean Bandit",
-      "titel": "Symphony",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Black Keys",
-      "titel": "Lonely Boy",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Kid Laroi",
-      "titel": "Without You",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Sean Paul",
-      "titel": "She Doesn'T Mind",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Simple Minds",
-      "titel": "Don'T You",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Rammstein",
-      "titel": "Sonne",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Justin Bieber",
-      "titel": "Beauty And A Beat",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Stromae",
-      "titel": "Alors On Danse",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "3 Doors Down",
-      "titel": "Kryptonite",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Coldplay",
-      "titel": "Clocks",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Juice Wrld",
-      "titel": "Robbery",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Chainsmokers",
-      "titel": "Something Just Like This",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Hozier",
-      "titel": "Take Me To Church",
+      "artiest": "Oasis",
+      "titel": "Champagne Supernova",
       "streak": 5,
       "period": "-"
     },
@@ -463,86 +397,8 @@
       "period": "-"
     },
     {
-      "artiest": "Gigi Perez",
-      "titel": "Sailor Song",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Radiohead",
-      "titel": "Let Down",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Scorpions",
-      "titel": "Wind Of Change",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Daft Punk",
-      "titel": "Instant Crush",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Abba",
-      "titel": "The Winner Takes It All",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Cranberries",
-      "titel": "Zombie",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Beyoncé",
-      "titel": "Halo",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Coolio",
-      "titel": "Gangsta'S Paradise",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Rixton",
-      "titel": "Me And My Broken Heart",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The War On Drugs",
-      "titel": "Pain",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Pommelien Thijs",
-      "titel": "Erop Of Eronder",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Kid Laroi",
-      "titel": "Baby I'M Back",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Weeknd",
-      "titel": "Timeless",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Florence + The Machine",
-      "titel": "Spectrum",
+      "artiest": "Netsky",
+      "titel": "Running Low",
       "streak": 5,
       "period": "-"
     },
@@ -553,8 +409,14 @@
       "period": "-"
     },
     {
-      "artiest": "Lady Gaga",
-      "titel": "Bad Romance",
+      "artiest": "Gigi Perez",
+      "titel": "Sailor Song",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Daft Punk",
+      "titel": "Instant Crush",
       "streak": 5,
       "period": "-"
     },
@@ -565,26 +427,62 @@
       "period": "-"
     },
     {
+      "artiest": "The Cranberries",
+      "titel": "Zombie",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Pommelien Thijs",
+      "titel": "Erop Of Eronder",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Red Hot Chili Peppers",
+      "titel": "Scar Tissue",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Pearl Jam",
+      "titel": "Alive",
+      "streak": 5,
+      "period": "-"
+    },
+    {
       "artiest": "Green Day",
       "titel": "Wake Me Up When September Ends",
       "streak": 5,
       "period": "-"
     },
     {
-      "artiest": "Zara Larsson",
-      "titel": "Lush Life",
+      "artiest": "The Chainsmokers",
+      "titel": "Something Just Like This",
       "streak": 5,
       "period": "-"
     },
     {
-      "artiest": "Tove Lo",
-      "titel": "Habits",
+      "artiest": "Jay-Z",
+      "titel": "Numb / Encore",
       "streak": 5,
       "period": "-"
     },
     {
-      "artiest": "Nicki Minaj",
-      "titel": "Starships",
+      "artiest": "Tom Odell",
+      "titel": "Another Love",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Hozier",
+      "titel": "Take Me To Church",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Tame Impala",
+      "titel": "Borderline",
       "streak": 5,
       "period": "-"
     },
@@ -595,178 +493,166 @@
       "period": "-"
     },
     {
-      "artiest": "Bazart",
-      "titel": "Goud",
+      "artiest": "Scorpions",
+      "titel": "Wind Of Change",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Green Day",
+      "titel": "Good Riddance",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Justin Bieber",
+      "titel": "Beauty And A Beat",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Juice Wrld",
+      "titel": "Robbery",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Sean Paul",
+      "titel": "She Doesn'T Mind",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "The Kid Laroi",
+      "titel": "Baby I'M Back",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "3 Doors Down",
+      "titel": "Kryptonite",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "The War On Drugs",
+      "titel": "Pain",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Tove Lo",
+      "titel": "Habits",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Stromae",
+      "titel": "Alors On Danse",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Clean Bandit",
+      "titel": "Symphony",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Zara Larsson",
+      "titel": "Lush Life",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Beyoncé",
+      "titel": "Halo",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "The War On Drugs",
+      "titel": "Red Eyes",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Rixton",
+      "titel": "Me And My Broken Heart",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "The Fray",
+      "titel": "How To Save A Life",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Oasis",
+      "titel": "Wonderwall",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "artiest": "Lady Gaga",
+      "titel": "Bad Romance",
       "streak": 5,
       "period": "-"
     }
   ],
   "songs_current": [
     {
-      "artiest": "Radiohead",
-      "titel": "Street Spirit",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "artiest": "Blink-182",
-      "titel": "All The Small Things",
-      "streak": 6,
-      "period": "-"
-    },
-    {
       "artiest": "Tame Impala",
-      "titel": "Let It Happen",
-      "streak": 6,
+      "titel": "Dracula",
+      "streak": 10,
       "period": "-"
     },
     {
-      "artiest": "Maroon 5",
-      "titel": "Payphone",
+      "artiest": "Pommelien Thijs",
+      "titel": "Ben Je Klaar?",
       "streak": 5,
       "period": "-"
     },
     {
-      "artiest": "Aerosmith",
-      "titel": "Dream On",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Lp",
-      "titel": "Lost On You",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Black Keys",
-      "titel": "Lonely Boy",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Pearl Jam",
-      "titel": "Black",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "The Kid Laroi",
-      "titel": "Without You",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Simple Minds",
-      "titel": "Don'T You",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "artiest": "Red Hot Chili Peppers",
-      "titel": "Otherside",
+      "artiest": "Manic Street Preachers",
+      "titel": "Motorcycle Emptiness",
       "streak": 4,
       "period": "-"
     },
     {
-      "artiest": "Kygo",
-      "titel": "Firestone",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Lost Frequencies",
-      "titel": "Reality",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "John Newman",
-      "titel": "Love Me Again",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "The War On Drugs",
-      "titel": "Red Eyes",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Oscar And The Wolf",
-      "titel": "Warrior",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Clean Bandit",
-      "titel": "Symphony",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Editors",
-      "titel": "Smokers Outside The Hospital Doors",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Lorde",
-      "titel": "Green Light",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Green Day",
-      "titel": "Good Riddance",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "artiest": "Linkin Park",
-      "titel": "In The End",
+      "artiest": "Kaleo",
+      "titel": "Way Down We Go",
       "streak": 3,
       "period": "-"
     },
     {
-      "artiest": "Michael Jackson",
-      "titel": "Beat It",
-      "streak": 3,
+      "artiest": "Bee Gees",
+      "titel": "Tragedy",
+      "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "Future",
-      "titel": "Mask Off",
-      "streak": 3,
+      "artiest": "Oasis",
+      "titel": "Champagne Supernova",
+      "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "The Lumineers",
-      "titel": "Ho Hey",
-      "streak": 3,
+      "artiest": "Conan Gray",
+      "titel": "Memories",
+      "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "Pitbull",
-      "titel": "Feel This Moment",
-      "streak": 3,
+      "artiest": "Netsky",
+      "titel": "Running Low",
+      "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "Tool",
-      "titel": "Schism",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "artiest": "Owl City",
-      "titel": "Fireflies",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "artiest": "Kate Bush",
-      "titel": "Running Up That Hill",
+      "artiest": "Ed Sheeran",
+      "titel": "Castle On The Hill",
       "streak": 2,
       "period": "-"
     },
@@ -777,26 +663,146 @@
       "period": "-"
     },
     {
-      "artiest": "Arctic Monkeys",
-      "titel": "Do I Wanna Know?",
+      "artiest": "Adele",
+      "titel": "Rolling In The Deep",
       "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "J. Cole",
-      "titel": "No Role Modelz",
+      "artiest": "Pommelien Thijs",
+      "titel": "Ik Moet Gaan",
       "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "Mgmt",
-      "titel": "Little Dark Age",
+      "artiest": "Pommelien Thijs",
+      "titel": "Erop Of Eronder",
       "streak": 2,
       "period": "-"
     },
     {
-      "artiest": "Dolly Parton",
-      "titel": "Jolene",
+      "artiest": "Red Hot Chili Peppers",
+      "titel": "Under The Bridge",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Lost Frequencies",
+      "titel": "Are You With Me",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Goose",
+      "titel": "Synrise",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Bruno Mars",
+      "titel": "Locked Out Of Heaven",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Nirvana",
+      "titel": "Come As You Are",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Red Hot Chili Peppers",
+      "titel": "Scar Tissue",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Oscar And The Wolf",
+      "titel": "Warrior",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Blink-182",
+      "titel": "All The Small Things",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Pearl Jam",
+      "titel": "Alive",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Franz Ferdinand",
+      "titel": "Take Me Out",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "The Chainsmokers",
+      "titel": "Something Just Like This",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Xxxtentacion",
+      "titel": "Numb",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "M83",
+      "titel": "Midnight City",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Jay-Z & Kanye West",
+      "titel": "Ni**as In Paris",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Pommelien Thijs",
+      "titel": "Ongewoon",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Travis Scott",
+      "titel": "Sicko Mode",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Dua Lipa",
+      "titel": "New Rules",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Tom Odell",
+      "titel": "Another Love",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Kendrick Lamar",
+      "titel": "Humble.",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Metallica",
+      "titel": "Nothing Else Matters",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "artiest": "Radiohead",
+      "titel": "Street Spirit",
       "streak": 2,
       "period": "-"
     }
@@ -838,16 +844,6 @@
       "period": "-"
     },
     {
-      "naam": "Radiohead",
-      "streak": 12,
-      "period": "-"
-    },
-    {
-      "naam": "Green Day",
-      "streak": 12,
-      "period": "-"
-    },
-    {
       "naam": "Oasis",
       "streak": 12,
       "period": "-"
@@ -858,7 +854,12 @@
       "period": "-"
     },
     {
-      "naam": "Sevdaliza",
+      "naam": "Green Day",
+      "streak": 12,
+      "period": "-"
+    },
+    {
+      "naam": "Radiohead",
       "streak": 12,
       "period": "-"
     },
@@ -868,17 +869,22 @@
       "period": "-"
     },
     {
+      "naam": "Sevdaliza",
+      "streak": 12,
+      "period": "-"
+    },
+    {
       "naam": "Red Hot Chili Peppers",
       "streak": 11,
       "period": "-"
     },
     {
-      "naam": "Arctic Monkeys",
+      "naam": "Florence + The Machine",
       "streak": 11,
       "period": "-"
     },
     {
-      "naam": "Florence + The Machine",
+      "naam": "Arctic Monkeys",
       "streak": 11,
       "period": "-"
     },
@@ -893,7 +899,7 @@
       "period": "-"
     },
     {
-      "naam": "Editors",
+      "naam": "Rihanna",
       "streak": 10,
       "period": "-"
     },
@@ -903,18 +909,13 @@
       "period": "-"
     },
     {
+      "naam": "Editors",
+      "streak": 10,
+      "period": "-"
+    },
+    {
       "naam": "Roxy Dekker",
       "streak": 10,
-      "period": "-"
-    },
-    {
-      "naam": "Rihanna",
-      "streak": 10,
-      "period": "-"
-    },
-    {
-      "naam": "Lp",
-      "streak": 9,
       "period": "-"
     },
     {
@@ -923,7 +924,7 @@
       "period": "-"
     },
     {
-      "naam": "The Kid Laroi",
+      "naam": "Lp",
       "streak": 9,
       "period": "-"
     },
@@ -933,27 +934,12 @@
       "period": "-"
     },
     {
-      "naam": "Fleetwood Mac",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "naam": "J. Cole",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "naam": "Pearl Jam",
-      "streak": 8,
+      "naam": "The Kid Laroi",
+      "streak": 9,
       "period": "-"
     },
     {
       "naam": "Lorde",
-      "streak": 8,
-      "period": "-"
-    },
-    {
-      "naam": "Lil Peep",
       "streak": 8,
       "period": "-"
     },
@@ -963,12 +949,37 @@
       "period": "-"
     },
     {
+      "naam": "Pearl Jam",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "naam": "Fleetwood Mac",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "naam": "Pixies",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "naam": "J. Cole",
+      "streak": 8,
+      "period": "-"
+    },
+    {
       "naam": "The Smiths",
       "streak": 8,
       "period": "-"
     },
     {
-      "naam": "Eminem",
+      "naam": "Lil Peep",
+      "streak": 8,
+      "period": "-"
+    },
+    {
+      "naam": "Blink-182",
       "streak": 7,
       "period": "-"
     },
@@ -983,12 +994,12 @@
       "period": "-"
     },
     {
-      "naam": "Gorki",
+      "naam": "Eminem",
       "streak": 7,
       "period": "-"
     },
     {
-      "naam": "Pixies",
+      "naam": "Abba",
       "streak": 7,
       "period": "-"
     },
@@ -998,12 +1009,27 @@
       "period": "-"
     },
     {
+      "naam": "The War On Drugs",
+      "streak": 7,
+      "period": "-"
+    },
+    {
+      "naam": "Gorki",
+      "streak": 7,
+      "period": "-"
+    },
+    {
       "naam": "Jopke Van Dobbenburgh",
       "streak": 7,
       "period": "-"
     },
     {
-      "naam": "Future",
+      "naam": "Bee Gees",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "naam": "Netsky",
       "streak": 6,
       "period": "-"
     },
@@ -1013,22 +1039,22 @@
       "period": "-"
     },
     {
-      "naam": "Passenger",
+      "naam": "Depeche Mode",
       "streak": 6,
       "period": "-"
     },
     {
-      "naam": "The War On Drugs",
+      "naam": "Jay-Z & Kanye West",
       "streak": 6,
       "period": "-"
     },
     {
-      "naam": "Interpol",
+      "naam": "Coolio",
       "streak": 6,
       "period": "-"
     },
     {
-      "naam": "Tool",
+      "naam": "Manic Street Preachers",
       "streak": 6,
       "period": "-"
     },
@@ -1038,12 +1064,7 @@
       "period": "-"
     },
     {
-      "naam": "Blink-182",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "Glints",
+      "naam": "Tool",
       "streak": 6,
       "period": "-"
     },
@@ -1058,17 +1079,22 @@
       "period": "-"
     },
     {
-      "naam": "R.E.M.",
+      "naam": "Interpol",
       "streak": 6,
       "period": "-"
     },
     {
-      "naam": "Manic Street Preachers",
+      "naam": "Simple Minds",
       "streak": 6,
       "period": "-"
     },
     {
-      "naam": "Jay-Z & Kanye West",
+      "naam": "Glints",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "naam": "Maroon 5",
       "streak": 6,
       "period": "-"
     },
@@ -1078,7 +1104,17 @@
       "period": "-"
     },
     {
-      "naam": "Vance Joy",
+      "naam": "R.E.M.",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "naam": "Passenger",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "naam": "Aerosmith",
       "streak": 6,
       "period": "-"
     },
@@ -1088,7 +1124,12 @@
       "period": "-"
     },
     {
-      "naam": "Bee Gees",
+      "naam": "Vance Joy",
+      "streak": 6,
+      "period": "-"
+    },
+    {
+      "naam": "Future",
       "streak": 6,
       "period": "-"
     },
@@ -1098,7 +1139,7 @@
       "period": "-"
     },
     {
-      "naam": "Linkin Park",
+      "naam": "Bazart",
       "streak": 5,
       "period": "-"
     },
@@ -1108,117 +1149,7 @@
       "period": "-"
     },
     {
-      "naam": "Maroon 5",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Aerosmith",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Clean Bandit",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "The Black Keys",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Sean Paul",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Simple Minds",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Rammstein",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Justin Bieber",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Bruno Mars",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "3 Doors Down",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "The Chainsmokers",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Hozier",
-      "streak": 5,
-      "period": "-"
-    },
-    {
       "naam": "David Bowie",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Gigi Perez",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Scorpions",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Daft Punk",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Abba",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "The Cranberries",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Beyoncé",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Coolio",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Rixton",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Depeche Mode",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Netsky",
       "streak": 5,
       "period": "-"
     },
@@ -1228,12 +1159,72 @@
       "period": "-"
     },
     {
+      "naam": "Gigi Perez",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Daft Punk",
+      "streak": 5,
+      "period": "-"
+    },
+    {
       "naam": "Olly Alexander (Years & Years)",
       "streak": 5,
       "period": "-"
     },
     {
-      "naam": "Zara Larsson",
+      "naam": "The Cranberries",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Bruno Mars",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Linkin Park",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "The Chainsmokers",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Jay-Z",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Tom Odell",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Hozier",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Scorpions",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Justin Bieber",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Sean Paul",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "3 Doors Down",
       "streak": 5,
       "period": "-"
     },
@@ -1243,12 +1234,22 @@
       "period": "-"
     },
     {
-      "naam": "Nicki Minaj",
+      "naam": "Clean Bandit",
       "streak": 5,
       "period": "-"
     },
     {
-      "naam": "Bazart",
+      "naam": "Zara Larsson",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Beyoncé",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Rixton",
       "streak": 5,
       "period": "-"
     },
@@ -1258,12 +1259,22 @@
       "period": "-"
     },
     {
-      "naam": "Djo",
+      "naam": "Nicki Minaj",
       "streak": 5,
       "period": "-"
     },
     {
-      "naam": "Tom Odell",
+      "naam": "Rammstein",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "The Black Keys",
+      "streak": 5,
+      "period": "-"
+    },
+    {
+      "naam": "Djo",
       "streak": 5,
       "period": "-"
     },
@@ -1288,199 +1299,189 @@
       "period": "-"
     },
     {
-      "naam": "Kygo",
+      "naam": "Survivor",
       "streak": 4,
       "period": "-"
     },
     {
-      "naam": "Gigi D'Agostino",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Metallica",
+      "naam": "Michael Sembello",
       "streak": 4,
       "period": "-"
     }
   ],
   "artists_current": [
     {
-      "naam": "Radiohead",
-      "streak": 7,
-      "period": "-"
-    },
-    {
-      "naam": "Arctic Monkeys",
-      "streak": 7,
-      "period": "-"
-    },
-    {
-      "naam": "Mgmt",
-      "streak": 7,
-      "period": "-"
-    },
-    {
       "naam": "Pommelien Thijs",
-      "streak": 7,
+      "streak": 11,
       "period": "-"
     },
     {
-      "naam": "Red Hot Chili Peppers",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "Coldplay",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "Green Day",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "The War On Drugs",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "J. Cole",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "Adele",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "The Kid Laroi",
-      "streak": 6,
-      "period": "-"
-    },
-    {
-      "naam": "Blink-182",
-      "streak": 6,
+      "naam": "Radiohead",
+      "streak": 11,
       "period": "-"
     },
     {
       "naam": "Tame Impala",
-      "streak": 6,
+      "streak": 10,
       "period": "-"
     },
     {
-      "naam": "Maroon 5",
-      "streak": 5,
+      "naam": "Red Hot Chili Peppers",
+      "streak": 10,
       "period": "-"
     },
     {
-      "naam": "Aerosmith",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Pitbull",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Lp",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "The Black Keys",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Pearl Jam",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Editors",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Simple Minds",
-      "streak": 5,
-      "period": "-"
-    },
-    {
-      "naam": "Kygo",
+      "naam": "Manic Street Preachers",
       "streak": 4,
       "period": "-"
     },
     {
-      "naam": "Linkin Park",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Fleetwood Mac",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Lost Frequencies",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "John Newman",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Oscar And The Wolf",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Clean Bandit",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Lorde",
-      "streak": 4,
-      "period": "-"
-    },
-    {
-      "naam": "Michael Jackson",
+      "naam": "Kaleo",
       "streak": 3,
       "period": "-"
     },
     {
-      "naam": "Future",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "naam": "The Lumineers",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "naam": "Tool",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "naam": "Owl City",
-      "streak": 3,
-      "period": "-"
-    },
-    {
-      "naam": "Kate Bush",
+      "naam": "Bee Gees",
       "streak": 2,
       "period": "-"
     },
     {
-      "naam": "Dolly Parton",
+      "naam": "Oasis",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Conan Gray",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Netsky",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Ed Sheeran",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Nirvana",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Coldplay",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Xxxtentacion",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Lost Frequencies",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Adele",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Mgmt",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Travis Scott",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Dua Lipa",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Depeche Mode",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Green Day",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Goose",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Bruno Mars",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Oscar And The Wolf",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Blink-182",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Pearl Jam",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Franz Ferdinand",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "The Chainsmokers",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "M83",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Jay-Z & Kanye West",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Tom Odell",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Kendrick Lamar",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Stromae",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "Metallica",
+      "streak": 2,
+      "period": "-"
+    },
+    {
+      "naam": "The Weeknd",
       "streak": 2,
       "period": "-"
     }

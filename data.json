@@ -1,9 +1,123 @@
 [
   {
-    "datum": "2026-01-07",
+    "datum": "2026-01-11",
+    "titel": "Ben Je Klaar?",
+    "artiest": "Pommelien Thijs",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/42/1d/be/421dbed6-2286-1558-4d91-8ff2d26a8c4a/196873431819.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-11",
+    "titel": "Running Low",
+    "artiest": "Netsky",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/0d/c4/ef/0dc4efde-1fbd-992e-a257-a00673de96c2/0617465586354.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-11",
+    "titel": "Dracula",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/be/b4/36beb41f-c644-55cb-9fbb-bf0622a66653/196873644783.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-11",
+    "titel": "All The Small Things",
+    "artiest": "Blink-182",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c1/3d/86/c13d8619-0794-ceee-6b1b-d0709119a9cf/16UMGIM35657.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-11",
     "titel": "Street Spirit",
     "artiest": "Radiohead",
     "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/1b/a9/5c/1ba95cac-b245-d386-63fb-6b857aa9dce8/634904078065.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-10",
+    "titel": "Dracula",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/be/b4/36beb41f-c644-55cb-9fbb-bf0622a66653/196873644783.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-10",
+    "titel": "Don'T You",
+    "artiest": "Simple Minds",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/9e/ff/259effb3-cb4d-0e2c-ef86-982561e53bfd/177279.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-10",
+    "titel": "Let It Happen",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/2e/b4/a82eb490-f30a-a321-461a-0383c88fec95/15UMGIM23316.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-10",
+    "titel": "Ben Je Klaar?",
+    "artiest": "Pommelien Thijs",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/42/1d/be/421dbed6-2286-1558-4d91-8ff2d26a8c4a/196873431819.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-10",
+    "titel": "The Winner Takes It All",
+    "artiest": "Abba",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/60/f8/a6/60f8a6bc-e875-238d-f2f8-f34a6034e6d2/14UMGIM07615.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-09",
+    "titel": "Dracula",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/be/b4/36beb41f-c644-55cb-9fbb-bf0622a66653/196873644783.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-09",
+    "titel": "Ben Je Klaar?",
+    "artiest": "Pommelien Thijs",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/42/1d/be/421dbed6-2286-1558-4d91-8ff2d26a8c4a/196873431819.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-09",
+    "titel": "No Surprises",
+    "artiest": "Radiohead",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-09",
+    "titel": "Love Me Again",
+    "artiest": "John Newman",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/25/6b/e9/256be99e-84af-eaf9-fe88-9c5d696200f1/00602537672172.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-09",
+    "titel": "Habits",
+    "artiest": "Tove Lo",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b9/2d/20/b92d205d-f9fc-13cc-c714-14aed93081b4/15UMGIM46170.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-08",
+    "titel": "Let It Happen",
+    "artiest": "Tame Impala",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/2e/b4/a82eb490-f30a-a321-461a-0383c88fec95/15UMGIM23316.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-08",
+    "titel": "Where Is My Mind?",
+    "artiest": "Pixies",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/68/b7/c0/68b7c018-dc15-f44a-2611-be10237fc9a5/652637080308.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-08",
+    "titel": "Street Spirit",
+    "artiest": "Radiohead",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/1b/a9/5c/1ba95cac-b245-d386-63fb-6b857aa9dce8/634904078065.png/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-08",
+    "titel": "All The Small Things",
+    "artiest": "Blink-182",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c1/3d/86/c13d8619-0794-ceee-6b1b-d0709119a9cf/16UMGIM35657.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-08",
+    "titel": "Black",
+    "artiest": "Pearl Jam",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg"
   },
   {
     "datum": "2026-01-07",
@@ -13,21 +127,27 @@
   },
   {
     "datum": "2026-01-07",
-    "titel": "Payphone",
-    "artiest": "Maroon 5",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/23/69/f3/2369f317-a9c8-5c32-9a7a-cdd7b218ee39/21UMGIM89172.rgb.jpg/600x600bb.jpg"
+    "titel": "Black",
+    "artiest": "Pearl Jam",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg"
   },
   {
     "datum": "2026-01-07",
-    "titel": "Reality",
-    "artiest": "Lost Frequencies",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/07/81/14/078114c0-5ff9-6088-9208-d28d20fb0508/8718522109102.png/600x600bb.jpg"
+    "titel": "Ben Je Klaar?",
+    "artiest": "Pommelien Thijs",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/42/1d/be/421dbed6-2286-1558-4d91-8ff2d26a8c4a/196873431819.jpg/600x600bb.jpg"
   },
   {
     "datum": "2026-01-07",
-    "titel": "Red Eyes",
-    "artiest": "The War On Drugs",
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/3b/e7/98/3be79889-aea5-5139-5330-3cbe1b364ef3/656605031064.jpg/600x600bb.jpg"
+    "titel": "All The Small Things",
+    "artiest": "Blink-182",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c1/3d/86/c13d8619-0794-ceee-6b1b-d0709119a9cf/16UMGIM35657.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    "datum": "2026-01-07",
+    "titel": "Don'T You",
+    "artiest": "Simple Minds",
+    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/9e/ff/259effb3-cb4d-0e2c-ef86-982561e53bfd/177279.jpg/600x600bb.jpg"
   },
   {
     "datum": "2026-01-06",
