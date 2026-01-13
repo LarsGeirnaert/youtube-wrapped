@@ -33,3 +33,7 @@ monthly_stats.json
 comebacks.json
 chart_data.json
 calendar_index.json
+
+
+# Lijn voor alles te zien en kopiëren
+# tail -n +1 *.html *.css *.js *.py | clip.exe 
