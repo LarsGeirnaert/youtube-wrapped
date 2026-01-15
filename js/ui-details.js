@@ -36,16 +36,33 @@ function showAlbumDetails(posterUrl, artistName, isBack = false) {
 
 function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack = false) {
     if (!isBack) addToHistory('artist', arguments);
+    
+    // Naam opschonen (bijv. "Drake (feat...)" -> "Drake")
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
+    
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = cleanArtist;
     
-    let songsToShow = []; let label = "totaal";
+    let songsToShow = []; 
+    let label = "totaal";
+    
+    // Bepaal welke songs we laten zien (totaal of per maand)
     if (monthKey && monthlyStats[monthKey] && monthlyStats[monthKey].artist_details[cleanArtist]) {
-        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; });
+        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { 
+            const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); 
+            return { 
+                titel: i[0], 
+                count: i[1], 
+                poster: info ? info.poster : 'img/placeholder.png', 
+                artiest: cleanArtist 
+            }; 
+        });
         label = "deze maand";
-    } else { songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); }
+    } else { 
+        songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); 
+    }
 
+    // Albums verzamelen
     const albums = {};
     songsToShow.forEach(s => {
         if (s.poster && s.poster !== "img/placeholder.png") {
@@ -56,9 +73,47 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
     });
     const sortedAlbums = Object.values(albums).sort((a,b) => b.count - a.count);
 
+    // --- NIEUW: STREAKS OPHALEN ---
+    const topStreaks = getArtistStreaks(cleanArtist);
+
+    // HTML Bouwen
     let html = '';
     if (overrideCount) html += `<p style="text-align:center; color:var(--spotify-green); margin-bottom:10px; font-weight:700;">${monthKey ? 'Deze maand' : 'Totaal'} ${overrideCount}x geluisterd</p>`;
+    
     html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
+
+    // --- NIEUW: STREAKS WEERGEVEN ---
+    if (topStreaks.length > 0) {
+        html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:5px;">🔥 Beste Streaks</h3>`;
+        html += `<div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:5px; margin-bottom:20px;">`;
+        
+        topStreaks.forEach(st => {
+            // Datums formatteren voor weergave
+            const d1Obj = new Date(st.start);
+            const d2Obj = new Date(st.end);
+            const d1 = d1Obj.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
+            const d2 = d2Obj.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
+            const periodStr = d1 === d2 ? d1 : `${d1} ➔ ${d2}`;
+            
+            // Datums formatteren voor filter (YYYY-MM-DD strings)
+            // Let op: st.start en st.end zijn hier strings uit getArtistStreaks (want die haalt ze uit fullHistoryData)
+            // Als getArtistStreaks ze als strings teruggeeft (zoals in globals.js), kunnen we ze direct gebruiken.
+            // Als het Date objecten zijn, moeten we ze converteren.
+            // De globals.js code die ik gaf gebruikt 'currentStreak.end = uniqueDates[i]' wat een string is.
+            
+            const sStr = st.start; 
+            const eStr = st.end; 
+
+            // Klikbaar maken -> Song title sturen we als null, zodat de kalender ALLE liedjes van de artiest toont
+            html += `
+                <div class="streak-row" onclick="applyCalendarFilter('${escapeStr(cleanArtist)}', '${sStr}', '${eStr}', null)" style="cursor:pointer; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+                    <span class="streak-days">${st.count} dagen</span>
+                    <span class="streak-dates">${periodStr}</span>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
 
     if (sortedAlbums.length > 0) {
         html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Albums</h3>`;
@@ -124,6 +179,7 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
             <div class="vinyl-record" style="width:200px; height:200px; background:#111; border-radius:50%; margin:0 auto; position:relative; background-image: repeating-radial-gradient(circle, #222 0, #111 2px, #222 4px);"></div>
             <img src="${s.poster}" style="position:absolute; inset:25%; width:50%; height:50%; border-radius:50%; object-fit:cover;">
         </div>
+        
         <h2 style="text-align:center; margin-top:10px; line-height:1.2;">${titel}</h2>
         <p style="text-align:center; color:var(--spotify-green); font-weight:bold; margin-bottom:20px;">${artiest}</p>
 
@@ -139,12 +195,27 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
         html += `<div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:5px;">`;
         
         topStreaks.forEach(st => {
-            const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
-            const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
+            // FIX VOOR CRASH:
+            // We maken een nieuw Date object. Als st.start al een string is, werkt dit.
+            // Als het al een Date object is, werkt dit ook.
+            const d1Obj = new Date(st.start);
+            const d2Obj = new Date(st.end);
+            
+            const d1 = d1Obj.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
+            const d2 = d2Obj.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
             const periodStr = d1 === d2 ? d1 : `${d1} ➔ ${d2}`;
             
-            const sStr = st.start.toISOString().split('T')[0];
-            const eStr = st.end.toISOString().split('T')[0];
+            // Format datums voor filter (YYYY-MM-DD)
+            // .toISOString() crasht als de datum ongeldig is, dus we doen een check
+            let sStr = "", eStr = "";
+            try {
+                sStr = d1Obj.toISOString().split('T')[0];
+                eStr = d2Obj.toISOString().split('T')[0];
+            } catch (e) {
+                // Fallback als conversie mislukt (bijv als st.start al de string "2023-01-01" is, gebruiken we die)
+                sStr = st.start;
+                eStr = st.end;
+            }
 
             html += `
                 <div class="streak-row" onclick="applyCalendarFilter('${escapeStr(artiest)}', '${sStr}', '${eStr}', '${escapeStr(titel)}')" style="cursor:pointer; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
@@ -179,6 +250,7 @@ function showTop100(category, isBack = false) {
         if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
         else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
     }
+    // STREAKS FIX: 7 items (inclusief datums)
     else if (category.includes('streaks')) { 
         const key = category.split('streaks-')[1].replace('-', '_'); 
         items = streakData[key].map(s => [
@@ -210,21 +282,21 @@ function showTop100(category, isBack = false) {
         
         let badgeAttr = '';
         let badgeStyle = 'flex-shrink:0;';
-        
         if (unit && unit.trim() === 'd') {
-             let filterArtist = name;
-             let filterSong = null;
-             
-             if(actualType === 'song' && name.includes(' - ')) {
+             let artistArg = actualType === 'song' ? name.split(' - ').pop() : name;
+             let songArg = null;
+             if(actualType === 'song') {
+                 // Haal de titel uit de volledige string "Titel - Artiest"
                  const parts = name.split(' - ');
-                 filterArtist = parts.pop(); 
-                 filterSong = parts.join(' - '); 
-             } else if(actualType === 'artist') {
-                 filterArtist = name;
+                 // Omdat we in renderList pop() gebruikten, moeten we hier voorzichtig zijn.
+                 // renderList split logic:
+                 // filterArtist = parts.pop(); filterSong = parts.join(' - ');
+                 // We doen hier hetzelfde:
+                 songArg = parts.slice(0, parts.length - 1).join(' - ');
              }
 
              if (start && end) {
-                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}', '${escapeStr(filterSong||'')}')"`;
+                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}', '${start}', '${end}', '${escapeStr(songArg||'')}')"`;
                  badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
              }
         }
@@ -236,7 +308,7 @@ function showTop100(category, isBack = false) {
                         <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>
                         ${sub}
                     </div>
-                    <span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">${val}${unit||''}</span></li>`;
+                    <span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">${val}${unit||' d'}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }

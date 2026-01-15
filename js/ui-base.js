@@ -21,13 +21,14 @@ function renderList(id, items, unit, type) {
 
             if (type === 'song' && name.includes(' - ')) {
                 const parts = name.split(' - ');
-                filterArtist = parts.pop(); 
-                filterSong = parts.join(' - ');
+                filterArtist = parts[parts.length - 1]; // Artiest is laatste deel
+                filterSong = parts.slice(0, parts.length - 1).join(' - '); // Rest is titel
             } else if (type === 'artist') {
                 filterArtist = name;
             }
 
             if (start && end) {
+                // Correcte song titel doorgeven
                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}', '${escapeStr(filterSong||'')}')" title="Bekijk streak in Kalender"`;
                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
             } else {
@@ -54,7 +55,6 @@ function renderList(id, items, unit, type) {
 
 function closeModal() {
     modalHistory.pop(); 
-    
     if (modalHistory.length > 0) {
         const prev = modalHistory[modalHistory.length - 1]; 
         
