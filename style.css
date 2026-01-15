@@ -203,3 +203,69 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 
 #btn-merge-mode:hover { background: rgba(255,165,0,0.4) !important; }
 li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !important; background: rgba(255, 165, 0, 0.15) !important; transform: scale(0.98); }
+
+/* --- STREAK CONNECTORS (NIEUW: Voor de kalender balken) --- */
+/* Zorgt voor de verbinding tussen dagen */
+.calendar-day.streak-middle {
+    border-radius: 0 !important;
+    background: rgba(29, 185, 84, 0.4) !important;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.calendar-day.streak-start {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background: rgba(29, 185, 84, 0.4) !important;
+    border-right: none !important;
+}
+.calendar-day.streak-end {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    background: rgba(29, 185, 84, 0.4) !important;
+    border-left: none !important;
+}
+.calendar-day.streak-middle .day-number,
+.calendar-day.streak-start .day-number,
+.calendar-day.streak-end .day-number {
+    color: white !important;
+    font-weight: 800;
+    text-shadow: 0 1px 2px black;
+}
+
+/* --- SONG SPOTLIGHT STATS --- */
+.spotlight-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.spotlight-stat-box {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid var(--glass-border);
+}
+.spotlight-stat-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: white;
+    display: block;
+}
+.spotlight-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.streak-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+.streak-row:last-child { border-bottom: none; }
+.streak-days { font-weight: bold; color: var(--spotify-green); }
+.streak-dates { color: #aaa; font-size: 0.8rem; }
