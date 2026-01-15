@@ -248,41 +248,10 @@
                 <div id="search-results" class="search-results-list"></div>
             </section>
 
-            <div class="section-title">🕰️ Nostalgie & Terugblik</div>
-            <div class="stats-grid">
-                
-                <div class="stat-card">
-                    <h3 style="font-size: 0.75rem; color: var(--spotify-green); margin-bottom: 10px; letter-spacing: 1.5px; text-transform: uppercase;">
-                        🚀 Grootste Comebacks
-                    </h3>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
-                        Liedjes die je minstens een half jaar niet luisterde.
-                    </p>
-                    <ul id="comeback-list" class="ranking-list"></ul>
-                </div>
-
-                <div class="stat-card">
-                    <h3 style="font-size: 0.75rem; color: var(--spotify-green); margin-bottom: 10px; letter-spacing: 1.5px; text-transform: uppercase;">
-                        💎 Vergeten Parels
-                    </h3>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
-                        Songs die je vroeger vaak luisterde, maar nu niet meer.
-                    </p>
-                    <ul id="old-favorites-list" class="ranking-list"></ul>
-                </div>
-
-            </div>
-
             <div class="section-title">🏆 Mijn Favorieten</div>
             <div class="stats-grid">
                 <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('songs')">Meest Beluisterde Songs ➔</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
                 <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('artists')">Grootste Artiesten ➔</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
-            </div>
-
-            <div class="section-title">💿 Album Collectie</div>
-            <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-listens')">Top Albums (Beurten) ➔</h3><ol id="top-albums-listens" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-variety')">Meest Diverse Albums ➔</h3><ol id="top-albums-variety" class="ranking-list"></ol></div>
             </div>
 
             <div class="section-title">🔥 Song Streaks</div>
@@ -297,13 +266,53 @@
                 <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-top')">All-time Records ➔</h3><ol id="top-artist-streaks" class="ranking-list"></ol></div>
             </div>
 
+            <div class="section-title">💿 Album Collectie</div>
+            <div class="stats-grid">
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-listens')">Top Albums (Beurten) ➔</h3><ol id="top-albums-listens" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-variety')">Meest Diverse Albums ➔</h3><ol id="top-albums-variety" class="ranking-list"></ol></div>
+            </div>
+
             <div class="section-title">🧭 Slimme Inzichten</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('obsessions')">💎 De Obsessies ➔</h3><ul id="obsessions-list" class="ranking-list"></ul></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('explorers')">🧭 Ontdekkingsreizigers ➔</h3><ul id="variety-list" class="ranking-list"></ul></div>
+                <div class="stat-card">
+                    <h3 class="clickable-header" onclick="showTop100('obsessions')">💎 De Obsessies ➔</h3>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Songs die je grijs draait van een artiest die je verder amper kent.
+                    </p>
+                    <ul id="obsessions-list" class="ranking-list"></ul>
+                </div>
+                <div class="stat-card">
+                    <h3 class="clickable-header" onclick="showTop100('explorers')">🧭 Ontdekkingsreizigers ➔</h3>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Artiesten waarvan je de meeste unieke nummers hebt ontdekt.
+                    </p>
+                    <ul id="variety-list" class="ranking-list"></ul>
+                </div>
             </div>
+
+            <div class="section-title">🕰️ Nostalgie & Terugblik</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 style="font-size: 0.75rem; color: var(--spotify-green); margin-bottom: 10px; letter-spacing: 1.5px; text-transform: uppercase;">
+                        🚀 Grootste Comebacks
+                    </h3>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Liedjes die je minstens een half jaar niet luisterde.
+                    </p>
+                    <ul id="comeback-list" class="ranking-list"></ul>
+                </div>
+                <div class="stat-card">
+                    <h3 style="font-size: 0.75rem; color: var(--spotify-green); margin-bottom: 10px; letter-spacing: 1.5px; text-transform: uppercase;">
+                        💎 Vergeten Parels
+                    </h3>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Songs die je vroeger vaak luisterde, maar nu niet meer.
+                    </p>
+                    <ul id="old-favorites-list" class="ranking-list"></ul>
+                </div>
+            </div>
+
         </div>
-    </div>
 
     <div id="merge-action-bar">
         <span id="merge-count" style="color:white; font-weight:bold;">0 geselecteerd</span>
