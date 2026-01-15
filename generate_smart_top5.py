@@ -342,6 +342,7 @@ def generate_smart_top5():
             final_data.append({ "datum": d, "titel": titel, "artiest": artiest, "poster": poster })
     with open('data.json', 'w', encoding='utf-8') as f: json.dump(final_data, f, indent=2, ensure_ascii=False)
 
+# 8. Streaks (All-time top, gebaseerd op de volledige lijst)
     if not all_dates_found: 
         print("✅ Klaar! (Geen streaks)")
         return
@@ -357,15 +358,12 @@ def generate_smart_top5():
             artist_dates_set[s[0]].add(d)
 
     def get_streak_info(date_set, reference_date):
-        # 1. Datums sorteren
         sorted_dates = sorted([datetime.strptime(d, "%Y-%m-%d") for d in date_set])
-        if not sorted_dates: return {"max": 0, "period": "-", "current": 0, "current_period": "-", "start_date": None, "end_date": None}
+        if not sorted_dates: return {"max": 0, "period": "-", "current": 0, "current_period": "-", "start_date": None, "end_date": None, "curr_start": None, "curr_end": None}
 
-        max_s = 1
+        max_s, curr_s = 1, 1
         max_start = sorted_dates[0]
         max_end = sorted_dates[0]
-
-        curr_s = 1
         curr_start = sorted_dates[0]
 
         for i in range(1, len(sorted_dates)):
@@ -379,7 +377,6 @@ def generate_smart_top5():
                 curr_s = 1
                 curr_start = sorted_dates[i]
         
-        # Check laatste streak
         if curr_s > max_s:
             max_s = curr_s
             max_start = curr_start
@@ -387,27 +384,41 @@ def generate_smart_top5():
 
         is_current = sorted_dates[-1] >= reference_date - timedelta(days=1)
         
+        # Datums voor de huidige streak berekenen
+        current_start_date = None
+        current_end_date = None
+        if is_current:
+            current_end_date = sorted_dates[-1]
+            # De start is het einde min de lengte van de streak (+1 dag correctie)
+            current_start_date = sorted_dates[-curr_s]
+
         return { 
             "max": max_s, 
             "period": f"{max_start.strftime('%d %b %Y')} - {max_end.strftime('%d %b %Y')}",
             "current": curr_s if is_current else 0,
             "current_period": "-",
-            # HIER IS DE TOEGEVOEGDE INFO VOOR DE AGENDA HIGHLIGHT
             "start_date": max_start.strftime("%Y-%m-%d"),
-            "end_date": max_end.strftime("%Y-%m-%d")
+            "end_date": max_end.strftime("%Y-%m-%d"),
+            "curr_start": current_start_date.strftime("%Y-%m-%d") if current_start_date else None,
+            "curr_end": current_end_date.strftime("%Y-%m-%d") if current_end_date else None
         }
 
     s_top, s_curr, a_top, a_curr = [], [], [], []
     for k, v in song_dates_set.items():
         if poster_cache.get((k[0].lower(), k[1].lower()), "img/placeholder.png") == "img/placeholder.png": continue
         res = get_streak_info(v, last_data_date)
-        if res["max"] > 1: s_top.append({"artiest": k[0], "titel": k[1], "streak": res["max"], "period": res["period"], "start": res["start_date"], "end": res["end_date"]})
-        if res["current"] > 1: s_curr.append({"artiest": k[0], "titel": k[1], "streak": res["current"], "period": res["current_period"]})
+        
+        if res["max"] > 1: 
+            s_top.append({"artiest": k[0], "titel": k[1], "streak": res["max"], "period": res["period"], "start": res["start_date"], "end": res["end_date"]})
+        if res["current"] > 1: 
+            s_curr.append({"artiest": k[0], "titel": k[1], "streak": res["current"], "period": res["current_period"], "start": res["curr_start"], "end": res["curr_end"]})
     
     for k, v in artist_dates_set.items():
         res = get_streak_info(v, last_data_date)
-        if res["max"] > 1: a_top.append({"naam": k, "streak": res["max"], "period": res["period"], "start": res["start_date"], "end": res["end_date"]})
-        if res["current"] > 1: a_curr.append({"naam": k, "streak": res["current"], "period": res["current_period"]})
+        if res["max"] > 1: 
+            a_top.append({"naam": k, "streak": res["max"], "period": res["period"], "start": res["start_date"], "end": res["end_date"]})
+        if res["current"] > 1: 
+            a_curr.append({"naam": k, "streak": res["current"], "period": res["current_period"], "start": res["curr_start"], "end": res["curr_end"]})
 
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)

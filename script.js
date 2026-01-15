@@ -10,8 +10,8 @@ let selectedForMerge = [];
 let existingCorrections = [];
 let fileHandle = null;
 let comparisonItems = []; 
-// NIEUW: Variabele om de datum-range van de streak te onthouden
-let focusStreakRange = null; 
+let activeSongFilter = null; // <--- TOEVOEGEN
+let focusStreakRange = null;
 
 const DB_NAME = 'MuziekDagboekDB';
 const STORE_NAME = 'Settings';
@@ -39,11 +39,7 @@ function addToHistory(viewType, args) {
 function renderList(id, items, unit, type) {
     const el = document.getElementById(id); if (!el) return;
     
-    // DEBUG: Laat zien wat voor data binnenkomt voor de eerste regel van een lijst
-    if (items.length > 0 && id.includes('streak')) {
-        console.log(`[DEBUG] Lijst '${id}' geladen. Eerste item data:`, items[0]);
-    }
-
+    // items is nu: [name, val, poster, extraInfo, period, start, end]
     el.innerHTML = items.map(([name, val, poster, extraInfo, period, start, end], index) => {
         const escapedName = escapeStr(name);
         const elementId = `${id}-${index}`;
@@ -56,23 +52,21 @@ function renderList(id, items, unit, type) {
         
         if (unit && unit.trim() === 'd') {
             let filterArtist = name;
+            let filterSong = null;
+
             if (type === 'song' && name.includes(' - ')) {
                 const parts = name.split(' - ');
                 filterArtist = parts[parts.length - 1]; 
+                filterSong = parts.slice(0, parts.length - 1).join(' - '); 
             } else if (type === 'artist') {
                 filterArtist = name;
             }
 
-            // DEBUG: Check of start/end goed doorkomen per regel
-            if (index === 0 && id.includes('streak')) {
-                console.log(`[DEBUG] Badge check voor ${name}: Start=${start}, End=${end}`);
-            }
-
             if (start && end) {
-                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}')" title="Bekijk streak in Kalender"`;
+                // Hier wordt de klikactie ingesteld
+                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}', '${escapeStr(filterSong||'')}')" title="Bekijk streak in Kalender"`;
                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
             } else {
-                // Fallback als er geen datums zijn
                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}')" title="Bekijk in Kalender"`;
                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
             }
@@ -220,7 +214,6 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     
     let titel, artiest; 
     if (songFull.includes(' - ')) { 
-        // Slimme split: pakt alles voor het laatste streepje als titel
         const lastDashIndex = songFull.lastIndexOf(' - ');
         titel = songFull.substring(0, lastDashIndex);
         artiest = songFull.substring(lastDashIndex + 3);
@@ -228,65 +221,52 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
         titel = songFull; artiest = "Onbekend"; 
     }
     
-    // 1. Basis Data ophalen (totaal count)
     const s = statsData.find(x => x.titel === titel && x.artiest === artiest) || { poster: 'img/placeholder.png', artiest: artiest, count: 0 };
     const countToDisplay = overrideCount !== null ? overrideCount : s.count;
     const label = overrideCount !== null ? "Deze maand" : "Totaal";
 
-    // 2. Ranking & Percentage berekenen
-    // Alle liedjes van deze artiest ophalen en sorteren op plays
     const artistSongs = statsData.filter(x => x.artiest === artiest).sort((a, b) => b.count - a.count);
-    
-    // Op welke plek staat dit liedje? (Index + 1)
     const rankIndex = artistSongs.findIndex(x => x.titel === titel);
     const rank = rankIndex !== -1 ? `#${rankIndex + 1}` : '-';
     
-    // Hoeveel procent van al je plays naar deze artiest is DIT nummer?
     const totalArtistPlays = artistSongs.reduce((sum, item) => sum + item.count, 0);
     const percentage = totalArtistPlays > 0 ? ((s.count / totalArtistPlays) * 100).toFixed(1) + '%' : '0%';
 
-    // 3. Top 3 Streaks ophalen (met de verbeterde functie)
+    // Haal de streaks op
     const topStreaks = getSongStreaks(titel, artiest);
     
-    // 4. HTML Bouwen
     let html = `
         <div class="vinyl-container">
             <div class="vinyl-record" style="width:200px; height:200px; background:#111; border-radius:50%; margin:0 auto; position:relative; background-image: repeating-radial-gradient(circle, #222 0, #111 2px, #222 4px);"></div>
             <img src="${s.poster}" style="position:absolute; inset:25%; width:50%; height:50%; border-radius:50%; object-fit:cover;">
         </div>
-        
         <h2 style="text-align:center; margin-top:10px; line-height:1.2;">${titel}</h2>
         <p style="text-align:center; color:var(--spotify-green); font-weight:bold; margin-bottom:20px;">${artiest}</p>
 
         <div class="spotlight-stats-grid">
-            <div class="spotlight-stat-box">
-                <span class="spotlight-stat-val">${countToDisplay}x</span>
-                <span class="spotlight-stat-label">${label} Plays</span>
-            </div>
-            <div class="spotlight-stat-box">
-                <span class="spotlight-stat-val">${rank}</span>
-                <span class="spotlight-stat-label">Populair van ${artiest}</span>
-            </div>
-            <div class="spotlight-stat-box" style="grid-column: span 2;">
-                <span class="spotlight-stat-val">${percentage}</span>
-                <span class="spotlight-stat-label">van alle ${artiest} luisterbeurten</span>
-            </div>
+            <div class="spotlight-stat-box"><span class="spotlight-stat-val">${countToDisplay}x</span><span class="spotlight-stat-label">${label} Plays</span></div>
+            <div class="spotlight-stat-box"><span class="spotlight-stat-val">${rank}</span><span class="spotlight-stat-label">Populair van ${artiest}</span></div>
+            <div class="spotlight-stat-box" style="grid-column: span 2;"><span class="spotlight-stat-val">${percentage}</span><span class="spotlight-stat-label">van alle ${artiest} luisterbeurten</span></div>
         </div>
     `;
 
-    // 5. Streaks toevoegen (als ze er zijn)
     if (topStreaks.length > 0) {
         html += `<h3 style="font-size:0.9rem; color:#aaa; margin-bottom:10px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:5px;">🔥 Beste Streaks</h3>`;
         html += `<div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:5px;">`;
         
         topStreaks.forEach(st => {
-            // Datums mooi maken
             const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
             const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
             const periodStr = d1 === d2 ? d1 : `${d1} ➔ ${d2}`;
             
+            // Format datums voor de onclick functie (YYYY-MM-DD)
+            // Let op: st.start en st.end zijn Date objecten hier (vanuit getSongStreaks)
+            const sStr = st.start.toISOString().split('T')[0];
+            const eStr = st.end.toISOString().split('T')[0];
+
+            // HIER MAKEN WE DE REGEL KLIKBAAR
             html += `
-                <div class="streak-row">
+                <div class="streak-row" onclick="applyCalendarFilter('${escapeStr(artiest)}', '${sStr}', '${eStr}', '${escapeStr(titel)}')" style="cursor:pointer; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
                     <span class="streak-days">${st.count} dagen</span>
                     <span class="streak-dates">${periodStr}</span>
                 </div>
@@ -301,7 +281,6 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     document.getElementById('modal-datum-titel').innerText = "Details"; 
     document.getElementById('modal').classList.remove('hidden');
 }
-
 function showTop100(category, isBack = false) {
     if (!isBack) addToHistory('list', arguments);
     const container = document.getElementById('day-top-three-container');
@@ -318,6 +297,7 @@ function showTop100(category, isBack = false) {
         if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
         else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
     }
+    // --- STREAK CORRECTIE HIER ---
     else if (category.includes('streaks')) { 
         const key = category.split('streaks-')[1].replace('-', '_'); 
         items = streakData[key].map(s => [
@@ -325,11 +305,12 @@ function showTop100(category, isBack = false) {
             s.streak, 
             statsData.find(x => x.titel === s.titel)?.poster, 
             s.titel ? 'song' : 'artist', 
-            null, // <--- DIT WAS DE FOUT!
+            null, // <--- CORRECTIE: Lege plek voor extraInfo
             s.period,
             s.start, s.end
         ]); 
     }
+    // --- EINDE CORRECTIE ---
     else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
     else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
     else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} - ${a}`, songs[0].count, songs[0].poster, 'song']); }
@@ -353,10 +334,8 @@ function showTop100(category, isBack = false) {
              let artistArg = actualType === 'song' ? name.split(' - ').pop() : name;
              if (start && end) {
                  badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}', '${start}', '${end}')"`;
-             } else {
-                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}')"`;
+                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
              }
-             badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
         }
 
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
@@ -727,6 +706,7 @@ function renderStatsDashboard() {
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
     const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
     
+    // Top 5 blokjes (klein)
     renderList('top-songs-list-small', topSongs.slice(0, 5).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list-small', topArtists.slice(0, 5).map(a => [a[0], a[1], null]), 'x', 'artist');
     
@@ -734,44 +714,47 @@ function renderStatsDashboard() {
     const el = document.getElementById('total-listens-count');
     if(el) el.innerText = totalListens;
 
+    // Grote lijsten (Algemeen)
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
     renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
     renderList('old-favorites-list', oldFavoritesData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.days_silent}d stil`, c.poster, `Laatst: ${c.last_played}`]), '', 'song');
 
-    // --- STREAKS DATA MAPPING (FIXED) ---
+    // --- STREAKS: HIER ZAT DE FOUT ---
+    // We zorgen nu dat de array PRECIES 7 items heeft: [Naam, Waarde, Poster, Extra, Periode, Start, Eind]
     if (streakData.songs_current) {
         renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [
             `${s.titel} - ${s.artiest}`, 
             s.streak, 
             statsData.find(x=>x.titel===s.titel)?.poster, 
-            null, // <--- DIT WAS DE FOUT! Placeholder voor extraInfo
+            null, // Placeholder
             s.period, 
-            s.start, s.end 
+            s.start, s.end // DATUMS!
         ]), ' d', 'song');
 
         renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [
             `${s.titel} - ${s.artiest}`, 
             s.streak, 
             statsData.find(x=>x.titel===s.titel)?.poster, 
-            null, // <--- DIT WAS DE FOUT!
+            null, 
             s.period,
-            s.start, s.end 
+            s.start, s.end // DATUMS!
         ]), ' d', 'song');
 
         renderList('current-artist-streaks', streakData.artists_current.slice(0, 10).map(a => [
-            a.naam, a.streak, null, 
-            null, // <--- DIT WAS DE FOUT!
-            a.period, a.start, a.end 
+            a.naam, a.streak, null, null, 
+            a.period, 
+            a.start, a.end // DATUMS!
         ]), ' d', 'artist');
 
         renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [
-            a.naam, a.streak, null, 
-            null, // <--- DIT WAS DE FOUT!
-            a.period, a.start, a.end 
+            a.naam, a.streak, null, null, 
+            a.period, 
+            a.start, a.end // DATUMS!
         ]), ' d', 'artist');
     }
 
+    // Albums & Obsessies (Rest ongewijzigd)
     const albumMap = {};
     statsData.forEach(s => {
         if (s.poster === "img/placeholder.png") return;
@@ -1545,25 +1528,26 @@ function switchTab(tabName) {
         renderRecapSelector();
     }
 }
-function applyCalendarFilter(artist, startDate, endDate) { 
-    console.log(`[DEBUG] applyCalendarFilter aangeroepen voor: ${artist}`);
-    console.log(`[DEBUG] Start: ${startDate}, End: ${endDate}`);
-
-    activeFilter = artist; 
+function applyCalendarFilter(artist, startDate, endDate, songTitle = null) { 
+    console.log(`[DEBUG] applyCalendarFilter: ${artist}, Song: ${songTitle}, Start: ${startDate}`);
     
+    activeFilter = artist; 
+    activeSongFilter = songTitle; // Sla het specifieke liedje op
+
     if (startDate && endDate) {
+        // Focus instellen
         focusStreakRange = { start: startDate, end: endDate };
+        // Navigeren naar start
         currentViewDate = new Date(startDate);
         currentViewDate.setDate(1); 
-        console.log("[DEBUG] Focus mode geactiveerd. Spring naar:", currentViewDate);
     } else {
         focusStreakRange = null;
+        // Zoek laatste luistermoment
         const allDates = Object.keys(calendarIndex).sort().reverse();
         const lastListenDate = allDates.find(date => calendarIndex[date][artist]);
         if (lastListenDate) {
             currentViewDate = new Date(lastListenDate);
             currentViewDate.setDate(1); 
-            console.log("[DEBUG] Geen specifieke streak, spring naar laatste luisterdatum:", currentViewDate);
         }
     }
 
@@ -1572,7 +1556,6 @@ function applyCalendarFilter(artist, startDate, endDate) {
     document.getElementById('resetFilter').classList.remove('hidden'); 
     renderCalendar(); 
 }
-
 function getSongStreaks(titel, artiest) {
     // FIX: Gebruik fullHistoryData (alles) ipv musicData (alleen top 5)
     // Hierdoor tellen dagen waarop het liedje op #6 stond nu WEL mee.
@@ -1633,7 +1616,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('prevMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderCalendar(); };
     document.getElementById('nextMonth').onclick = () => { currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderCalendar(); };
     document.getElementById('close-button').onclick = () => closeModal();
-    document.getElementById('resetFilter').onclick = function() { activeFilter = null; this.classList.add('hidden'); renderCalendar(); };
-    
+document.getElementById('resetFilter').onclick = function() { 
+    activeFilter = null; 
+    activeSongFilter = null; // <--- TOEVOEGEN
+    focusStreakRange = null; 
+    this.classList.add('hidden'); 
+    renderCalendar(); 
+};    
     loadMusic();
 });
