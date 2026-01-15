@@ -179,7 +179,15 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 }
 
 function handleAlbumClick(poster, artist, elementId) {
-    showAlbumDetails(poster, artist);
+    if (mergeMode) {
+        // MERGE MODE AAN: Selecteer het album voor samenvoegen
+        // We bouwen de "naam" op zoals de merge-functie die verwacht
+        const albumName = `Album van ${artist}`;
+        toggleMergeSelection(albumName, 'album', poster, artist, elementId);
+    } else {
+        // MERGE MODE UIT: Open gewoon de details van het album
+        showAlbumDetails(poster, artist);
+    }
 }
 
 function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
@@ -513,28 +521,53 @@ function updateMergeUI() {
 
 function showMergeModal() {
     if (selectedForMerge.length < 2) { alert("Selecteer minstens 2 items."); return; }
+    
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = "Kies de Hoofdversie";
-    let html = `<p style="text-align:center;margin-bottom:15px;color:#ccc;">Welke versie moet blijven?</p>`;
+    
+    let html = `<p style="text-align:center;margin-bottom:15px;color:#ccc;">Welke versie (en cover) moet blijven?</p>`;
     html += `<form id="merge-form" style="max-height:300px;overflow-y:auto;margin-bottom:20px;">`;
+    
     selectedForMerge.forEach((obj, idx) => {
         const label = obj.type === 'song' ? obj.item.titel : obj.item.displayTitle;
         const sub = obj.item.artiest;
-        html += `<label class="radio-item"><input type="radio" name="merge-target" value="${idx}" ${idx===0?'checked':''}><div><span style="font-weight:600;display:block;">${label}</span><span style="font-size:0.8rem;color:#aaa;">${sub}</span></div></label>`;
+        
+        // Bepaal de afbeelding (gebruik placeholder als er geen is)
+        // Voor albums zit de poster in obj.item.poster, voor songs moeten we even kijken wat er beschikbaar is
+        let posterSrc = 'https://placehold.co/64x64/1e1e1e/444444?text=💿';
+        if (obj.item.poster && obj.item.poster !== 'img/placeholder.png') {
+            posterSrc = obj.item.poster;
+        }
+
+        html += `<label class="radio-item" style="display:flex; align-items:center; padding:10px; cursor:pointer;">
+                    <input type="radio" name="merge-target" value="${idx}" ${idx===0?'checked':''} style="margin-right:15px; transform:scale(1.3);">
+                    
+                    <img src="${posterSrc}" style="width:60px; height:60px; border-radius:6px; object-fit:cover; margin-right:15px; background:#222;">
+                    
+                    <div style="flex-grow:1; overflow:hidden;">
+                        <span style="font-weight:600; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>
+                        <span style="font-size:0.8rem; color:#aaa;">${sub}</span>
+                    </div>
+                 </label>`;
     });
+    
     html += `</form><button onclick="confirmMerge()" class="apply-btn">✅ Samenvoegen & Opslaan</button>`;
+    
     container.innerHTML = html;
     document.getElementById('modal').classList.remove('hidden');
 }
-
 async function confirmMerge() {
     const radios = document.getElementsByName('merge-target');
     let selectedIndex = -1;
     for (const r of radios) { if (r.checked) { selectedIndex = parseInt(r.value); break; } }
+    
     if (selectedIndex === -1) return;
+    
     const targetObj = selectedForMerge[selectedIndex];
     let newCount = 0;
+
     if (targetObj.type === 'song') {
+        // --- LIEDJES MERGEN (Bestaande logica) ---
         selectedForMerge.forEach((obj, idx) => {
             if (idx !== selectedIndex) {
                 existingCorrections.push({ original: obj.item, target: targetObj.item });
@@ -542,14 +575,24 @@ async function confirmMerge() {
             }
         });
     } else if (targetObj.type === 'album') {
+        // --- ALBUMS MERGEN (Verbeterde logica) ---
         const targetArtist = targetObj.item.artiest;
         const targetPoster = targetObj.item.poster;
+
         selectedForMerge.forEach((sourceObj, idx) => {
             if (idx !== selectedIndex) {
-                const songsToMove = statsData.filter(s => s.artiest === sourceObj.item.artiest && s.poster === sourceObj.item.poster);
+                // 1. Bereken de unieke sleutel van het album dat we weg willen hebben
+                const sourceKey = getAlbumKey(sourceObj.item.poster, sourceObj.item.artiest);
+
+                // 2. Zoek alle liedjes in je database die bij die sleutel horen
+                // Dit zorgt ervoor dat we exact dezelfde liedjes pakken als die in de lijst stonden
+                const songsToMove = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === sourceKey);
+
+                // 3. Maak voor elk liedje een correctieregel aan
                 songsToMove.forEach(song => {
                     existingCorrections.push({
                         original: { titel: song.titel, artiest: song.artiest },
+                        // De target krijgt dezelfde titel, maar de artiest en poster van het 'Hoofd Album'
                         target: { titel: song.titel, artiest: targetArtist, poster: targetPoster }
                     });
                     newCount++;
@@ -557,14 +600,15 @@ async function confirmMerge() {
             }
         });
     }
+
     const isAuto = await saveCorrections();
     let msg = `Succes! ${newCount} correctieregels toegevoegd.`;
     if (!isAuto) msg += " (Bestand gedownload).";
+    
     alert(msg);
     document.getElementById('modal').classList.add('hidden');
     toggleMergeMode(); 
 }
-
 // ==========================================
 // 6. DASHBOARD & STATS & CHARTS
 // ==========================================

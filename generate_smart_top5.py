@@ -37,6 +37,7 @@ def generate_smart_top5():
     # --- CONFIGURATIE ---
     MIN_DURATION_SECONDS = 15  # Nummers korter dan dit worden genegeerd (geskipt)
 
+    # Cache laden uit vorige run om posters te hergebruiken
     poster_cache = {}
     if os.path.exists('stats.json'):
         with open('stats.json', 'r', encoding='utf-8') as f:
@@ -46,6 +47,7 @@ def generate_smart_top5():
                         poster_cache[(entry['artiest'].lower().strip(), entry['titel'].lower().strip())] = entry['poster']
             except: pass
 
+    # Correcties laden (HIER ZIT DE FIX VOOR ALBUM MERGES)
     corrections = {}
     if os.path.exists('corrections.json'):
         try:
@@ -88,17 +90,22 @@ def generate_smart_top5():
         if not t or t.startswith('http'): continue
 
         # Correcties toepassen
+        forced_poster = None # Variabele om een merged poster op te slaan
         check_key = f"{a.lower()}|{t.lower()}"
+        
         if check_key in corrections:
             target = corrections[check_key]
             a = target['artiest']
             t = target['titel']
+            # FIX: Als de correctie een poster bevat (bijv. door album merge), sla die op!
+            if 'poster' in target:
+                forced_poster = target['poster']
 
         raw_candidates.append({
             'dt': dt_obj,
             'artiest': a,
             'titel': t,
-            'time_str': time_str # Bewaren voor originele logica
+            'forced_poster': forced_poster # Geef de geforceerde poster mee
         })
 
     # Sorteer chronologisch (Oud -> Nieuw) om tijdsverschil te berekenen
@@ -120,7 +127,7 @@ def generate_smart_top5():
                 skipped_count += 1
                 continue 
         
-        # Als we hier zijn, is het liedje lang genoeg (of het is het allerlaatste liedje)
+        # Als we hier zijn, is het liedje lang genoeg
         filtered_history.append(current_item)
 
     print(f"✂️ {skipped_count} geskipte nummers verwijderd.")
@@ -133,7 +140,7 @@ def generate_smart_top5():
     song_history_dates = {} 
     monthly_counts = Counter()
     all_dates_found = set()
-    temp_calendar_data = {} # Voor kalender index
+    temp_calendar_data = {} 
 
     hourly_counts = Counter()
     weekday_counts = Counter()
@@ -155,17 +162,24 @@ def generate_smart_top5():
         all_dates_found.add(datum_str)
         song_key = (a, t)
 
-        # Poster ophalen
-        poster = poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")
+        # Poster ophalen:
+        # 1. Is er een geforceerde poster uit corrections.json (album merge)? GEBRUIK DIE.
+        if item['forced_poster']:
+            poster = item['forced_poster']
+            # Update direct de cache zodat toekomstige lookups deze ook gebruiken
+            poster_cache[(a.lower(), t.lower())] = poster
+        else:
+            # 2. Anders, kijk in de cache
+            poster = poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")
+
+        # Cache de poster als we die nog niet hadden
+        if (a.lower(), t.lower()) not in poster_cache and poster != "img/placeholder.png":
+             poster_cache[(a.lower(), t.lower())] = poster
 
         # Kalender data verzamelen
         if datum_str not in temp_calendar_data: temp_calendar_data[datum_str] = {}
         if a not in temp_calendar_data[datum_str]: temp_calendar_data[datum_str][a] = Counter()
         temp_calendar_data[datum_str][a][t] += 1
-
-        # Cache de poster
-        if (a.lower(), t.lower()) not in poster_cache and poster != "img/placeholder.png":
-             poster_cache[(a.lower(), t.lower())] = poster
 
         # Stats opbouwen
         if song_key not in song_history_dates: song_history_dates[song_key] = []
