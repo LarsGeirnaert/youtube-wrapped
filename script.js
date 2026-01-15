@@ -1,8 +1,5 @@
-// ==========================================
-// 1. GLOBALE VARIABELEN & INSTELLINGEN
-// ==========================================
 let currentViewDate = new Date();
-// Voeg fullHistoryData toe aan de lijst:
+// Zorg dat fullHistoryData hierin staat
 let musicData = [], fullHistoryData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
 let oldFavoritesData = []; 
 let calendarIndex = {}; 
@@ -13,6 +10,8 @@ let selectedForMerge = [];
 let existingCorrections = [];
 let fileHandle = null;
 let comparisonItems = []; 
+// NIEUW: Variabele om de datum-range van de streak te onthouden
+let focusStreakRange = null; 
 
 const DB_NAME = 'MuziekDagboekDB';
 const STORE_NAME = 'Settings';
@@ -39,35 +38,44 @@ function addToHistory(viewType, args) {
 
 function renderList(id, items, unit, type) {
     const el = document.getElementById(id); if (!el) return;
-    el.innerHTML = items.map(([name, val, poster, extraInfo, period], index) => {
+    
+    // DEBUG: Laat zien wat voor data binnenkomt voor de eerste regel van een lijst
+    if (items.length > 0 && id.includes('streak')) {
+        console.log(`[DEBUG] Lijst '${id}' geladen. Eerste item data:`, items[0]);
+    }
+
+    el.innerHTML = items.map(([name, val, poster, extraInfo, period, start, end], index) => {
         const escapedName = escapeStr(name);
         const elementId = `${id}-${index}`;
-        
-        // Klik op de regel opent de details
         const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${escapeStr(extraInfo||'')}', '${elementId}')`;
-        
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
         
-        // --- KLIKBARE STREAK BADGE LOGICA ---
         let badgeAttr = '';
         let badgeStyle = 'flex-shrink:0;';
         
-        // Als de unit ' d' is (dus een streak), maken we de badge klikbaar
         if (unit && unit.trim() === 'd') {
             let filterArtist = name;
-            
-            // Bij songs is de naam "Titel - Artiest", we willen alleen de Artiest voor de filter
             if (type === 'song' && name.includes(' - ')) {
                 const parts = name.split(' - ');
                 filterArtist = parts[parts.length - 1]; 
             } else if (type === 'artist') {
                 filterArtist = name;
             }
-            
-            // Stuur artiest door naar kalender en stopPropagation voorkomt dat de modal opent
-            badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}')" title="Bekijk streak in Kalender"`;
-            badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+
+            // DEBUG: Check of start/end goed doorkomen per regel
+            if (index === 0 && id.includes('streak')) {
+                console.log(`[DEBUG] Badge check voor ${name}: Start=${start}, End=${end}`);
+            }
+
+            if (start && end) {
+                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}')" title="Bekijk streak in Kalender"`;
+                badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+            } else {
+                // Fallback als er geen datums zijn
+                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}')" title="Bekijk in Kalender"`;
+                badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+            }
         }
 
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
@@ -310,13 +318,24 @@ function showTop100(category, isBack = false) {
         if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
         else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
     }
-    else if (category.includes('streaks')) { const key = category.split('streaks-')[1].replace('-', '_'); items = streakData[key].map(s => [s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', s.period]); }
+    else if (category.includes('streaks')) { 
+        const key = category.split('streaks-')[1].replace('-', '_'); 
+        items = streakData[key].map(s => [
+            s.titel ? `${s.titel} - ${s.artiest}` : s.naam, 
+            s.streak, 
+            statsData.find(x => x.titel === s.titel)?.poster, 
+            s.titel ? 'song' : 'artist', 
+            null, // <--- DIT WAS DE FOUT!
+            s.period,
+            s.start, s.end
+        ]); 
+    }
     else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
     else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
     else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} - ${a}`, songs[0].count, songs[0].poster, 'song']); }
     else if (category === 'explorers') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']); }
 
-    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period], index) => {
+    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period, start, end], index) => {
         const escapedName = escapeStr(name);
         const elementId = `top100-${index}`;
         let actualType = type; let albumArtist = '';
@@ -327,6 +346,19 @@ function showTop100(category, isBack = false) {
         const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
+        
+        let badgeAttr = '';
+        let badgeStyle = 'flex-shrink:0;';
+        if (unit && unit.trim() === 'd') {
+             let artistArg = actualType === 'song' ? name.split(' - ').pop() : name;
+             if (start && end) {
+                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}', '${start}', '${end}')"`;
+             } else {
+                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}')"`;
+             }
+             badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+        }
+
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
                     <span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
                     ${img}
@@ -334,11 +366,10 @@ function showTop100(category, isBack = false) {
                         <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>
                         ${sub}
                     </div>
-                    <span class="point-badge" style="flex-shrink:0;">${val}${unit||''}</span></li>`;
+                    <span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">${val}${unit||''}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }
-
 function handleSearch() {
     const query = document.getElementById('musicSearch').value.toLowerCase().trim();
     const resultsContainer = document.getElementById('search-results'); 
@@ -690,6 +721,8 @@ async function confirmMerge() {
 // ==========================================
 
 function renderStatsDashboard() {
+    console.log("[DEBUG] renderStatsDashboard gestart...");
+    
     const topSongs = [...statsData].sort((a, b) => b.count - a.count).slice(0, 10);
     const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; });
     const topArtists = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
@@ -704,14 +737,39 @@ function renderStatsDashboard() {
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
     renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
-    
     renderList('old-favorites-list', oldFavoritesData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.days_silent}d stil`, c.poster, `Laatst: ${c.last_played}`]), '', 'song');
 
+    // --- STREAKS DATA MAPPING (FIXED) ---
     if (streakData.songs_current) {
-        renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
-        renderList('current-artist-streaks', streakData.artists_current.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
-        renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [a.naam, a.streak, null, a.period]), ' d', 'artist');
+        renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [
+            `${s.titel} - ${s.artiest}`, 
+            s.streak, 
+            statsData.find(x=>x.titel===s.titel)?.poster, 
+            null, // <--- DIT WAS DE FOUT! Placeholder voor extraInfo
+            s.period, 
+            s.start, s.end 
+        ]), ' d', 'song');
+
+        renderList('top-song-streaks', streakData.songs_top.slice(0, 10).map(s => [
+            `${s.titel} - ${s.artiest}`, 
+            s.streak, 
+            statsData.find(x=>x.titel===s.titel)?.poster, 
+            null, // <--- DIT WAS DE FOUT!
+            s.period,
+            s.start, s.end 
+        ]), ' d', 'song');
+
+        renderList('current-artist-streaks', streakData.artists_current.slice(0, 10).map(a => [
+            a.naam, a.streak, null, 
+            null, // <--- DIT WAS DE FOUT!
+            a.period, a.start, a.end 
+        ]), ' d', 'artist');
+
+        renderList('top-artist-streaks', streakData.artists_top.slice(0, 10).map(a => [
+            a.naam, a.streak, null, 
+            null, // <--- DIT WAS DE FOUT!
+            a.period, a.start, a.end 
+        ]), ' d', 'artist');
     }
 
     const albumMap = {};
@@ -743,7 +801,6 @@ function renderStatsDashboard() {
     renderList('obsessions-list', obsessions.sort((a,b) => b[1] - a[1]).slice(0, 10), 'x', 'song');
     renderList('variety-list', explorers.sort((a,b) => b[1] - a[1]).slice(0, 10), ' songs', 'artist');
 }
-
 // --- CALENDAR RENDERING FIX (FILTERED VIEW) ---
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid'), monthDisplay = document.getElementById('monthDisplay');
@@ -775,29 +832,44 @@ function renderCalendar() {
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
                 
-                // --- FIX: ROBUUSTE MAPPING VOOR [OBJECT OBJECT] ---
                 clickData = entry.songs.map(songObj => {
-                    // Als het een object is (nieuwe data), pak .titel
                     if (typeof songObj === 'object' && songObj !== null) {
                         return { 
                             titel: songObj.titel, 
                             artiest: activeFilter, 
                             poster: songObj.poster || poster 
                         };
-                    } 
-                    // Als het toch een string is (oude data), gebruik die direct
-                    return { titel: String(songObj), artiest: activeFilter, poster: poster };
+                    } else {
+                        return { titel: String(songObj), artiest: activeFilter, poster: poster };
+                    }
                 });
 
                 // Streak connectors
                 const yesterday = new Date(year, month, day - 1);
                 const tomorrow = new Date(year, month, day + 1);
+                
                 const hadYesterday = checkDateHasListen(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
                 const hasTomorrow = checkDateHasListen(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+
+                // FOCUS STREAK LOGICA: Check of deze datum in de actieve streak valt
+                let isFocus = false;
+                if (focusStreakRange) {
+                    const d = new Date(dateStr);
+                    const s = new Date(focusStreakRange.start);
+                    // Reset tijd om puur op datum te vergelijken
+                    d.setHours(0,0,0,0); s.setHours(0,0,0,0);
+                    const e = new Date(focusStreakRange.end);
+                    e.setHours(0,0,0,0);
+                    
+                    if (d >= s && d <= e) isFocus = true;
+                }
 
                 if (hadYesterday && hasTomorrow) cell.classList.add('streak-middle');
                 else if (hasTomorrow) cell.classList.add('streak-start');
                 else if (hadYesterday) cell.classList.add('streak-end');
+
+                // Voeg gouden focus klasse toe
+                if (isFocus) cell.classList.add('streak-focus');
             }
         } else {
             // STANDAARD MODE
@@ -1352,7 +1424,6 @@ async function loadMusic() {
             } catch (e) { console.log("Wacht op permissie...", e); }
         }
 
-        // HIER IS DE WIJZIGING: full_history.json toegevoegd aan de lijst
         const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes, calendarRes, oldFavRes, fullHistRes] = await Promise.all([
             fetch('data.json'), fetch('stats.json'), fetch('monthly_stats.json'), 
             fetch('streaks.json').catch(() => ({json: () => ({})})),
@@ -1361,7 +1432,7 @@ async function loadMusic() {
             fetch('corrections.json').catch(() => ({json: () => ([])})),
             fetch('calendar_index.json').catch(() => ({json: () => ({})})),
             fetch('old_favorites.json').catch(() => ({json: () => ([])})),
-            fetch('full_history.json').catch(() => ({json: () => ([])})) // <--- NIEUW
+            fetch('full_history.json').catch(() => ({json: () => ([])})) // <--- DEZE IS CRUCIAAL
         ]);
 
         musicData = await dataRes.json();
@@ -1373,7 +1444,7 @@ async function loadMusic() {
         try { calendarIndex = await calendarRes.json(); } catch(e) { calendarIndex = {}; }
         oldFavoritesData = await oldFavRes.json(); 
         
-        // Data toewijzen aan de nieuwe variabele
+        // Data toewijzen
         fullHistoryData = await fullHistRes.json(); 
         
         if (existingCorrections.length === 0) {
@@ -1391,6 +1462,7 @@ async function loadMusic() {
         renderRecapSelector();
     } catch (error) { console.error("Fout bij laden:", error); }
 }
+
 // --- CALENDAR RENDERING ---
 
 function renderCalendar() {
@@ -1458,6 +1530,9 @@ function switchTab(tabName) {
     document.getElementById('btn-graphs').classList.toggle('active', tabName === 'graphs'); 
     document.getElementById('btn-recap').classList.toggle('active', tabName === 'recap'); 
     
+    // Reset focus als we van tab wisselen (behalve als we net gefilterd hebben)
+    if (tabName !== 'calendar') focusStreakRange = null;
+
     if (tabName === 'calendar') renderCalendar(); 
     else if (tabName === 'stats') {
         renderStatsDashboard();
@@ -1470,19 +1545,29 @@ function switchTab(tabName) {
         renderRecapSelector();
     }
 }
-function applyCalendarFilter(artist) { 
-    activeFilter = artist; 
-    document.getElementById('modal').classList.add('hidden'); 
-    
-    // Spring naar de laatste datum waarop deze artiest geluisterd is
-    const allDates = Object.keys(calendarIndex).sort().reverse();
-    const lastListenDate = allDates.find(date => calendarIndex[date][artist]);
+function applyCalendarFilter(artist, startDate, endDate) { 
+    console.log(`[DEBUG] applyCalendarFilter aangeroepen voor: ${artist}`);
+    console.log(`[DEBUG] Start: ${startDate}, End: ${endDate}`);
 
-    if (lastListenDate) {
-        currentViewDate = new Date(lastListenDate);
+    activeFilter = artist; 
+    
+    if (startDate && endDate) {
+        focusStreakRange = { start: startDate, end: endDate };
+        currentViewDate = new Date(startDate);
         currentViewDate.setDate(1); 
+        console.log("[DEBUG] Focus mode geactiveerd. Spring naar:", currentViewDate);
+    } else {
+        focusStreakRange = null;
+        const allDates = Object.keys(calendarIndex).sort().reverse();
+        const lastListenDate = allDates.find(date => calendarIndex[date][artist]);
+        if (lastListenDate) {
+            currentViewDate = new Date(lastListenDate);
+            currentViewDate.setDate(1); 
+            console.log("[DEBUG] Geen specifieke streak, spring naar laatste luisterdatum:", currentViewDate);
+        }
     }
 
+    document.getElementById('modal').classList.add('hidden'); 
     switchTab('calendar'); 
     document.getElementById('resetFilter').classList.remove('hidden'); 
     renderCalendar(); 

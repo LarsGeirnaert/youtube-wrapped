@@ -269,3 +269,16 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
 .streak-row:last-child { border-bottom: none; }
 .streak-days { font-weight: bold; color: var(--spotify-green); }
 .streak-dates { color: #aaa; font-size: 0.8rem; }
+
+/* --- STREAK FOCUS (Goud) --- */
+.calendar-day.streak-focus {
+    background: rgba(255, 215, 0, 0.25) !important; /* Goud achtergrond */
+    border: 2px solid gold !important;             /* Goud rand */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);   /* Goud gloed */
+    z-index: 100;
+    transform: scale(1.05);
+}
+.calendar-day.streak-focus .day-number {
+    color: gold !important;
+    text-shadow: 0 0 5px black;
+}
