@@ -228,15 +228,15 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     // Alle liedjes van deze artiest ophalen en sorteren op plays
     const artistSongs = statsData.filter(x => x.artiest === artiest).sort((a, b) => b.count - a.count);
     
-    // Op welke plek staat dit liedje?
+    // Op welke plek staat dit liedje? (Index + 1)
     const rankIndex = artistSongs.findIndex(x => x.titel === titel);
-    const rank = rankIndex !== -1 ? rankIndex + 1 : '-';
+    const rank = rankIndex !== -1 ? `#${rankIndex + 1}` : '-';
     
     // Hoeveel procent van al je plays naar deze artiest is DIT nummer?
     const totalArtistPlays = artistSongs.reduce((sum, item) => sum + item.count, 0);
-    const percentage = totalArtistPlays > 0 ? ((s.count / totalArtistPlays) * 100).toFixed(1) : 0;
+    const percentage = totalArtistPlays > 0 ? ((s.count / totalArtistPlays) * 100).toFixed(1) + '%' : '0%';
 
-    // 3. Top 3 Streaks ophalen (met de nieuwe functie)
+    // 3. Top 3 Streaks ophalen (met de verbeterde functie)
     const topStreaks = getSongStreaks(titel, artiest);
     
     // 4. HTML Bouwen
@@ -255,11 +255,11 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
                 <span class="spotlight-stat-label">${label} Plays</span>
             </div>
             <div class="spotlight-stat-box">
-                <span class="spotlight-stat-val">#${rank}</span>
-                <span class="spotlight-stat-label">Populairste van ${artiest}</span>
+                <span class="spotlight-stat-val">${rank}</span>
+                <span class="spotlight-stat-label">Populair van ${artiest}</span>
             </div>
             <div class="spotlight-stat-box" style="grid-column: span 2;">
-                <span class="spotlight-stat-val">${percentage}%</span>
+                <span class="spotlight-stat-val">${percentage}</span>
                 <span class="spotlight-stat-label">van alle ${artiest} luisterbeurten</span>
             </div>
         </div>
@@ -271,9 +271,9 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
         html += `<div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:5px;">`;
         
         topStreaks.forEach(st => {
-            // Datums mooi maken (YYYY-MM-DD -> DD MMM)
-            const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short'});
-            const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short'});
+            // Datums mooi maken
+            const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
+            const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day: 'numeric', month: 'short', year: '2-digit'});
             const periodStr = d1 === d2 ? d1 : `${d1} ➔ ${d2}`;
             
             html += `
@@ -774,24 +774,23 @@ function renderCalendar() {
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
                 
-                // Mappen van de song objecten (FIX VOOR [OBJECT OBJECT])
+                // --- FIX: ROBUUSTE MAPPING VOOR [OBJECT OBJECT] ---
                 clickData = entry.songs.map(songObj => {
+                    // Als het een object is (nieuwe data), pak .titel
                     if (typeof songObj === 'object' && songObj !== null) {
                         return { 
                             titel: songObj.titel, 
                             artiest: activeFilter, 
                             poster: songObj.poster || poster 
                         };
-                    } else {
-                        // Fallback voor als het toch nog strings zijn (oude data)
-                        return { titel: String(songObj), artiest: activeFilter, poster: poster };
-                    }
+                    } 
+                    // Als het toch een string is (oude data), gebruik die direct
+                    return { titel: String(songObj), artiest: activeFilter, poster: poster };
                 });
 
-                // Streak connectors (Visuele balken)
+                // Streak connectors
                 const yesterday = new Date(year, month, day - 1);
                 const tomorrow = new Date(year, month, day + 1);
-                
                 const hadYesterday = checkDateHasListen(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
                 const hasTomorrow = checkDateHasListen(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
@@ -1485,50 +1484,53 @@ function applyCalendarFilter(artist) {
 }
 
 function getSongStreaks(titel, artiest) {
-    // 1. Haal alle unieke datums op en sorteer van OUD naar NIEUW
-    const uniqueDates = [...new Set(musicData
+    // 1. Haal alle datums op
+    const rawDates = musicData
         .filter(m => m.titel === titel && m.artiest === artiest)
-        .map(m => m.datum)
-    )].sort();
+        .map(m => m.datum);
+
+    // 2. Unieke datums maken en sorteren (BELANGRIJK!)
+    const uniqueDates = [...new Set(rawDates)].sort();
 
     if (uniqueDates.length === 0) return [];
 
     let streaks = [];
-    // Begin de eerste streak
+    
+    // Helper: Zet string '2023-01-01' om naar datum object (middernacht)
+    const parseDate = (str) => new Date(str + 'T00:00:00');
+
+    // Begin eerste streak
     let currentStreak = { 
         start: uniqueDates[0], 
         end: uniqueDates[0], 
         count: 1 
     };
-    
-    // Een dag in milliseconden
+
+    // Een dag in ms
     const oneDay = 1000 * 60 * 60 * 24;
 
     for (let i = 1; i < uniqueDates.length; i++) {
-        const prev = new Date(uniqueDates[i-1]);
-        const curr = new Date(uniqueDates[i]);
+        const prevDate = parseDate(uniqueDates[i-1]);
+        const currDate = parseDate(uniqueDates[i]);
         
-        // Bereken verschil in tijd
-        const diffTime = curr - prev;
-        // Deel door dag-lengte en ROND AF (Math.round is cruciaal hier voor zomertijd correcties)
+        // Bereken verschil in dagen (afronden om zeker te zijn)
+        const diffTime = currDate - prevDate;
         const diffDays = Math.round(diffTime / oneDay);
 
         if (diffDays === 1) {
-            // Aansluitend! (Gisteren en Vandaag)
+            // Aansluitend
             currentStreak.count++;
             currentStreak.end = uniqueDates[i];
         } else {
-            // Gat gevallen > Sla vorige streak op als hij relevant is (> 1 dag)
+            // Gat
             if (currentStreak.count > 1) streaks.push(currentStreak);
-            
-            // Start nieuwe streak
             currentStreak = { start: uniqueDates[i], end: uniqueDates[i], count: 1 };
         }
     }
-    // Vergeet de laatste niet toe te voegen
+    // Laatste toevoegen
     if (currentStreak.count > 1) streaks.push(currentStreak);
 
-    // Sorteer op lengte (langste bovenaan) en pak de top 3
+    // Sorteer op lengte (grootste bovenaan) en pak top 3
     return streaks.sort((a,b) => b.count - a.count).slice(0, 3);
 }
 // --- INITIALIZATION ---
