@@ -1,16 +1,23 @@
 # --- PRIVACY & BRONBESTANDEN ---
-# De ruwe export van Google bevat je hele kijkgeschiedenis. NIET PUSHEN!
 kijkgeschiedenis.json
 watch-history.json
 kijkgeschiedenis.json:Zone.Identifier
+corrections.json:Zone.Identifier
 
 # --- CONFIGURATIE & LOKALE FIXES ---
-# Jouw persoonlijke correcties (niet delen, want dit is specifiek voor jouw data)
 corrections.json
 
-# --- INTERMEDIAIRE BESTANDEN ---
-# Bestanden die door scripts worden gemaakt maar niet nodig zijn voor de website
+# --- GEGENEREERDE DATA (OUTPUT VAN SCRIPTS) ---
+# Deze bestanden veranderen constant en horen niet in de broncode
 filtered_music.json
+stats.json
+monthly_stats.json
+comebacks.json
+chart_data.json
+calendar_index.json
+data.json
+streaks.json
+old_favorites.json
 
 # --- PYTHON NOISE ---
 __pycache__/
@@ -26,14 +33,5 @@ Thumbs.db
 .vscode/
 .idea/
 
-# --- NODE.JS (indien van toepassing) ---
+# --- NODE.JS ---
 node_modules/
-stats.json
-monthly_stats.json
-comebacks.json
-chart_data.json
-calendar_index.json
-
-
-# Lijn voor alles te zien en kopiëren
-# tail -n +1 *.html *.css *.js *.py | clip.exe 

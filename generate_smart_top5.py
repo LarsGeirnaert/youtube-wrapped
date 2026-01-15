@@ -187,7 +187,7 @@ def generate_smart_top5():
             monthly_stats[m_key]["artist_song_details"][a] = Counter()
         monthly_stats[m_key]["artist_song_details"][a][t] += 1
 
-    # --- EXPORTS (Hetzelfde als voorheen) ---
+    # --- EXPORTS ---
 
     # Calendar Index Genereren
     calendar_index = {}
@@ -208,11 +208,20 @@ def generate_smart_top5():
     with open('calendar_index.json', 'w', encoding='utf-8') as f:
         json.dump(calendar_index, f, indent=2, ensure_ascii=False)
 
-    # 1. Comebacks
+    # 1. Comebacks & Vergeten Parels
     comebacks = []
+    old_favorites = []
+    
+    if all_dates_found:
+        last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
+    else:
+        last_data_date = datetime.now()
+
     for song, dates in song_history_dates.items():
         sorted_dates = sorted(dates)
-        if len(sorted_dates) < 20: continue
+        if len(sorted_dates) < 15: continue # Minimaal 15x geluisterd
+
+        # A. Comebacks
         for i in range(len(sorted_dates) - 1):
             gap = (sorted_dates[i+1] - sorted_dates[i]).days
             if gap >= 30: 
@@ -224,14 +233,28 @@ def generate_smart_top5():
                         "poster": poster_cache.get((song[0].lower(), song[1].lower()), "img/placeholder.png"),
                         "periode": f"{sorted_dates[i].year} ➔ {sorted_dates[i+1].year}"
                     })
-                    break
+                    break 
+        
+        # B. Vergeten Parels (Gat NU)
+        last_listen = sorted_dates[-1]
+        days_silent = (last_data_date - last_listen.replace(tzinfo=None)).days
+        if days_silent > 90:
+            old_favorites.append({
+                "artiest": song[0], "titel": song[1], "days_silent": days_silent,
+                "poster": poster_cache.get((song[0].lower(), song[1].lower()), "img/placeholder.png"),
+                "last_played": last_listen.strftime("%Y-%m-%d")
+            })
+
     with open('comebacks.json', 'w', encoding='utf-8') as f:
         json.dump(sorted(comebacks, key=lambda x: x['gap'], reverse=True), f, indent=2, ensure_ascii=False)
+        
+    with open('old_favorites.json', 'w', encoding='utf-8') as f:
+        json.dump(sorted(old_favorites, key=lambda x: x['days_silent'], reverse=True), f, indent=2, ensure_ascii=False)
 
     # 2. Fun Stats
     busiest_day_date = daily_total_plays.most_common(1)[0] if daily_total_plays else ("-", 0)
     total_tracks = sum(all_listens.values())
-    estimated_minutes = total_tracks * 3.5 # Gemiddeld 3.5 minuut per liedje (gefilterd)
+    estimated_minutes = total_tracks * 3.5 
     
     discovery_rates = {}
     seen_artists = set()
@@ -251,7 +274,7 @@ def generate_smart_top5():
         "unique_songs": len(all_listens)
     }
 
-    # 3. Chart Data (Top 10)
+    # 3. Chart Data
     top_10_songs_keys = [k for k, v in all_listens.most_common(10)]
     song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_10_songs_keys}
     song_running_totals = {k: 0 for k in top_10_songs_keys}
@@ -273,7 +296,6 @@ def generate_smart_top5():
             artist_running_totals[a_key] += count
             artist_growth_data[a_key].append(artist_running_totals[a_key])
 
-    # Pie Chart Data
     top_10_artists_chart = artist_counts.most_common(10)
     artist_chart_data = { "labels": [x[0] for x in top_10_artists_chart], "values": [x[1] for x in top_10_artists_chart] }
     top_10_songs_chart = all_listens.most_common(10)
@@ -315,12 +337,14 @@ def generate_smart_top5():
         current_date_obj = datetime.strptime(d, "%Y-%m-%d")
         month_ago_date_obj = current_date_obj - timedelta(days=7) 
         today_counter = Counter(days_dict[d])
+        
         def get_momentum_score(song_key):
             dates = song_history_dates.get(song_key, [])
             score = 0
             for listen_date in dates:
-                if month_ago_date_obj <= listen_date <= current_date_obj: score += 1
+                if month_ago_date_obj <= listen_date.replace(tzinfo=None) <= current_date_obj: score += 1
             return score
+            
         unique_songs_today = list(today_counter.keys())
         unique_songs_today.sort(key=lambda s: (today_counter[s], get_momentum_score(s)), reverse=True)
         for song_key in unique_songs_today[:5]:
@@ -333,7 +357,10 @@ def generate_smart_top5():
     if not all_dates_found: 
         print("✅ Klaar! (Geen streaks)")
         return
+    
+    # LAATSTE DATUM VOOR STREAK BEREKENING
     last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
+    
     song_dates_set, artist_dates_set = {}, {}
     for d, songs in days_dict.items():
         for s in songs:
@@ -351,7 +378,10 @@ def generate_smart_top5():
                 if curr_s > max_s: max_s = curr_s
                 curr_s = 1
         if curr_s > max_s: max_s = curr_s
-        is_current = sorted_dates[-1] == reference_date
+        
+        # AANGEPAST: Streak is actief als laatste keer VANDAAG (referentie) of GISTEREN was
+        is_current = sorted_dates[-1] >= reference_date - timedelta(days=1)
+        
         return { "max": max_s, "period": "-", "current": curr_s if is_current else 0, "current_period": "-" }
 
     s_top, s_curr, a_top, a_curr = [], [], [], []

@@ -3,6 +3,7 @@
 // ==========================================
 let currentViewDate = new Date();
 let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
+let oldFavoritesData = []; // NIEUW: Variabele voor vergeten parels
 let calendarIndex = {}; // Hier komt de volledige kalender historie in
 let charts = {};
 let modalHistory = [];
@@ -40,29 +41,56 @@ function renderList(id, items, unit, type) {
         const escapedName = escapeStr(name);
         const elementId = `${id}-${index}`;
         const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${escapeStr(extraInfo||'')}', '${elementId}')`;
-        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
-        const sub = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem;">${period}</small>` : '';
-        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center;">
-                    <span style="width:20px; font-size:0.7rem; font-weight:700; color:var(--spotify-green); margin-right:5px;">${index+1}.</span>
-                    ${img}<div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500;">${name}</span>${sub}</div>
-                    <span class="point-badge" style="margin-left:10px;">${val}${unit}</span></li>`;
+        
+        // Afbeelding mag niet krimpen (flex-shrink: 0)
+        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
+        
+        // Subtekst moet ook afkappen
+        const sub = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
+        
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; overflow:hidden;">
+                    <span style="width:20px; font-size:0.7rem; font-weight:700; color:var(--spotify-green); margin-right:5px; flex-shrink:0;">${index+1}.</span>
+                    ${img}
+                    <div style="flex-grow:1; min-width:0; margin-right:10px;">
+                        <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500;">${name}</span>
+                        ${sub}
+                    </div>
+                    <span class="point-badge" style="margin-left:0; flex-shrink:0;">${val}${unit}</span></li>`;
     }).join('');
 }
 
 function closeModal() {
-    modalHistory.pop();
+    modalHistory.pop(); // Verwijder de huidige pagina uit de geschiedenis
+    
     if (modalHistory.length > 0) {
+        // We gaan terug naar de vorige pagina
         const prev = modalHistory[modalHistory.length - 1]; 
-        if (prev.type === 'artist') showArtistDetails(...prev.args, true);
-        else if (prev.type === 'album') showAlbumDetails(...prev.args, true);
-        else if (prev.type === 'song') showSongSpotlight(...prev.args, true);
-        else if (prev.type === 'list') showTop100(...prev.args, true);
+        
+        // Hier roepen we de functies aan met EXACT de juiste parameters
+        // Zodat 'isBack' (de true aan het eind) altijd op de juiste plek staat
+        
+        if (prev.type === 'artist') {
+            // showArtistDetails(artist, overrideCount, monthKey, isBack)
+            showArtistDetails(prev.args[0], prev.args[1] || null, prev.args[2] || null, true);
+        }
+        else if (prev.type === 'album') {
+            // showAlbumDetails(poster, artist, isBack)
+            showAlbumDetails(prev.args[0], prev.args[1], true);
+        }
+        else if (prev.type === 'song') {
+            // showSongSpotlight(song, count, isBack)
+            showSongSpotlight(prev.args[0], prev.args[1] || null, true);
+        }
+        else if (prev.type === 'list') {
+            // showTop100(category, isBack)
+            showTop100(prev.args[0], true);
+        }
     } else {
+        // Geschiedenis is leeg, sluit de modal echt
         document.getElementById('modal').classList.add('hidden');
         modalHistory = [];
     }
 }
-
 // ==========================================
 // 3. UI ACTIES (DETAILS & KLIKKEN)
 // ==========================================
@@ -200,12 +228,16 @@ function showTop100(category, isBack = false) {
             albumArtist = name.replace('Album van ', ''); 
         } 
         const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
-        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">` : '';
-        const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted);">${period}</small>` : '';
-        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px;">
-                    <span style="width: 25px; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
-                    ${img}<div style="flex-grow:1; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>${sub}</div>
-                    <span class="point-badge">${val}${unit||''}</span></li>`;
+        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
+        const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
+                    <span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
+                    ${img}
+                    <div style="flex-grow:1; min-width:0; overflow:hidden; margin-right:10px;">
+                        <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>
+                        ${sub}
+                    </div>
+                    <span class="point-badge" style="flex-shrink:0;">${val}${unit||''}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }
@@ -357,34 +389,42 @@ function updateFileStatus(isConnected) {
 // ==========================================
 
 function calculateStreak() {
+    // 1. Haal alle unieke datums op en sorteer van NIEUW naar OUD
     const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse(); 
+
+    // 2. Geen data? Dan 0.
     if (dates.length === 0) {
         const el = document.getElementById('streak-count');
         if(el) el.innerText = 0;
         return;
     }
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-    
-    const lastListenDate = dates[0];
-    if (lastListenDate !== todayStr && lastListenDate !== yesterdayStr) {
-        const el = document.getElementById('streak-count');
-        if(el) el.innerText = 0;
-        return;
-    }
-    
+
+    // 3. Begin de streak
     let streak = 1; 
+    
+    // We gebruiken Date.UTC om 100% zeker te zijn dat tijdzones geen rol spelen
+    // Een dag in milliseconden = 1000 * 60 * 60 * 24 = 86400000
+    const oneDay = 86400000;
+
     for (let i = 0; i < dates.length - 1; i++) { 
-        const current = new Date(dates[i]);
-        const previous = new Date(dates[i+1]);
-        const diffTime = Math.abs(current - previous);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-        if (diffDays === 1) streak++;
-        else break; 
+        const currentDate = new Date(dates[i]);
+        const prevDate = new Date(dates[i+1]);
+        
+        // Zet beide datums om naar pure UTC timestamps (middernacht)
+        const currentUTC = Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        const prevUTC = Date.UTC(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate());
+
+        // Het verschil moet exact 1 dag zijn
+        const diff = (currentUTC - prevUTC) / oneDay;
+        
+        if (diff === 1) {
+            streak++; // Ketting loopt door
+        } else {
+            break; // Gat in de data? Stop direct.
+        } 
     }
+
+    // 4. Update de teller
     const el = document.getElementById('streak-count');
     if(el) el.innerText = streak;
 }
@@ -544,6 +584,9 @@ function renderStatsDashboard() {
     renderList('top-songs-list', topSongs.map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster]), 'x', 'song');
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
     renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
+    
+    // --- TOEVOEGING: VERGETEN PARELS ---
+    renderList('old-favorites-list', oldFavoritesData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.days_silent}d stil`, c.poster, `Laatst: ${c.last_played}`]), '', 'song');
 
     if (streakData.songs_current) {
         renderList('current-song-streaks', streakData.songs_current.slice(0, 10).map(s => [`${s.titel} - ${s.artiest}`, s.streak, statsData.find(x=>x.titel===s.titel)?.poster, s.period]), ' d', 'song');
@@ -600,12 +643,10 @@ function renderCalendar() {
         let clickData = [];
 
         if (activeFilter) {
-            // FILTER MODE: Check de complete index
             if (calendarIndex[dateStr] && calendarIndex[dateStr][activeFilter]) {
                 hasListen = true;
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
-                // De Top 5 songs van DIE artiest op DIE dag
                 clickData = entry.songs.map(titel => ({
                     titel: titel,
                     artiest: activeFilter,
@@ -613,7 +654,6 @@ function renderCalendar() {
                 }));
             }
         } else {
-            // STANDAARD MODE: Check Top 5 data
             let songs = musicData.filter(d => d.datum === dateStr);
             if (songs.length > 0) {
                 hasListen = true;
@@ -682,19 +722,23 @@ function renderRecap() {
         const escapedName = escapeStr(songName);
         const elementId = `recap-song-${idx}`;
         const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
-        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${poster}', '', '${elementId}')" style="display:flex; align-items:center;">
-            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
-            <img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;">
-            <div style="flex-grow:1; overflow:hidden;"><span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[1]}</span><small style="color:#aaa;">${s[0]}</small></div>
-            <span class="point-badge">${s[2]}x</span></li>`;
+        
+        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${poster}', '', '${elementId}')" style="display:flex; align-items:center; overflow:hidden;">
+            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px; flex-shrink:0;">${idx+1}</span>
+            <img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">
+            <div style="flex-grow:1; min-width:0; margin-right:10px;">
+                <span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[1]}</span>
+                <small style="color:#aaa; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[0]}</small>
+            </div>
+            <span class="point-badge" style="flex-shrink:0;">${s[2]}x</span></li>`;
     }).join('');
 
     const artistsEl = document.getElementById('recap-top-artists');
     artistsEl.innerHTML = data.top_artists.slice(0, 5).map((a, idx) => {
-        return `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')" style="display:flex; align-items:center;">
-            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px;">${idx+1}</span>
-            <div style="flex-grow:1;">${a[0]}</div>
-            <span class="point-badge">${a[1]}x</span></li>`;
+        return `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')" style="display:flex; align-items:center; overflow:hidden;">
+            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px; flex-shrink:0;">${idx+1}</span>
+            <div style="flex-grow:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${a[0]}</div>
+            <span class="point-badge" style="flex-shrink:0;">${a[1]}x</span></li>`;
     }).join('');
 }
 
@@ -1161,13 +1205,14 @@ async function loadMusic() {
             } catch (e) { console.log("Wacht op permissie...", e); }
         }
 
-        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes, calendarRes] = await Promise.all([
+        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes, calendarRes, oldFavRes] = await Promise.all([
             fetch('data.json'), fetch('stats.json'), fetch('monthly_stats.json'), 
             fetch('streaks.json').catch(() => ({json: () => ({})})),
             fetch('chart_data.json').catch(() => ({json: () => ({})})),
             fetch('comebacks.json').catch(() => ({json: () => ([])})),
             fetch('corrections.json').catch(() => ({json: () => ([])})),
-            fetch('calendar_index.json').catch(() => ({json: () => ({})}))
+            fetch('calendar_index.json').catch(() => ({json: () => ({})})),
+            fetch('old_favorites.json').catch(() => ({json: () => ([])})) // NIEUW: Laden van de vergeten parels
         ]);
 
         musicData = await dataRes.json();
@@ -1177,6 +1222,7 @@ async function loadMusic() {
         comebackData = await comebackRes.json();
         try { streakData = await streaksRes.json(); } catch(e) { streakData = {}; }
         try { calendarIndex = await calendarRes.json(); } catch(e) { calendarIndex = {}; }
+        oldFavoritesData = await oldFavRes.json(); // NIEUW: Data toewijzen
         
         if (existingCorrections.length === 0) {
             try { existingCorrections = await correctionsRes.json(); } catch(e) { existingCorrections = []; }
@@ -1218,6 +1264,7 @@ function renderCalendar() {
                 hasListen = true;
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
+                // De Top 5 songs van DIE artiest op DIE dag
                 clickData = entry.songs.map(titel => ({
                     titel: titel,
                     artiest: activeFilter,
