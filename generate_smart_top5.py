@@ -35,9 +35,22 @@ def clean_music_data(artist, title):
 
 def generate_smart_top5():
     # --- CONFIGURATIE ---
-    MIN_DURATION_SECONDS = 15  # Nummers korter dan dit worden genegeerd (geskipt)
+    MIN_DURATION_SECONDS = 15 
 
-    # Cache laden uit vorige run om posters te hergebruiken
+    # 1. Zwarte lijst laden (ignored.json)
+    ignored_set = set()
+    if os.path.exists('ignored.json'):
+        try:
+            with open('ignored.json', 'r', encoding='utf-8') as f:
+                ignored_list = json.load(f)
+                for item in ignored_list:
+                    # We maken een unieke key: "artiest|titel" in kleine letters
+                    key = f"{item['artiest'].lower().strip()}|{item['titel'].lower().strip()}"
+                    ignored_set.add(key)
+            print(f"🚫 {len(ignored_set)} verborgen nummers geladen.")
+        except: pass
+
+    # Cache laden
     poster_cache = {}
     if os.path.exists('stats.json'):
         with open('stats.json', 'r', encoding='utf-8') as f:
@@ -47,7 +60,7 @@ def generate_smart_top5():
                         poster_cache[(entry['artiest'].lower().strip(), entry['titel'].lower().strip())] = entry['poster']
             except: pass
 
-    # Correcties laden (HIER ZIT DE FIX VOOR ALBUM MERGES)
+    # Correcties laden
     corrections = {}
     if os.path.exists('corrections.json'):
         try:
@@ -57,7 +70,7 @@ def generate_smart_top5():
                     orig_a, orig_t = clean_music_data(c['original']['artiest'], c['original']['titel'])
                     key = f"{orig_a.lower()}|{orig_t.lower()}"
                     corrections[key] = c['target']
-            print(f"🔧 {len(corrections)} correctieregels geladen.")
+            print(f"📦 {len(corrections)} correctieregels geladen.")
         except Exception as e: 
             print(f"⚠️ Fout bij laden corrections.json: {e}")
 
@@ -68,8 +81,8 @@ def generate_smart_top5():
     with open('kijkgeschiedenis.json', 'r', encoding='utf-8') as f:
         history = json.load(f)
 
-    # --- STAP 1: VOORBEREIDEN & FILTEREN OP SKIPS ---
-    print(f"🚀 Data analyseren en skips (< {MIN_DURATION_SECONDS}s) verwijderen...")
+    # --- STAP 1: DATA VERWERKEN ---
+    print(f"🚀 Data analyseren...")
     
     raw_candidates = []
 
@@ -77,27 +90,28 @@ def generate_smart_top5():
         is_music = entry.get('header') == "YouTube Music" or "music.youtube.com" in entry.get('titleUrl', '')
         if not is_music or 'title' not in entry: continue
 
-        # Tijd parsen
         time_str = entry['time']
         try:
             dt_obj = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
         except:
             continue
 
-        # Naam opschonen
         raw_artist = entry.get('subtitles', [{'name': 'Onbekend'}])[0]['name']
         a, t = clean_music_data(raw_artist, entry['title'])
         if not t or t.startswith('http'): continue
 
-        # Correcties toepassen
-        forced_poster = None # Variabele om een merged poster op te slaan
+        # CHECK ZWARTE LIJST: Als hij hierop staat, slaan we hem over!
+        ignore_key = f"{a.lower().strip()}|{t.lower().strip()}"
+        if ignore_key in ignored_set:
+            continue
+
+        forced_poster = None
         check_key = f"{a.lower()}|{t.lower()}"
         
         if check_key in corrections:
             target = corrections[check_key]
             a = target['artiest']
             t = target['titel']
-            # FIX: Als de correctie een poster bevat (bijv. door album merge), sla die op!
             if 'poster' in target:
                 forced_poster = target['poster']
 
@@ -105,10 +119,9 @@ def generate_smart_top5():
             'dt': dt_obj,
             'artiest': a,
             'titel': t,
-            'forced_poster': forced_poster # Geef de geforceerde poster mee
+            'forced_poster': forced_poster
         })
 
-    # Sorteer chronologisch (Oud -> Nieuw) om tijdsverschil te berekenen
     raw_candidates.sort(key=lambda x: x['dt'])
 
     filtered_history = []
@@ -116,25 +129,18 @@ def generate_smart_top5():
 
     for i in range(len(raw_candidates)):
         current_item = raw_candidates[i]
-        
-        # Bereken duur door naar het VOLGENDE item te kijken
         if i < len(raw_candidates) - 1:
             next_item = raw_candidates[i+1]
             duration = (next_item['dt'] - current_item['dt']).total_seconds()
-            
-            # FILTER LOGICA: Als het verschil kleiner is dan 15 seconden -> Skip
             if duration < MIN_DURATION_SECONDS:
                 skipped_count += 1
                 continue 
-        
-        # Als we hier zijn, is het liedje lang genoeg
         filtered_history.append(current_item)
 
     print(f"✂️ {skipped_count} geskipte nummers verwijderd.")
     print(f"✅ {len(filtered_history)} geldige luisterbeurten over.")
 
-
-    # --- STAP 2: STATISTIEKEN BOUWEN MET GEFILTERDE DATA ---
+    # --- STAP 2: STATISTIEKEN BOUWEN ---
     
     days_dict, all_listens, monthly_stats = {}, Counter(), {}
     song_history_dates = {} 
@@ -146,8 +152,8 @@ def generate_smart_top5():
     weekday_counts = Counter()
     artist_counts = Counter()
     daily_total_plays = Counter()
+    full_history_export = []
 
-    # Nu itereren we over de GEFILTERDE lijst
     for item in filtered_history:
         dt_obj = item['dt']
         a = item['artiest']
@@ -162,26 +168,22 @@ def generate_smart_top5():
         all_dates_found.add(datum_str)
         song_key = (a, t)
 
-        # Poster ophalen:
-        # 1. Is er een geforceerde poster uit corrections.json (album merge)? GEBRUIK DIE.
+        # Poster logica
         if item['forced_poster']:
             poster = item['forced_poster']
-            # Update direct de cache zodat toekomstige lookups deze ook gebruiken
             poster_cache[(a.lower(), t.lower())] = poster
         else:
-            # 2. Anders, kijk in de cache
             poster = poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")
 
-        # Cache de poster als we die nog niet hadden
         if (a.lower(), t.lower()) not in poster_cache and poster != "img/placeholder.png":
              poster_cache[(a.lower(), t.lower())] = poster
 
-        # Kalender data verzamelen
+        # Kalender
         if datum_str not in temp_calendar_data: temp_calendar_data[datum_str] = {}
         if a not in temp_calendar_data[datum_str]: temp_calendar_data[datum_str][a] = Counter()
         temp_calendar_data[datum_str][a][t] += 1
 
-        # Stats opbouwen
+        # Stats
         if song_key not in song_history_dates: song_history_dates[song_key] = []
         song_history_dates[song_key].append(dt_obj)
 
@@ -201,9 +203,13 @@ def generate_smart_top5():
             monthly_stats[m_key]["artist_song_details"][a] = Counter()
         monthly_stats[m_key]["artist_song_details"][a][t] += 1
 
+        full_history_export.append({"datum": datum_str, "titel": t, "artiest": a})
+
     # --- EXPORTS ---
 
-    # Calendar Index Genereren
+    with open('full_history.json', 'w', encoding='utf-8') as f:
+        json.dump(full_history_export, f, indent=2, ensure_ascii=False)
+
     calendar_index = {}
     for dag, artiesten in temp_calendar_data.items():
         calendar_index[dag] = {}
@@ -222,10 +228,8 @@ def generate_smart_top5():
     with open('calendar_index.json', 'w', encoding='utf-8') as f:
         json.dump(calendar_index, f, indent=2, ensure_ascii=False)
 
-    # 1. Comebacks & Vergeten Parels
     comebacks = []
     old_favorites = []
-    
     if all_dates_found:
         last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
     else:
@@ -233,9 +237,8 @@ def generate_smart_top5():
 
     for song, dates in song_history_dates.items():
         sorted_dates = sorted(dates)
-        if len(sorted_dates) < 15: continue # Minimaal 15x geluisterd
+        if len(sorted_dates) < 15: continue 
 
-        # A. Comebacks
         for i in range(len(sorted_dates) - 1):
             gap = (sorted_dates[i+1] - sorted_dates[i]).days
             if gap >= 30: 
@@ -249,7 +252,6 @@ def generate_smart_top5():
                     })
                     break 
         
-        # B. Vergeten Parels (Gat NU)
         last_listen = sorted_dates[-1]
         days_silent = (last_data_date - last_listen.replace(tzinfo=None)).days
         if days_silent > 90:
@@ -261,11 +263,9 @@ def generate_smart_top5():
 
     with open('comebacks.json', 'w', encoding='utf-8') as f:
         json.dump(sorted(comebacks, key=lambda x: x['gap'], reverse=True), f, indent=2, ensure_ascii=False)
-        
     with open('old_favorites.json', 'w', encoding='utf-8') as f:
         json.dump(sorted(old_favorites, key=lambda x: x['days_silent'], reverse=True), f, indent=2, ensure_ascii=False)
 
-    # 2. Fun Stats
     busiest_day_date = daily_total_plays.most_common(1)[0] if daily_total_plays else ("-", 0)
     total_tracks = sum(all_listens.values())
     estimated_minutes = total_tracks * 3.5 
@@ -288,15 +288,12 @@ def generate_smart_top5():
         "unique_songs": len(all_listens)
     }
 
-    # 3. Chart Data
     top_10_songs_keys = [k for k, v in all_listens.most_common(10)]
     song_growth_data = {f"{k[1]} - {k[0]}": [] for k in top_10_songs_keys}
     song_running_totals = {k: 0 for k in top_10_songs_keys}
-    
     top_10_artists_keys = [k for k, v in artist_counts.most_common(10)]
     artist_growth_data = {k: [] for k in top_10_artists_keys}
     artist_running_totals = {k: 0 for k in top_10_artists_keys}
-
     sorted_months = sorted(monthly_counts.keys())
 
     for m in sorted_months:
@@ -304,7 +301,6 @@ def generate_smart_top5():
             count = monthly_stats.get(m, {}).get('songs', {}).get(s_key, 0)
             song_running_totals[s_key] += count
             song_growth_data[f"{s_key[1]} - {s_key[0]}"].append(song_running_totals[s_key])
-        
         for a_key in top_10_artists_keys:
             count = monthly_stats.get(m, {}).get('artists', {}).get(a_key, 0)
             artist_running_totals[a_key] += count
@@ -326,7 +322,6 @@ def generate_smart_top5():
     }
     with open('chart_data.json', 'w', encoding='utf-8') as f: json.dump(chart_data, f, indent=2, ensure_ascii=False)
 
-    # 4. Monthly & Overall Stats
     json_monthly = {}
     for m, d in monthly_stats.items():
         json_monthly[m] = {
@@ -344,7 +339,6 @@ def generate_smart_top5():
     stats_out = [{"artiest": a, "titel": t, "count": c, "poster": poster_cache.get((a.lower(), t.lower()), "img/placeholder.png")} for (a, t), c in all_listens.items()]
     with open('stats.json', 'w', encoding='utf-8') as f: json.dump(stats_out, f, indent=2, ensure_ascii=False)
 
-    # 5. Momentum Top 5
     final_data = []
     sorted_days = sorted(days_dict.keys(), reverse=True)
     for d in sorted_days:
@@ -367,12 +361,10 @@ def generate_smart_top5():
             final_data.append({ "datum": d, "titel": titel, "artiest": artiest, "poster": poster })
     with open('data.json', 'w', encoding='utf-8') as f: json.dump(final_data, f, indent=2, ensure_ascii=False)
 
-    # 6. Streaks
     if not all_dates_found: 
         print("✅ Klaar! (Geen streaks)")
         return
     
-    # LAATSTE DATUM VOOR STREAK BEREKENING
     last_data_date = max([datetime.strptime(d, "%Y-%m-%d") for d in all_dates_found])
     
     song_dates_set, artist_dates_set = {}, {}
@@ -392,10 +384,7 @@ def generate_smart_top5():
                 if curr_s > max_s: max_s = curr_s
                 curr_s = 1
         if curr_s > max_s: max_s = curr_s
-        
-        # AANGEPAST: Streak is actief als laatste keer VANDAAG (referentie) of GISTEREN was
         is_current = sorted_dates[-1] >= reference_date - timedelta(days=1)
-        
         return { "max": max_s, "period": "-", "current": curr_s if is_current else 0, "current_period": "-" }
 
     s_top, s_curr, a_top, a_curr = [], [], [], []
@@ -411,7 +400,7 @@ def generate_smart_top5():
     with open('streaks.json', 'w', encoding='utf-8') as f:
         json.dump({"songs_top": sorted(s_top, key=lambda x: x['streak'], reverse=True)[:100], "songs_current": sorted(s_curr, key=lambda x: x['streak'], reverse=True)[:100], "artists_top": sorted(a_top, key=lambda x: x['streak'], reverse=True)[:100], "artists_current": sorted(a_curr, key=lambda x: x['streak'], reverse=True)[:100]}, f, indent=2, ensure_ascii=False)
 
-    print("✅ Klaar! Skip-filter toegepast & Indexen gegenereerd.")
+    print("✅ Klaar! Volledige export & Indexen gegenereerd.")
 
 if __name__ == "__main__":
     generate_smart_top5()

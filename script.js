@@ -2,7 +2,8 @@
 // 1. GLOBALE VARIABELEN & INSTELLINGEN
 // ==========================================
 let currentViewDate = new Date();
-let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
+// Voeg fullHistoryData toe aan de lijst:
+let musicData = [], fullHistoryData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
 let oldFavoritesData = []; 
 let calendarIndex = {}; 
 let charts = {};
@@ -1351,14 +1352,16 @@ async function loadMusic() {
             } catch (e) { console.log("Wacht op permissie...", e); }
         }
 
-        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes, calendarRes, oldFavRes] = await Promise.all([
+        // HIER IS DE WIJZIGING: full_history.json toegevoegd aan de lijst
+        const [dataRes, statsRes, monthlyRes, streaksRes, chartRes, comebackRes, correctionsRes, calendarRes, oldFavRes, fullHistRes] = await Promise.all([
             fetch('data.json'), fetch('stats.json'), fetch('monthly_stats.json'), 
             fetch('streaks.json').catch(() => ({json: () => ({})})),
             fetch('chart_data.json').catch(() => ({json: () => ({})})),
             fetch('comebacks.json').catch(() => ({json: () => ([])})),
             fetch('corrections.json').catch(() => ({json: () => ([])})),
             fetch('calendar_index.json').catch(() => ({json: () => ({})})),
-            fetch('old_favorites.json').catch(() => ({json: () => ([])})) 
+            fetch('old_favorites.json').catch(() => ({json: () => ([])})),
+            fetch('full_history.json').catch(() => ({json: () => ([])})) // <--- NIEUW
         ]);
 
         musicData = await dataRes.json();
@@ -1369,6 +1372,9 @@ async function loadMusic() {
         try { streakData = await streaksRes.json(); } catch(e) { streakData = {}; }
         try { calendarIndex = await calendarRes.json(); } catch(e) { calendarIndex = {}; }
         oldFavoritesData = await oldFavRes.json(); 
+        
+        // Data toewijzen aan de nieuwe variabele
+        fullHistoryData = await fullHistRes.json(); 
         
         if (existingCorrections.length === 0) {
             try { existingCorrections = await correctionsRes.json(); } catch(e) { existingCorrections = []; }
@@ -1385,7 +1391,6 @@ async function loadMusic() {
         renderRecapSelector();
     } catch (error) { console.error("Fout bij laden:", error); }
 }
-
 // --- CALENDAR RENDERING ---
 
 function renderCalendar() {
@@ -1484,12 +1489,13 @@ function applyCalendarFilter(artist) {
 }
 
 function getSongStreaks(titel, artiest) {
-    // 1. Haal alle datums op
-    const rawDates = musicData
+    // FIX: Gebruik fullHistoryData (alles) ipv musicData (alleen top 5)
+    // Hierdoor tellen dagen waarop het liedje op #6 stond nu WEL mee.
+    const rawDates = fullHistoryData
         .filter(m => m.titel === titel && m.artiest === artiest)
         .map(m => m.datum);
 
-    // 2. Unieke datums maken en sorteren (BELANGRIJK!)
+    // 2. Unieke datums maken en sorteren
     const uniqueDates = [...new Set(rawDates)].sort();
 
     if (uniqueDates.length === 0) return [];
@@ -1497,7 +1503,11 @@ function getSongStreaks(titel, artiest) {
     let streaks = [];
     
     // Helper: Zet string '2023-01-01' om naar datum object (middernacht)
-    const parseDate = (str) => new Date(str + 'T00:00:00');
+    const parseDate = (str) => {
+        if(!str) return new Date();
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d, 12, 0, 0);
+    };
 
     // Begin eerste streak
     let currentStreak = { 
@@ -1507,15 +1517,15 @@ function getSongStreaks(titel, artiest) {
     };
 
     // Een dag in ms
-    const oneDay = 1000 * 60 * 60 * 24;
+    const oneDayMs = 1000 * 60 * 60 * 24;
 
     for (let i = 1; i < uniqueDates.length; i++) {
         const prevDate = parseDate(uniqueDates[i-1]);
         const currDate = parseDate(uniqueDates[i]);
         
         // Bereken verschil in dagen (afronden om zeker te zijn)
-        const diffTime = currDate - prevDate;
-        const diffDays = Math.round(diffTime / oneDay);
+        const diffMs = currDate - prevDate;
+        const diffDays = Math.round(diffMs / oneDayMs);
 
         if (diffDays === 1) {
             // Aansluitend
