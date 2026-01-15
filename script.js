@@ -3,8 +3,8 @@
 // ==========================================
 let currentViewDate = new Date();
 let musicData = [], statsData = [], monthlyStats = {}, streakData = {}, chartData = {}, comebackData = [], activeFilter = null;
-let oldFavoritesData = []; // NIEUW: Variabele voor vergeten parels
-let calendarIndex = {}; // Hier komt de volledige kalender historie in
+let oldFavoritesData = []; 
+let calendarIndex = {}; 
 let charts = {};
 let modalHistory = [];
 let mergeMode = false;
@@ -22,7 +22,8 @@ const STORE_NAME = 'Settings';
 
 function escapeStr(str) {
     if (!str) return '';
-    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    // FIX: Forceer naar string om crashes te voorkomen als er per ongeluk een object in komt
+    return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
 function getAlbumKey(posterUrl, artist) {
@@ -42,55 +43,60 @@ function renderList(id, items, unit, type) {
         const elementId = `${id}-${index}`;
         const clickAction = `handleListClick('${escapedName}', '${type}', '${poster}', '${escapeStr(extraInfo||'')}', '${elementId}')`;
         
-        // Afbeelding mag niet krimpen (flex-shrink: 0)
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
+        const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
         
-        // Subtekst moet ook afkappen
-        const sub = period ? `<br><small style="color:var(--text-muted); font-size:0.65rem; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
+        // --- LOGICA VOOR KLIKBARE STREAK BADGE ---
+        let badgeAttr = '';
+        let badgeStyle = 'flex-shrink:0;';
         
-        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; overflow:hidden;">
-                    <span style="width:20px; font-size:0.7rem; font-weight:700; color:var(--spotify-green); margin-right:5px; flex-shrink:0;">${index+1}.</span>
+        if (unit && unit.trim() === 'd') {
+            let filterArtist = name;
+            if (type === 'song' && name.includes(' - ')) {
+                const parts = name.split(' - ');
+                filterArtist = parts[parts.length - 1]; 
+            }
+            badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}')" title="Bekijk in Kalender"`;
+            badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+        }
+
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
+                    <span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
                     ${img}
-                    <div style="flex-grow:1; min-width:0; margin-right:10px;">
-                        <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500;">${name}</span>
+                    <div style="flex-grow:1; min-width:0; overflow:hidden; margin-right:10px;">
+                        <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>
                         ${sub}
                     </div>
-                    <span class="point-badge" style="margin-left:0; flex-shrink:0;">${val}${unit}</span></li>`;
+                    <span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='white'">${val}${unit||''}</span>
+                </li>`;
     }).join('');
 }
 
 function closeModal() {
-    modalHistory.pop(); // Verwijder de huidige pagina uit de geschiedenis
+    modalHistory.pop(); 
     
     if (modalHistory.length > 0) {
-        // We gaan terug naar de vorige pagina
         const prev = modalHistory[modalHistory.length - 1]; 
         
-        // Hier roepen we de functies aan met EXACT de juiste parameters
-        // Zodat 'isBack' (de true aan het eind) altijd op de juiste plek staat
-        
+        // FIX: Correcte parameters doorgeven bij terugkeren
         if (prev.type === 'artist') {
-            // showArtistDetails(artist, overrideCount, monthKey, isBack)
             showArtistDetails(prev.args[0], prev.args[1] || null, prev.args[2] || null, true);
         }
         else if (prev.type === 'album') {
-            // showAlbumDetails(poster, artist, isBack)
             showAlbumDetails(prev.args[0], prev.args[1], true);
         }
         else if (prev.type === 'song') {
-            // showSongSpotlight(song, count, isBack)
             showSongSpotlight(prev.args[0], prev.args[1] || null, true);
         }
         else if (prev.type === 'list') {
-            // showTop100(category, isBack)
             showTop100(prev.args[0], true);
         }
     } else {
-        // Geschiedenis is leeg, sluit de modal echt
         document.getElementById('modal').classList.add('hidden');
         modalHistory = [];
     }
 }
+
 // ==========================================
 // 3. UI ACTIES (DETAILS & KLIKKEN)
 // ==========================================
@@ -180,12 +186,10 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
 function handleAlbumClick(poster, artist, elementId) {
     if (mergeMode) {
-        // MERGE MODE AAN: Selecteer het album voor samenvoegen
-        // We bouwen de "naam" op zoals de merge-functie die verwacht
+        // FIX: Merge support voor albums in artiesten detail view
         const albumName = `Album van ${artist}`;
         toggleMergeSelection(albumName, 'album', poster, artist, elementId);
     } else {
-        // MERGE MODE UIT: Open gewoon de details van het album
         showAlbumDetails(poster, artist);
     }
 }
@@ -397,42 +401,33 @@ function updateFileStatus(isConnected) {
 // ==========================================
 
 function calculateStreak() {
-    // 1. Haal alle unieke datums op en sorteer van NIEUW naar OUD
     const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse(); 
 
-    // 2. Geen data? Dan 0.
     if (dates.length === 0) {
         const el = document.getElementById('streak-count');
         if(el) el.innerText = 0;
         return;
     }
 
-    // 3. Begin de streak
     let streak = 1; 
-    
-    // We gebruiken Date.UTC om 100% zeker te zijn dat tijdzones geen rol spelen
-    // Een dag in milliseconden = 1000 * 60 * 60 * 24 = 86400000
     const oneDay = 86400000;
 
     for (let i = 0; i < dates.length - 1; i++) { 
-        const currentDate = new Date(dates[i]);
-        const prevDate = new Date(dates[i+1]);
+        const currentDate = new Date(dates[i]); 
+        const prevDate = new Date(dates[i+1]);  
         
-        // Zet beide datums om naar pure UTC timestamps (middernacht)
         const currentUTC = Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
         const prevUTC = Date.UTC(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate());
 
-        // Het verschil moet exact 1 dag zijn
-        const diff = (currentUTC - prevUTC) / oneDay;
+        const diffDays = (currentUTC - prevUTC) / oneDay;
         
-        if (diff === 1) {
-            streak++; // Ketting loopt door
+        if (diffDays === 1) {
+            streak++; 
         } else {
-            break; // Gat in de data? Stop direct.
+            break; 
         } 
     }
 
-    // 4. Update de teller
     const el = document.getElementById('streak-count');
     if(el) el.innerText = streak;
 }
@@ -532,8 +527,6 @@ function showMergeModal() {
         const label = obj.type === 'song' ? obj.item.titel : obj.item.displayTitle;
         const sub = obj.item.artiest;
         
-        // Bepaal de afbeelding (gebruik placeholder als er geen is)
-        // Voor albums zit de poster in obj.item.poster, voor songs moeten we even kijken wat er beschikbaar is
         let posterSrc = 'https://placehold.co/64x64/1e1e1e/444444?text=💿';
         if (obj.item.poster && obj.item.poster !== 'img/placeholder.png') {
             posterSrc = obj.item.poster;
@@ -541,9 +534,7 @@ function showMergeModal() {
 
         html += `<label class="radio-item" style="display:flex; align-items:center; padding:10px; cursor:pointer;">
                     <input type="radio" name="merge-target" value="${idx}" ${idx===0?'checked':''} style="margin-right:15px; transform:scale(1.3);">
-                    
                     <img src="${posterSrc}" style="width:60px; height:60px; border-radius:6px; object-fit:cover; margin-right:15px; background:#222;">
-                    
                     <div style="flex-grow:1; overflow:hidden;">
                         <span style="font-weight:600; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>
                         <span style="font-size:0.8rem; color:#aaa;">${sub}</span>
@@ -556,6 +547,7 @@ function showMergeModal() {
     container.innerHTML = html;
     document.getElementById('modal').classList.remove('hidden');
 }
+
 async function confirmMerge() {
     const radios = document.getElementsByName('merge-target');
     let selectedIndex = -1;
@@ -567,7 +559,7 @@ async function confirmMerge() {
     let newCount = 0;
 
     if (targetObj.type === 'song') {
-        // --- LIEDJES MERGEN (Bestaande logica) ---
+        // --- LIEDJES MERGEN ---
         selectedForMerge.forEach((obj, idx) => {
             if (idx !== selectedIndex) {
                 existingCorrections.push({ original: obj.item, target: targetObj.item });
@@ -575,20 +567,18 @@ async function confirmMerge() {
             }
         });
     } else if (targetObj.type === 'album') {
-        // --- ALBUMS MERGEN (Verbeterde logica) ---
+        // --- ALBUMS MERGEN (FIX) ---
         const targetArtist = targetObj.item.artiest;
         const targetPoster = targetObj.item.poster;
 
         selectedForMerge.forEach((sourceObj, idx) => {
             if (idx !== selectedIndex) {
-                // 1. Bereken de unieke sleutel van het album dat we weg willen hebben
+                // Bereken de unieke sleutel van het album dat we weg willen hebben
                 const sourceKey = getAlbumKey(sourceObj.item.poster, sourceObj.item.artiest);
 
-                // 2. Zoek alle liedjes in je database die bij die sleutel horen
-                // Dit zorgt ervoor dat we exact dezelfde liedjes pakken als die in de lijst stonden
+                // Zoek alle liedjes in je database die bij die sleutel horen
                 const songsToMove = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === sourceKey);
 
-                // 3. Maak voor elk liedje een correctieregel aan
                 songsToMove.forEach(song => {
                     existingCorrections.push({
                         original: { titel: song.titel, artiest: song.artiest },
@@ -609,6 +599,7 @@ async function confirmMerge() {
     document.getElementById('modal').classList.add('hidden');
     toggleMergeMode(); 
 }
+
 // ==========================================
 // 6. DASHBOARD & STATS & CHARTS
 // ==========================================
@@ -629,7 +620,6 @@ function renderStatsDashboard() {
     renderList('top-artists-list', topArtists.map(a => [a[0], a[1], null]), 'x', 'artist');
     renderList('comeback-list', comebackData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.gap}d stilte`, c.poster, c.periode]), '', 'song');
     
-    // --- TOEVOEGING: VERGETEN PARELS ---
     renderList('old-favorites-list', oldFavoritesData.slice(0, 10).map(c => [`${c.titel} - ${c.artiest}`, `${c.days_silent}d stil`, c.poster, `Laatst: ${c.last_played}`]), '', 'song');
 
     if (streakData.songs_current) {
@@ -687,17 +677,21 @@ function renderCalendar() {
         let clickData = [];
 
         if (activeFilter) {
+            // FILTER MODE: Check de complete index (Specifieke artiest)
             if (calendarIndex[dateStr] && calendarIndex[dateStr][activeFilter]) {
                 hasListen = true;
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
-                clickData = entry.songs.map(titel => ({
-                    titel: titel,
-                    artiest: activeFilter,
-                    poster: poster
+                
+                // --- FIX: entry.songs is een lijst van OBJECTEN, niet strings ---
+                clickData = entry.songs.map(songObj => ({
+                    titel: songObj.titel,       // Pak de string 'titel'
+                    artiest: activeFilter,      // De artiest weten we al
+                    poster: songObj.poster || poster // Gebruik de song-poster
                 }));
             }
         } else {
+            // STANDAARD MODE: Check Top 5 data (Alles)
             let songs = musicData.filter(d => d.datum === dateStr);
             if (songs.length > 0) {
                 hasListen = true;
@@ -970,8 +964,8 @@ function renderRepertoireGrowthChart(artistName) {
     if (charts['repertoire']) charts['repertoire'].destroy();
 
     const songs = statsData.filter(s => s.artiest === artistName)
-                           .sort((a, b) => b.count - a.count)
-                           .slice(0, 5);
+                            .sort((a, b) => b.count - a.count)
+                            .slice(0, 5);
 
     const labels = chartData.history.labels;
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
@@ -1011,8 +1005,8 @@ function renderRepertoireMonthlyChart(artistName) {
     if (charts['repertoireMonthly']) charts['repertoireMonthly'].destroy();
 
     const songs = statsData.filter(s => s.artiest === artistName)
-                           .sort((a, b) => b.count - a.count)
-                           .slice(0, 5);
+                            .sort((a, b) => b.count - a.count)
+                            .slice(0, 5);
 
     const labels = chartData.history.labels.map(l => {
         const [y, m] = l.split('-'); 
@@ -1256,7 +1250,7 @@ async function loadMusic() {
             fetch('comebacks.json').catch(() => ({json: () => ([])})),
             fetch('corrections.json').catch(() => ({json: () => ([])})),
             fetch('calendar_index.json').catch(() => ({json: () => ({})})),
-            fetch('old_favorites.json').catch(() => ({json: () => ([])})) // NIEUW: Laden van de vergeten parels
+            fetch('old_favorites.json').catch(() => ({json: () => ([])})) 
         ]);
 
         musicData = await dataRes.json();
@@ -1266,7 +1260,7 @@ async function loadMusic() {
         comebackData = await comebackRes.json();
         try { streakData = await streaksRes.json(); } catch(e) { streakData = {}; }
         try { calendarIndex = await calendarRes.json(); } catch(e) { calendarIndex = {}; }
-        oldFavoritesData = await oldFavRes.json(); // NIEUW: Data toewijzen
+        oldFavoritesData = await oldFavRes.json(); 
         
         if (existingCorrections.length === 0) {
             try { existingCorrections = await correctionsRes.json(); } catch(e) { existingCorrections = []; }
@@ -1308,11 +1302,12 @@ function renderCalendar() {
                 hasListen = true;
                 const entry = calendarIndex[dateStr][activeFilter];
                 poster = entry.poster;
-                // De Top 5 songs van DIE artiest op DIE dag
-                clickData = entry.songs.map(titel => ({
-                    titel: titel,
-                    artiest: activeFilter,
-                    poster: poster
+                
+                // --- FIX: entry.songs is een lijst van OBJECTEN, niet strings ---
+                clickData = entry.songs.map(songObj => ({
+                    titel: songObj.titel,       // Pak de string 'titel'
+                    artiest: activeFilter,      // De artiest weten we al
+                    poster: songObj.poster || poster // Gebruik de song-poster
                 }));
             }
         } else {
@@ -1342,13 +1337,13 @@ function openDagDetails(date, songs) { const container = document.getElementById
 function switchTab(tabName) { 
     document.getElementById('view-calendar').classList.toggle('hidden', tabName !== 'calendar'); 
     document.getElementById('view-stats').classList.toggle('hidden', tabName !== 'stats'); 
-    document.getElementById('view-graphs').classList.toggle('hidden', tabName !== 'graphs');
-    document.getElementById('view-recap').classList.toggle('hidden', tabName !== 'recap');
+    document.getElementById('view-graphs').classList.toggle('hidden', tabName !== 'graphs'); 
+    document.getElementById('view-recap').classList.toggle('hidden', tabName !== 'recap'); 
     
     document.getElementById('btn-calendar').classList.toggle('active', tabName === 'calendar'); 
-    document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats');
-    document.getElementById('btn-graphs').classList.toggle('active', tabName === 'graphs');
-    document.getElementById('btn-recap').classList.toggle('active', tabName === 'recap');
+    document.getElementById('btn-stats').classList.toggle('active', tabName === 'stats'); 
+    document.getElementById('btn-graphs').classList.toggle('active', tabName === 'graphs'); 
+    document.getElementById('btn-recap').classList.toggle('active', tabName === 'recap'); 
     
     if (tabName === 'calendar') renderCalendar(); 
     else if (tabName === 'stats') {
