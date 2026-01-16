@@ -5,11 +5,13 @@
 function getArtistTopHits(artistName) {
     if (!artistName || artistName === "Onbekend") return [];
     let songPeaks = {}; 
+
     Object.values(monthlyStats).forEach(month => {
         month.top_songs.forEach((s, index) => {
             if (s[0] === artistName) {
                 const songTitle = s[1];
                 const currentRank = index + 1;
+
                 if (!songPeaks[songTitle]) {
                     songPeaks[songTitle] = { bestRank: currentRank, occurrences: 1 };
                 } else {
@@ -23,9 +25,14 @@ function getArtistTopHits(artistName) {
             }
         });
     });
+
     return Object.entries(songPeaks)
-        .sort((a, b) => a[1].bestRank - b[1].bestRank || b[1].occurrences - a[1].occurrences)
-        .slice(0, 3).map(entry => entry[0]);
+        .sort((a, b) => {
+            if (a[1].bestRank !== b[1].bestRank) return a[1].bestRank - b[1].bestRank;
+            return b[1].occurrences - a[1].occurrences;
+        })
+        .slice(0, 3)
+        .map(entry => entry[0]);
 }
 
 function calculatePeakStat(targetName, type, targetArtist = null) {
@@ -49,36 +56,53 @@ function calculatePeakStat(targetName, type, targetArtist = null) {
     return `<div class="peak-value-container"><span class="peak-rank ${rankClass}">#${bestRank}</span><span class="peak-label">${occurrences > 1 ? occurrences + 'x behaald' : 'in ' + bestMonthLabel}</span></div>`;
 }
 
+// DE GEREPAREERDE KLIK-HANDLER
 function handleListClick(name, type, poster, albumArtist, elementId) {
     if (name.includes("Onbekend")) return;
+    
+    // Scroll positie onthouden voor terugkeer
     if (document.getElementById('modal').classList.contains('hidden')) {
         lastScrollPos = window.scrollY;
         modalHistory = [];
     }
-    if (type === 'artist') showArtistDetails(name);
-    else if (type === 'album') showAlbumDetails(poster, albumArtist);
-    else showSongSpotlight(name);
+    
+    // MERGE LOGICA HERSTELD:
+    if (mergeMode) {
+        if (type === 'song' || type === 'album') {
+            toggleMergeSelection(name, type, poster, albumArtist, elementId);
+        } else {
+            alert("Je kan alleen liedjes of albums samenvoegen.");
+        }
+    } else {
+        // NORMALE MODUS: Open details
+        if (type === 'artist') showArtistDetails(name);
+        else if (type === 'album') showAlbumDetails(poster, albumArtist);
+        else showSongSpotlight(name);
+    }
 }
 
 function handleAlbumClick(poster, artist, elementId) {
-    if (mergeMode) { toggleMergeSelection(`Album van ${artist}`, 'album', poster, artist, elementId); }
-    else { showAlbumDetails(poster, artist); }
+    if (mergeMode) {
+        toggleMergeSelection(`Album van ${artist}`, 'album', poster, artist, elementId);
+    } else {
+        showAlbumDetails(poster, artist);
+    }
 }
 
 function showAlbumDetails(posterUrl, artistName, isBack = false) {
-    // Voeg alleen toe aan geschiedenis als we er NIET via de 'terug' knop komen
     if (!isBack) modalHistory.push({ type: 'album', args: [posterUrl, artistName] });
-
     const key = getAlbumKey(posterUrl, artistName);
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = `Album van ${artistName}`;
+    
     container.innerHTML = `
         <div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:140px;border-radius:20px;box-shadow:var(--shadow-lg);">
         <div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-top:10px;"></div></div>
         <div class="modal-list-wrapper">${albumSongs.map((s, idx) => {
+            const escapedName = escapeStr(`${s.titel} - ${s.artiest}`);
             const elementId = `album-det-${idx}`;
-            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapeStr(s.titel + ' - ' + s.artiest)}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`;
+            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`;
         }).join('')}</div>`;
     document.getElementById('modal').classList.remove('hidden');
     updateModalMergeButton();
@@ -86,7 +110,6 @@ function showAlbumDetails(posterUrl, artistName, isBack = false) {
 
 function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack = false) {
     if (artist === "Onbekend") return;
-    // Voeg alleen toe aan geschiedenis als we er NIET via de 'terug' knop komen
     if (!isBack) modalHistory.push({ type: 'artist', args: [artist, overrideCount, monthKey] });
 
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
@@ -142,7 +165,6 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
 function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     if (songFull.includes("Onbekend")) return;
-    // Voeg alleen toe aan geschiedenis als we er NIET via de 'terug' knop komen
     if (!isBack) modalHistory.push({ type: 'song', args: [songFull, overrideCount] });
 
     let titel, artiest; 
@@ -184,8 +206,16 @@ function showTop100(category, isBack = false) {
     const titleEl = document.getElementById('modal-datum-titel');
     let items = [];
     
-    if (category === 'songs') { titleEl.innerText = "Top 100 Songs"; items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); }
-    else if (category === 'artists') { titleEl.innerText = "Top 100 Artiesten"; const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], statsData.find(s=>s.artiest===a[0])?.poster, 'artist']); }
+    if (category === 'songs') { 
+        titleEl.innerText = "Top 100 Songs"; 
+        items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); 
+    }
+    else if (category === 'artists') { 
+        titleEl.innerText = "Top 100 Artiesten"; 
+        const artistMap = {}; 
+        statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); 
+        items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], statsData.find(s=>s.artiest===a[0])?.poster, 'artist']); 
+    }
     else if (category.includes('albums')) {
         const albumMap = {}; statsData.forEach(s => { if (s.poster === "img/placeholder.png") return; const key = getAlbumKey(s.poster, s.artiest); if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0 }; albumMap[key].total += s.count; });
         const albums = Object.values(albumMap);
