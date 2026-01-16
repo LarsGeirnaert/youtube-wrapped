@@ -1,5 +1,6 @@
 /* --- GOOGLE FONTS --- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap');
 
 /* --- BASIS & THEMA VARIABELEN --- */
 :root {
@@ -63,18 +64,6 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 .big-number { font-size: 2.8rem; font-weight: 800; display: block; line-height: 1; margin-bottom: 5px; }
 .big-number.streak { color: #ff4500; }
 
-/* --- MAANDELIJKSE HIGHLIGHTS --- */
-#monthly-highlights { border: 1px solid rgba(29, 185, 84, 0.2); }
-.highlights-grid { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 20px; }
-.highlight-item { background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 18px; border: 1px solid var(--glass-border); }
-.highlight-item .label { 
-    font-size: 0.7rem; text-transform: uppercase; color: var(--spotify-green); 
-    letter-spacing: 1px; display: block; margin-bottom: 10px; font-weight: 600;
-}
-.total-circle { 
-    text-align: center; display: flex; flex-direction: column; justify-content: center; border: 2px dashed var(--glass-border);
-}
-
 /* --- KALENDER SECTIE --- */
 .stat-card {
     background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
@@ -104,6 +93,51 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 .calendar-day:hover img { opacity: 1; }
 .calendar-day.dimmed { opacity: 0.15; filter: grayscale(1); }
 .day-number { position: absolute; top: 6px; left: 8px; font-size: 0.65rem; color: rgba(255,255,255,0.4); z-index: 2; }
+
+/* --- MAANDELIJKSE HIGHLIGHTS --- */
+#monthly-highlights { border: 1px solid rgba(29, 185, 84, 0.2); }
+.highlights-grid { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 20px; }
+.highlight-item { background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 18px; border: 1px solid var(--glass-border); }
+.highlight-item .label { 
+    font-size: 0.7rem; text-transform: uppercase; color: var(--spotify-green); 
+    letter-spacing: 1px; display: block; margin-bottom: 10px; font-weight: 600;
+}
+.total-circle { 
+    text-align: center; display: flex; flex-direction: column; justify-content: center; border: 2px dashed var(--glass-border);
+}
+
+/* --- MODAL (FIXED VOOR SCHERMVULLING) --- */
+#modal { 
+    position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
+    z-index: 2000; display: flex; align-items: center; justify-content: center; 
+    backdrop-filter: blur(12px); padding: 20px;
+}
+.modal-content { 
+    background: #121212; 
+    border-radius: 30px; 
+    width: 100%; 
+    max-width: 500px; 
+    max-height: 90vh; /* Nooit groter dan 90% van het scherm */
+    border: 1px solid var(--glass-border); 
+    position: relative; 
+    box-shadow: var(--shadow-lg); 
+    display: flex; 
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#modal-body-content {
+    padding: 30px;
+    overflow-y: auto; /* Alleen de inhoud scrollt */
+    flex-grow: 1;
+}
+
+#close-button { 
+    position: absolute; top: 15px; right: 20px; 
+    font-size: 35px; cursor: pointer; color: #777; 
+    transition: 0.2s; z-index: 2100;
+}
+#close-button:hover { color: #fff; }
 
 /* --- ZOEKBALK & RESULTATEN --- */
 .search-section { margin-bottom: 40px; }
@@ -160,22 +194,64 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 .small-list li:hover { background: var(--card-hover) !important; border-radius: 8px !important; transform: none !important; }
 .point-badge { background: rgba(29, 185, 84, 0.1); color: var(--spotify-green); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; }
 
-/* --- MODAL --- */
-#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); }
-.modal-content { background: #121212; padding: 40px; border-radius: 35px; width: 90%; max-width: 500px; border: 1px solid var(--glass-border); position: relative; box-shadow: var(--shadow-lg); }
-#close-button { position: absolute; top: 20px; right: 25px; font-size: 30px; cursor: pointer; color: #555; transition: 0.2s; }
-#close-button:hover { color: #fff; }
-.apply-btn { background: var(--spotify-green); color: black; border: none; padding: 14px; border-radius: 15px; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; transition: var(--transition); }
+/* --- SPOTLIGHT STATS GRID (Used in Song Details) --- */
+.spotlight-stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; margin-bottom: 20px;
+}
+.spotlight-stat-box {
+    background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border);
+}
+.spotlight-stat-val { font-size: 1.1rem; font-weight: 800; color: white; display: block; }
+.spotlight-stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Vinyl effect */
-.vinyl-container { position: relative; width: 200px; height: 200px; margin: 0 auto 25px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8)); }
-.vinyl-record { width: 100%; height: 100%; background: #111; border-radius: 50%; background-image: repeating-radial-gradient(circle, #222 0, #111 2px, #222 4px), radial-gradient(circle at center, transparent 38%, #1db954 39%, transparent 39.5%); animation: rotate 6s linear infinite; }
+/* --- BESTE POSITIE (PEAK RANK) STYLING --- */
+.peak-value-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.peak-rank { font-size: 1.6rem; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+.peak-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+.rank-1 { color: #ffcc00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
+
+/* --- STREAK CONNECTORS --- */
+.calendar-day.streak-middle { border-radius: 0 !important; background: rgba(29, 185, 84, 0.4) !important; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); }
+.calendar-day.streak-start { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; background: rgba(29, 185, 84, 0.4) !important; border-right: none !important; }
+.calendar-day.streak-end { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; background: rgba(29, 185, 84, 0.4) !important; border-left: none !important; }
+
+/* --- STREAK FOCUS (Gold) --- */
+.calendar-day.streak-focus { background: rgba(255, 215, 0, 0.25) !important; border: 2px solid gold !important; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); z-index: 100; transform: scale(1.05); }
+
+/* --- SONG STREAK ROWS --- */
+.streak-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+.streak-row:last-child { border-bottom: none; }
+.streak-days { font-weight: bold; color: var(--spotify-green); }
+.streak-dates { color: #aaa; font-size: 0.8rem; }
+
+/* --- VINYL EFFECT --- */
+.vinyl-container { position: relative; width: 180px; height: 180px; margin: 0 auto 20px; }
+.vinyl-record { width: 100%; height: 100%; background: #111; border-radius: 50%; background-image: repeating-radial-gradient(circle, #222 0, #111 2px, #222 4px); }
 .vinyl-cover { position: absolute; inset: 25%; width: 50%; height: 50%; border-radius: 50%; object-fit: cover; }
-@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* Scrollbar voor de Top 100 modal lijst */
-#day-top-three-container ul::-webkit-scrollbar { width: 6px; }
-#day-top-three-container ul::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+/* --- WRAPPED CARD STYLING --- */
+.wrapped-card {
+    width: 100%; max-width: 450px; margin: 0 auto; aspect-ratio: 9 / 16;
+    background: linear-gradient(180deg, #5e0b2a 0%, #3e1b5e 30%, #1b4e5e 70%, #1b5e3e 100%);
+    padding: 40px 30px; border-radius: 20px; display: flex; flex-direction: column; color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden;
+}
+#wrapped-month-label { font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; opacity: 0.9; }
+.personality-box { margin-bottom: 40px; }
+.personality-title { display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; }
+.personality-type { display: block; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+.personality-desc { font-size: 0.85rem; line-height: 1.4; opacity: 0.9; }
+.wrapped-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-grow: 1; }
+.wrapped-section h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8; }
+.wrapped-list { display: flex; flex-direction: column; gap: 12px; }
+.wrapped-item { display: flex; align-items: center; gap: 10px; }
+.wrapped-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+.wrapped-item .name { display: block; font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#wrapped-songs .wrapped-item img { border-radius: 4px; }
+.wrapped-footer { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+.footer-stat .stat-label { display: block; font-size: 0.85rem; opacity: 0.8; }
+.footer-stat .stat-value { font-size: 1.4rem; font-weight: 800; }
+.footer-brand { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; opacity: 0.6; font-size: 0.7rem; }
 
 /* --- UTILS & RESPONSIVE --- */
 .hidden { display: none !important; }
@@ -185,8 +261,6 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 ::-webkit-scrollbar-thumb:hover { background: #444; }
 
 .charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
-
-/* NIEUWE STIJL VOOR 2 KOLOMMEN (voor de onderste grafieken) */
 .charts-grid.two-columns { grid-template-columns: 1fr 1fr; }
 
 @media (max-width: 900px) { 
@@ -203,182 +277,3 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 
 #btn-merge-mode:hover { background: rgba(255,165,0,0.4) !important; }
 li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !important; background: rgba(255, 165, 0, 0.15) !important; transform: scale(0.98); }
-
-/* --- STREAK CONNECTORS (NIEUW: Voor de kalender balken) --- */
-/* Zorgt voor de verbinding tussen dagen */
-.calendar-day.streak-middle {
-    border-radius: 0 !important;
-    background: rgba(29, 185, 84, 0.4) !important;
-    border-left: 1px solid rgba(255,255,255,0.1);
-    border-right: 1px solid rgba(255,255,255,0.1);
-}
-.calendar-day.streak-start {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    background: rgba(29, 185, 84, 0.4) !important;
-    border-right: none !important;
-}
-.calendar-day.streak-end {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    background: rgba(29, 185, 84, 0.4) !important;
-    border-left: none !important;
-}
-.calendar-day.streak-middle .day-number,
-.calendar-day.streak-start .day-number,
-.calendar-day.streak-end .day-number {
-    color: white !important;
-    font-weight: 800;
-    text-shadow: 0 1px 2px black;
-}
-
-/* --- SONG SPOTLIGHT STATS --- */
-.spotlight-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-.spotlight-stat-box {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 15px;
-    text-align: center;
-    border: 1px solid var(--glass-border);
-}
-.spotlight-stat-val {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: white;
-    display: block;
-}
-.spotlight-stat-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-}
-
-.streak-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-}
-.streak-row:last-child { border-bottom: none; }
-.streak-days { font-weight: bold; color: var(--spotify-green); }
-.streak-dates { color: #aaa; font-size: 0.8rem; }
-
-/* --- STREAK FOCUS (Goud) --- */
-.calendar-day.streak-focus {
-    background: rgba(255, 215, 0, 0.25) !important; /* Goud achtergrond */
-    border: 2px solid gold !important;             /* Goud rand */
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);   /* Goud gloed */
-    z-index: 100;
-    transform: scale(1.05);
-}
-.calendar-day.streak-focus .day-number {
-    color: gold !important;
-    text-shadow: 0 0 5px black;
-}
-
-/* --- MAAND WRAPPED STYLING --- */
-.wrapped-card {
-    width: 100%;
-    max-width: 450px;
-    margin: 0 auto;
-    aspect-ratio: 9 / 16;
-    background: linear-gradient(180deg, #5e0b2a 0%, #3e1b5e 30%, #1b4e5e 70%, #1b5e3e 100%);
-    padding: 40px 30px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-    position: relative;
-    overflow: hidden;
-}
-
-#wrapped-month-label { font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; opacity: 0.9; }
-
-.personality-box { margin-bottom: 40px; }
-.personality-title { display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; }
-.personality-type { display: block; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
-.personality-desc { font-size: 0.85rem; line-height: 1.4; opacity: 0.9; }
-
-.wrapped-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-grow: 1; }
-.wrapped-section h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8; }
-
-.wrapped-list { display: flex; flex-direction: column; gap: 12px; }
-.wrapped-item { display: flex; align-items: center; gap: 10px; }
-.wrapped-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-.wrapped-item .info { overflow: hidden; }
-.wrapped-item .name { display: block; font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* Voor tracks gebruiken we vierkante afbeeldingen */
-#wrapped-songs .wrapped-item img { border-radius: 4px; }
-
-.wrapped-footer { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-.footer-stat .stat-label { display: block; font-size: 0.85rem; opacity: 0.8; }
-.footer-stat .stat-value { font-size: 1.4rem; font-weight: 800; }
-
-.footer-brand { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; opacity: 0.6; font-size: 0.7rem; }
-
-.spotlight-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 kolommen */
-    gap: 12px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-}
-
-/* Zorg dat de boxen er consistent uitzien */
-.spotlight-stat-box {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid var(--glass-border);
-}
-
-.spotlight-stat-val {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: white;
-    display: block;
-}
-
-.spotlight-stat-label {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Verbeterde styling voor de Beste Positie box */
-.peak-value-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.peak-rank {
-    font-size: 1.6rem; /* Lekker groot rank nummer */
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 4px;
-}
-
-.peak-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-/* Speciale kleur voor de nummer 1 positie */
-.rank-1 {
-    color: #ffcc00; /* Goud */
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
-}
