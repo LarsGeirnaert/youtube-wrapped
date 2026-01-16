@@ -81,34 +81,46 @@
             <select id="recap-month-select" onchange="renderRecap()"></select>
             
             <div id="recap-content">
-                <div class="recap-hero">
-                    <h3 style="color:#aaa; text-transform:uppercase; font-size:0.8rem; margin-bottom:10px;">Top van de Maand</h3>
-                    <img id="recap-hero-img" src="data:,">
-                    <h2 id="recap-hero-title" style="font-size:1.8rem; margin-bottom:5px;">-</h2>
-                    <p id="recap-hero-artist" style="color:var(--spotify-green); font-weight:bold;">-</p>
+                <div id="wrapped-card" class="wrapped-card">
+                    <div class="wrapped-header">
+                        <h2 id="wrapped-month-label">RECAP 2025</h2>
+                        <div class="personality-box">
+                            <span class="personality-title">Mijn muziekpersoonlijkheid</span>
+                            <span class="personality-type">De Dorpsheld</span>
+                            <p class="personality-desc">Ik blijf mijn favoriete muziek trouw en luister keer op keer naar mijn lievelingsnummers.</p>
+                        </div>
+                    </div>
+
+                    <div class="wrapped-body">
+                        <div class="wrapped-section">
+                            <h3>Topartiesten</h3>
+                            <div id="wrapped-artists" class="wrapped-list">
+                                </div>
+                        </div>
+
+                        <div class="wrapped-section">
+                            <h3>Toptracks</h3>
+                            <div id="wrapped-songs" class="wrapped-list">
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="wrapped-footer">
+                        <div class="footer-stat">
+                            <span class="stat-label">Totale tijdsduur</span>
+                            <span class="stat-value"><span id="wrapped-total-minutes">0</span> minuten</span>
+                        </div>
+                        <div class="footer-brand">
+                            <span class="brand-logo">🎧 Muziek Dagboek</span>
+                            <span class="brand-url">muziek-dagboek.local</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 30px;">
-                    <div class="stat-card tiny">
-                        <div id="recap-total-plays" class="big-number" style="font-size:2rem;">0</div><p>Plays</p>
-                    </div>
-                    <div class="stat-card tiny">
-                        <div id="recap-unique-songs" class="big-number" style="color:var(--accent-blue); font-size:2rem;">0</div><p>Unieke Songs</p>
-                    </div>
-                    <div class="stat-card tiny">
-                        <div id="recap-unique-artists" class="big-number" style="color:#e91e63; font-size:2rem;">0</div><p>Artiesten</p>
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3 style="color:#aaa; font-size:0.8rem; margin-bottom:15px; text-transform:uppercase;">Top 5 Songs</h3>
-                        <ol id="recap-top-songs" class="ranking-list"></ol>
-                    </div>
-                    <div class="stat-card">
-                        <h3 style="color:#aaa; font-size:0.8rem; margin-bottom:15px; text-transform:uppercase;">Top 5 Artiesten</h3>
-                        <ol id="recap-top-artists" class="ranking-list"></ol>
-                    </div>
+                <div style="text-align:center; margin-top: 30px;">
+                    <button onclick="downloadWrapped()" class="apply-btn" style="width: auto; background: var(--spotify-green); color: black;">
+                        📸 Download als Afbeelding
+                    </button>
                 </div>
             </div>
         </div>

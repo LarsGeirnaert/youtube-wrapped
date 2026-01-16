@@ -337,43 +337,61 @@ function renderRecap() {
     const data = monthlyStats[monthKey];
     if(!data) return;
 
-    const topSong = data.top_songs[0];
-    if(topSong) {
-        const songInfo = statsData.find(s => s.titel === topSong[1] && s.artiest === topSong[0]);
-        document.getElementById('recap-hero-title').innerText = topSong[1];
-        document.getElementById('recap-hero-artist').innerText = `${topSong[0]} (${topSong[2]} plays)`;
-        const imgEl = document.getElementById('recap-hero-img');
-        const poster = (songInfo && songInfo.poster !== 'img/placeholder.png') ? songInfo.poster : 'https://placehold.co/150x150/222/444?text=🎵';
-        imgEl.src = poster;
-    }
+    // 1. Label instellen
+    const [y, m] = monthKey.split('-');
+    const dateObj = new Date(y, m - 1);
+    const monthName = dateObj.toLocaleDateString('nl-NL', { month: 'long' }).toUpperCase();
+    document.getElementById('wrapped-month-label').innerText = `RECAP ${monthName} ${y}`;
 
-    document.getElementById('recap-total-plays').innerText = data.total_listens;
-    document.getElementById('recap-unique-songs').innerText = data.unique_songs || '-';
-    document.getElementById('recap-unique-artists').innerText = data.unique_artists || '-';
+    // 2. Minuten berekenen (schatting: 3.5 min per play)
+    const totalMinutes = Math.round(data.total_listens * 3.5);
+    document.getElementById('wrapped-total-minutes').innerText = totalMinutes.toLocaleString();
 
-    const songsEl = document.getElementById('recap-top-songs');
-    songsEl.innerHTML = data.top_songs.slice(0, 5).map((s, idx) => {
-        const songName = `${s[1]} - ${s[0]}`;
-        const info = statsData.find(x => x.titel === s[1] && x.artiest === s[0]);
-        const escapedName = escapeStr(songName);
-        const elementId = `recap-song-${idx}`;
+    // 3. Top Artiesten
+    const artistsEl = document.getElementById('wrapped-artists');
+    artistsEl.innerHTML = data.top_artists.slice(0, 5).map(a => {
+        // We zoeken een poster van deze artiest uit statsData
+        const info = statsData.find(s => s.artiest === a[0]);
         const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
-        
-        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', 'song', '${poster}', '', '${elementId}')" style="display:flex; align-items:center; overflow:hidden;">
-            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px; flex-shrink:0;">${idx+1}</span>
-            <img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">
-            <div style="flex-grow:1; min-width:0; margin-right:10px;">
-                <span style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[1]}</span>
-                <small style="color:#aaa; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s[0]}</small>
+        return `
+            <div class="wrapped-item">
+                <img src="${poster}">
+                <div class="info"><span class="name">${a[0]}</span></div>
             </div>
-            <span class="point-badge" style="flex-shrink:0;">${s[2]}x</span></li>`;
+        `;
     }).join('');
 
-    const artistsEl = document.getElementById('recap-top-artists');
-    artistsEl.innerHTML = data.top_artists.slice(0, 5).map((a, idx) => {
-        return `<li onclick="showArtistDetails('${escapeStr(a[0])}', ${a[1]}, '${monthKey}')" style="display:flex; align-items:center; overflow:hidden;">
-            <span style="width:20px; font-weight:bold; color:var(--spotify-green); margin-right:10px; flex-shrink:0;">${idx+1}</span>
-            <div style="flex-grow:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:10px;">${a[0]}</div>
-            <span class="point-badge" style="flex-shrink:0;">${a[1]}x</span></li>`;
+    // 4. Top Songs
+    const songsEl = document.getElementById('wrapped-songs');
+    songsEl.innerHTML = data.top_songs.slice(0, 5).map(s => {
+        const info = statsData.find(x => x.titel === s[1] && x.artiest === s[0]);
+        const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
+        return `
+            <div class="wrapped-item">
+                <img src="${poster}">
+                <div class="info"><span class="name">${s[1]}</span></div>
+            </div>
+        `;
     }).join('');
+}
+
+function downloadWrapped() {
+    const card = document.getElementById('wrapped-card');
+    const monthLabel = document.getElementById('wrapped-month-label').innerText;
+    
+    // De knop even verbergen/veranderen voor de screenshot
+    const btn = event.target;
+    btn.innerText = "⏳ Bezig...";
+
+    html2canvas(card, {
+        scale: 3, // Hoge resolutie
+        useCORS: true, // Nodig voor externe afbeeldingen
+        backgroundColor: "#0c0c0c"
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Wrapped_${monthLabel.replace(' ', '_')}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        btn.innerText = "📸 Download als Afbeelding";
+    });
 }

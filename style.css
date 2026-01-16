@@ -282,3 +282,45 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
     color: gold !important;
     text-shadow: 0 0 5px black;
 }
+
+/* --- MAAND WRAPPED STYLING --- */
+.wrapped-card {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    aspect-ratio: 9 / 16;
+    background: linear-gradient(180deg, #5e0b2a 0%, #3e1b5e 30%, #1b4e5e 70%, #1b5e3e 100%);
+    padding: 40px 30px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+#wrapped-month-label { font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; opacity: 0.9; }
+
+.personality-box { margin-bottom: 40px; }
+.personality-title { display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; }
+.personality-type { display: block; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+.personality-desc { font-size: 0.85rem; line-height: 1.4; opacity: 0.9; }
+
+.wrapped-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-grow: 1; }
+.wrapped-section h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; opacity: 0.8; }
+
+.wrapped-list { display: flex; flex-direction: column; gap: 12px; }
+.wrapped-item { display: flex; align-items: center; gap: 10px; }
+.wrapped-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+.wrapped-item .info { overflow: hidden; }
+.wrapped-item .name { display: block; font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Voor tracks gebruiken we vierkante afbeeldingen */
+#wrapped-songs .wrapped-item img { border-radius: 4px; }
+
+.wrapped-footer { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+.footer-stat .stat-label { display: block; font-size: 0.85rem; opacity: 0.8; }
+.footer-stat .stat-value { font-size: 1.4rem; font-weight: 800; }
+
+.footer-brand { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; opacity: 0.6; font-size: 0.7rem; }
