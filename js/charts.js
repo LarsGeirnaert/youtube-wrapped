@@ -346,6 +346,7 @@ function renderRankingHistoryChart(name, type, artist = null) {
         }
     });
 }
+
 function renderCharts() {
     const ctxHist = document.getElementById('listeningChart').getContext('2d');
     if (charts['history']) charts['history'].destroy();

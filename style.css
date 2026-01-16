@@ -277,3 +277,19 @@ h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0
 
 #btn-merge-mode:hover { background: rgba(255,165,0,0.4) !important; }
 li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !important; background: rgba(255, 165, 0, 0.15) !important; transform: scale(0.98); }
+
+/* Zorg dat de modal inhoud goed blijft binnen de container */
+.modal-list-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Scrollbar voor album-lijstjes */
+#day-top-three-container div::-webkit-scrollbar {
+    height: 6px;
+}
+#day-top-three-container div::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}

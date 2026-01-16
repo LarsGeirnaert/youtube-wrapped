@@ -2,6 +2,46 @@
 // 4. DETAIL VIEWS (MODALS)
 // ==========================================
 
+// Aangepast: Berekent de top 3 liedjes op basis van de BESTE piekpositie ooit
+function getArtistTopHits(artistName) {
+    let songPeaks = {}; // Formaat: { "Song Titel": { bestRank: X, occurrences: Y } }
+
+    Object.values(monthlyStats).forEach(month => {
+        month.top_songs.forEach((s, index) => {
+            // s[0] = Artiest, s[1] = Titel
+            if (s[0] === artistName) {
+                const songTitle = s[1];
+                const currentRank = index + 1;
+
+                if (!songPeaks[songTitle]) {
+                    songPeaks[songTitle] = { bestRank: currentRank, occurrences: 1 };
+                } else {
+                    if (currentRank < songPeaks[songTitle].bestRank) {
+                        // Nieuwe absolute piek gevonden
+                        songPeaks[songTitle].bestRank = currentRank;
+                        songPeaks[songTitle].occurrences = 1;
+                    } else if (currentRank === songPeaks[songTitle].bestRank) {
+                        // Piek opnieuw behaald
+                        songPeaks[songTitle].occurrences++;
+                    }
+                }
+            }
+        });
+    });
+
+    // Sorteer op bestRank (laagste getal is beter)
+    // Bij gelijke rank: sorteer op hoe vaak die rank behaald is
+    return Object.entries(songPeaks)
+        .sort((a, b) => {
+            if (a[1].bestRank !== b[1].bestRank) {
+                return a[1].bestRank - b[1].bestRank;
+            }
+            return b[1].occurrences - a[1].occurrences;
+        })
+        .slice(0, 3)
+        .map(entry => entry[0]);
+}
+
 function calculatePeakStat(targetName, type, targetArtist = null) {
     let bestRank = 101;
     let occurrences = 0;
@@ -93,12 +133,33 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
     const topStreaks = getArtistStreaks(cleanArtist);
     const peakStat = calculatePeakStat(cleanArtist, 'artist');
+    const topHits = getArtistTopHits(cleanArtist);
 
     let html = '';
     if (overrideCount) html += `<p style="text-align:center; color:var(--spotify-green); margin-bottom:10px; font-weight:700;">${monthKey ? 'Deze maand' : 'Totaal'} ${overrideCount}x geluisterd</p>`;
     if (peakStat) html += `<div class="spotlight-stat-box" style="margin: 0 auto 15px; max-width: 200px; background: rgba(255,204,0,0.1); border-color: #ffcc00;">${peakStat}</div>`;
 
     html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
+
+    // TOP 3 LIEDJES (Geselecteerd op beste piekpositie ooit)
+    if (topHits.length > 0) {
+        html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">🏆 Top 100 All-Time Hits</h3>`;
+        html += `<div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px;">`;
+        topHits.forEach((hitTitle, idx) => {
+            const info = statsData.find(s => s.artiest === cleanArtist && s.titel === hitTitle);
+            const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
+            html += `
+                <div onclick="showSongSpotlight('${escapeStr(hitTitle + ' - ' + cleanArtist)}')" style="cursor:pointer; text-align:center;">
+                    <div style="position:relative; width:100%; aspect-ratio:1/1;">
+                        <img src="${poster}" style="width:100%; height:100%; border-radius:8px; object-fit:cover; border:1px solid var(--glass-border);">
+                        <span style="position:absolute; top:-5px; left:-5px; width:22px; height:22px; background:var(--spotify-green); color:black; border-radius:50%; font-size:0.7rem; font-weight:800; display:flex; align-items:center; justify-content:center;">${idx+1}</span>
+                    </div>
+                    <span style="display:block; font-size:0.65rem; font-weight:600; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hitTitle}</span>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
 
     if (topStreaks.length > 0) {
         html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">🔥 Beste Streaks</h3><div style="background:rgba(255,255,255,0.03); border-radius:12px; padding:5px; margin-bottom:15px;">`;
@@ -118,7 +179,7 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
         html += `</div>`;
     }
 
-    html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Songs</h3>`;
+    html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Alle Songs</h3>`;
     html += `<div>${songsToShow.map((s, idx) => {
             const elementId = `artist-det-${idx}`;
             return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapeStr(s.titel + ' - ' + cleanArtist)}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><img src="${s.poster}" style="width:30px;height:30px;border-radius:5px;margin-right:10px;"><div style="flex-grow:1; font-size:0.9rem;"><b>${s.titel}</b></div><span class="point-badge" style="background:transparent; color:#777;">${s.count}x</span></div>`;
@@ -173,5 +234,62 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
 
     document.getElementById('day-top-three-container').innerHTML = html;
     document.getElementById('modal-datum-titel').innerText = "Details"; 
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+function showTop100(category, isBack = false) {
+    if (!isBack) addToHistory('list', arguments);
+    const container = document.getElementById('day-top-three-container');
+    const titleEl = document.getElementById('modal-datum-titel');
+    let items = [];
+    const monthKey = `${currentViewDate.getFullYear()}-${String(currentViewDate.getMonth() + 1).padStart(2, '0')}`;
+    const mData = monthlyStats[monthKey];
+
+    if (category === 'songs') { titleEl.innerText = "Top 100 Songs"; items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); }
+    else if (category === 'artists') { titleEl.innerText = "Top 100 Artiesten"; const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], null, 'artist']); }
+    else if (category.includes('albums')) {
+        const albumMap = {}; statsData.forEach(s => { if (s.poster === "img/placeholder.png") return; const key = getAlbumKey(s.poster, s.artiest); if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0, unique: new Set() }; albumMap[key].total += s.count; albumMap[key].unique.add(s.titel); });
+        const albums = Object.values(albumMap);
+        if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
+        else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
+    }
+    else if (category.includes('streaks')) { 
+        const key = category.split('streaks-')[1].replace('-', '_'); 
+        items = streakData[key].map(s => [
+            s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, 
+            statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', 
+            null, s.period, s.start, s.end
+        ]); 
+    }
+    else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
+    else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
+    else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} - ${a}`, songs[0].count, songs[0].poster, 'song']); }
+    else if (category === 'explorers') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']); }
+
+    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period, start, end], index) => {
+        const escapedName = escapeStr(name);
+        const elementId = `top100-${index}`;
+        let actualType = type; let albumArtist = '';
+        if (name.startsWith('Album van ')) { actualType = 'album'; albumArtist = name.replace('Album van ', ''); } 
+        const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
+        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
+        const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
+        
+        let badgeAttr = '';
+        let badgeStyle = 'flex-shrink:0;';
+        if (unit && unit.trim() === 'd') {
+             let artistArg = actualType === 'song' ? name.split(' - ').pop() : name;
+             let songArg = null;
+             if(actualType === 'song') {
+                 const parts = name.split(' - ');
+                 songArg = parts.slice(0, parts.length - 1).join(' - ');
+             }
+             if (start && end) {
+                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}', '${start}', '${end}', '${escapeStr(songArg||'')}')"`;
+                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
+             }
+        }
+        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>${img}<div style="flex-grow:1; min-width:0; overflow:hidden; margin-right:10px;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>${sub}</div><span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">${val}${unit||' d'}</span></li>`;
+    }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }
