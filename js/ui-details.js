@@ -11,12 +11,32 @@ function updateSmartHistory(type, args) {
     const existingIndex = modalHistory.findIndex(entry => JSON.stringify(entry) === newEntryKey);
 
     if (existingIndex !== -1) {
+        // De pagina bestaat al! Verwijder alles wat daarna kwam.
         modalHistory = modalHistory.slice(0, existingIndex + 1);
         return true; 
     }
     
     modalHistory.push({ type, args });
     return false;
+}
+
+/**
+ * Filtert live de lijst in de geopende modal.
+ */
+function filterTopModalList(query) {
+    const filter = query.toLowerCase();
+    const list = document.getElementById('modal-ranking-list');
+    if (!list) return;
+    const items = list.getElementsByTagName('li');
+
+    for (let i = 0; i < items.length; i++) {
+        const text = items[i].innerText.toLowerCase();
+        if (text.includes(filter)) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
 }
 
 function getArtistTopHits(artistName) {
@@ -162,7 +182,7 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
     html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
 
     if (topHits.length > 0) {
-        html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">🏆 Top 100 All-Time Hits</h3><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px;">`;
+        html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">📊 Top 100 All-Time Hits</h3><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px;">`;
         topHits.forEach((hitTitle, idx) => {
             const info = statsData.find(s => s.artiest === cleanArtist && s.titel === hitTitle);
             const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
@@ -263,40 +283,35 @@ function showTop100(category, isBack = false) {
     if (category === 'songs') { titleEl.innerText = "Top 100 Songs"; items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); }
     else if (category === 'artists') { titleEl.innerText = "Top 100 Artiesten"; const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], statsData.find(s=>s.artiest===a[0])?.poster, 'artist']); }
     else if (category.includes('streaks')) {
-        // FIX: Mapping voor streaks zodat de top 100 headers nu wel werken
         const key = category.split('streaks-')[1].replace(/-/g, '_'); 
         titleEl.innerText = "Top 100 Streaks";
         if (streakData[key]) {
             items = streakData[key].map(s => {
                 const name = s.titel ? `${s.titel} - ${s.artiest}` : s.naam;
                 const poster = statsData.find(x => x.titel === s.titel)?.poster || statsData.find(x => x.artiest === s.naam)?.poster;
-                // De unit ' d' activeert de klik-logica in renderList
                 return [name, s.streak, poster, s.titel ? 'song' : 'artist', ' d', s.period, s.start, s.end];
             });
         }
     }
     else if (category.includes('albums')) {
         const albumMap = {}; statsData.forEach(s => { if (s.poster !== "img/placeholder.png") { const key = getAlbumKey(s.poster, s.artiest); if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0 }; albumMap[key].total += s.count; }});
-        items = Object.values(albumMap).sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album', a.artiest]);
+        const albums = Object.values(albumMap);
+        items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album', a.artiest]);
     }
     
     const backBtn = (modalHistory.length > 1) ? `<span onclick="closeModal()" style="cursor:pointer; position:absolute; left:20px; top:20px; font-size:1.2rem; opacity:0.6;">←</span>` : '';
 
-    container.innerHTML = backBtn + `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.filter(item => item[0] && !item[0].includes("Onbekend")).map(([name, val, poster, type, unit, period, start, end], index) => {
+    // Voeg zoekbalk toe
+    const searchBarHtml = `
+        <div style="margin-bottom: 15px;">
+            <input type="text" class="modal-search-input" placeholder="Zoek in deze lijst..." oninput="filterTopModalList(this.value)">
+        </div>
+    `;
+
+    container.innerHTML = backBtn + searchBarHtml + `<ul id="modal-ranking-list" class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.filter(item => item[0] && !item[0].includes("Onbekend")).map(([name, val, poster, type, albumArtist], index) => {
+        const escapedName = escapeStr(name);
         const elementId = `top100-${index}`;
-        let actualType = type; let albumArtist = '';
-        if (name.startsWith('Album van ')) { actualType = 'album'; albumArtist = name.replace('Album van ', ''); } 
-        const clickAction = `handleListClick('${escapeStr(name)}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
-
-        let badgeAttr = ''; let badgeStyle = '';
-        if (unit === ' d' && start && end) {
-            let filterArtist = name; let filterSong = null;
-            if (actualType === 'song' && name.includes(' - ')) { const parts = name.split(' - '); filterArtist = parts[parts.length - 1]; filterSong = parts.slice(0, parts.length - 1).join(' - '); }
-            badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}', '${escapeStr(filterSong||'')}', false)"`;
-            badgeStyle = 'cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15);';
-        }
-
-        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span><img src="${poster || 'img/placeholder.png'}" style="width:30px; height:30px; border-radius:${actualType==='artist'?'50%':'5px'}; margin-right:10px; object-fit:cover;"><div style="flex-grow:1; min-width:0; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span></div><span class="point-badge" ${badgeAttr} style="${badgeStyle}">${val}${unit||''}</span></li>`;
+        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', '${type}', '${poster}', '${escapeStr(albumArtist || '')}', '${elementId}')" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span><img src="${poster || 'img/placeholder.png'}" style="width:30px; height:30px; border-radius:${type==='artist'?'50%':'5px'}; margin-right:10px; object-fit:cover;"><div style="flex-grow:1; min-width:0; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span></div><span class="point-badge">${val}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }
