@@ -12,31 +12,6 @@ function renderList(id, items, unit, type) {
         const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
         const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
         
-        let badgeAttr = '';
-        let badgeStyle = 'flex-shrink:0;';
-        
-        if (unit && unit.trim() === 'd') {
-            let filterArtist = name;
-            let filterSong = null;
-
-            if (type === 'song' && name.includes(' - ')) {
-                const parts = name.split(' - ');
-                filterArtist = parts[parts.length - 1]; // Artiest is laatste deel
-                filterSong = parts.slice(0, parts.length - 1).join(' - '); // Rest is titel
-            } else if (type === 'artist') {
-                filterArtist = name;
-            }
-
-            if (start && end) {
-                // Correcte song titel doorgeven
-                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}', '${start}', '${end}', '${escapeStr(filterSong||'')}')" title="Bekijk streak in Kalender"`;
-                badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
-            } else {
-                badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(filterArtist)}')" title="Bekijk in Kalender"`;
-                badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
-            }
-        }
-
         return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;">
                     <span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>
                     ${img}
@@ -44,34 +19,48 @@ function renderList(id, items, unit, type) {
                         <span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>
                         ${sub}
                     </div>
-                    <span class="point-badge" ${badgeAttr} style="${badgeStyle}" 
-                          onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" 
-                          onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">
+                    <span class="point-badge">
                         ${val}${unit||''}
                     </span>
                 </li>`;
     }).join('');
 }
 
+/**
+ * Beheert het sluiten van de modal en het terugkeren in de geschiedenis.
+ */
 function closeModal() {
+    // Verwijder de huidige actieve weergave uit de geschiedenis
     modalHistory.pop(); 
+
     if (modalHistory.length > 0) {
+        // Er is nog een vorig scherm (bijv. de Artiest nadat je een Song sloot)
         const prev = modalHistory[modalHistory.length - 1]; 
         
         if (prev.type === 'artist') {
-            showArtistDetails(prev.args[0], prev.args[1] || null, prev.args[2] || null, true);
+            // Roep de functie aan met isBack = true om dubbele geschiedenis te voorkomen
+            showArtistDetails(prev.args[0], prev.args[1], prev.args[2], true);
         }
         else if (prev.type === 'album') {
             showAlbumDetails(prev.args[0], prev.args[1], true);
         }
         else if (prev.type === 'song') {
-            showSongSpotlight(prev.args[0], prev.args[1] || null, true);
+            showSongSpotlight(prev.args[0], prev.args[1], true);
         }
         else if (prev.type === 'list') {
             showTop100(prev.args[0], true);
         }
     } else {
-        document.getElementById('modal').classList.add('hidden');
+        // Geen geschiedenis meer over -> Modal echt verbergen
+        const modal = document.getElementById('modal');
+        modal.classList.add('hidden');
+        
+        // Herstel scroll positie van de hoofd-app
+        if (typeof lastScrollPos !== 'undefined') {
+            window.scrollTo({ top: lastScrollPos, behavior: 'instant' });
+        }
+        
+        // Reset de geschiedenis-array volledig voor de zekerheid
         modalHistory = [];
     }
 }

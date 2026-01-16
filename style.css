@@ -348,3 +348,127 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
 .btn-download-wrapped .btn-icon {
     font-size: 1.2rem;
 }
+
+#btn-merge-mode {
+    background: rgba(255, 152, 0, 0.1) !important;
+    color: var(--merge-orange) !important;
+    border: 1.5px solid var(--merge-orange) !important;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+#btn-merge-mode:hover {
+    background: var(--merge-orange) !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px var(--merge-glow);
+    transform: translateY(-2px);
+}
+
+#btn-merge-mode.active-stop {
+    background: rgba(235, 64, 52, 0.1) !important;
+    color: #eb4034 !important;
+    border-color: #eb4034 !important;
+}
+
+/* 2. Floating Action Bar Button (Samenvoegen) */
+#merge-action-bar button {
+    background: linear-gradient(135deg, #ff9800 0%, #f44336 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 24px !important;
+    border-radius: 50px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+    transition: var(--transition);
+}
+
+#merge-action-bar button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5);
+}
+
+/* 3. Samenvoegen & Opslaan (Binnen Modal) */
+.btn-merge-final {
+    background: linear-gradient(90deg, #1db954 0%, #17a34a 100%) !important;
+    color: #000 !important;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 16px;
+    border-radius: 16px;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: var(--transition);
+    box-shadow: 0 10px 25px rgba(29, 185, 84, 0.2);
+}
+
+.btn-merge-final:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(29, 185, 84, 0.4);
+    filter: brightness(1.1);
+}
+
+/* --- MERGE MODAL RADIO OPTIONS --- */
+.radio-item-merge {
+    display: block;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.radio-item-merge input {
+    display: none; /* Verberg standaard radio */
+}
+
+.merge-option-content {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    transition: all 0.2s ease;
+}
+
+.radio-item-merge input:checked + .merge-option-content {
+    background: rgba(29, 185, 84, 0.1);
+    border-color: var(--spotify-green);
+    box-shadow: 0 0 15px rgba(29, 185, 84, 0.1);
+}
+
+.merge-option-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+    background: #222;
+}
+
+.merge-option-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.merge-option-text .main-label {
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.merge-option-text .sub-label {
+    font-size: 0.8rem;
+    color: #888;
+}
