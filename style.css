@@ -324,3 +324,61 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
 .footer-stat .stat-value { font-size: 1.4rem; font-weight: 800; }
 
 .footer-brand { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; opacity: 0.6; font-size: 0.7rem; }
+
+.spotlight-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 kolommen */
+    gap: 12px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+/* Zorg dat de boxen er consistent uitzien */
+.spotlight-stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--glass-border);
+}
+
+.spotlight-stat-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+    display: block;
+}
+
+.spotlight-stat-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Verbeterde styling voor de Beste Positie box */
+.peak-value-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.peak-rank {
+    font-size: 1.6rem; /* Lekker groot rank nummer */
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.peak-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Speciale kleur voor de nummer 1 positie */
+.rank-1 {
+    color: #ffcc00; /* Goud */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
