@@ -9,7 +9,8 @@ function updateComparisonChart() {
     if (charts['comparison']) charts['comparison'].destroy();
     if (charts['comparisonMonthly']) charts['comparisonMonthly'].destroy();
 
-    const labels = chartData.history.labels; 
+    // VISUELE FILTER: Sla de eerste maand over
+    const labels = chartData.history.labels.slice(1); 
     const datasetsCumulative = [];
     const datasetsMonthly = [];
 
@@ -19,7 +20,9 @@ function updateComparisonChart() {
         let dataPointsMonthly = [];
         let runningTotal = 0;
 
-        labels.forEach(month => {
+        // Bereken de cumulatieve waarde over ALLE data (voor correcte stats)
+        // Maar we tonen alleen vanaf de tweede maand
+        chartData.history.labels.forEach((month, index) => {
             let count = 0;
             if (monthlyStats[month]) {
                 if (item.type === 'artist') {
@@ -33,8 +36,12 @@ function updateComparisonChart() {
                 }
             }
             runningTotal += count;
-            dataPointsMonthly.push(count);
-            dataPointsCumulative.push(runningTotal);
+            
+            // Alleen toevoegen aan grafiek-data vanaf index 1
+            if (index > 0) {
+                dataPointsMonthly.push(count);
+                dataPointsCumulative.push(runningTotal);
+            }
         });
 
         datasetsCumulative.push({
@@ -87,21 +94,27 @@ function renderRepertoireGrowthChart(artistName) {
                             .sort((a, b) => b.count - a.count)
                             .slice(0, 5);
 
-    const labels = chartData.history.labels;
+    // VISUELE FILTER: Sla de eerste maand over
+    const labels = chartData.history.labels.slice(1);
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
 
     const datasets = songs.map((song, i) => {
         let dataPoints = [];
         let runningTotal = 0;
-        labels.forEach(month => {
+        
+        chartData.history.labels.forEach((month, index) => {
             let count = 0;
             const key = `${song.titel}|${song.artiest}`;
             if (monthlyStats[month] && monthlyStats[month].song_counts) {
                 count = monthlyStats[month].song_counts[key] || 0;
             }
             runningTotal += count;
-            dataPoints.push(runningTotal);
+            
+            if (index > 0) {
+                dataPoints.push(runningTotal);
+            }
         });
+        
         return {
             label: song.titel, data: dataPoints, borderColor: colors[i % colors.length],
             backgroundColor: 'transparent', tension: 0.3, pointRadius: 0, borderWidth: 2
@@ -128,14 +141,15 @@ function renderRepertoireMonthlyChart(artistName) {
                             .sort((a, b) => b.count - a.count)
                             .slice(0, 5);
 
-    const labels = chartData.history.labels.map(l => {
+    // VISUELE FILTER: Sla de eerste maand over
+    const labels = chartData.history.labels.slice(1).map(l => {
         const [y, m] = l.split('-'); 
         return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
     });
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'];
 
     const datasets = songs.map((song, i) => {
-        const dataPoints = chartData.history.labels.map(month => {
+        const dataPoints = chartData.history.labels.slice(1).map(month => {
             let count = 0;
             const key = `${song.titel}|${song.artiest}`;
             if (monthlyStats[month] && monthlyStats[month].song_counts) {
@@ -182,13 +196,14 @@ function renderRankingHistoryChart(name, type, artist = null) {
     const ctx = document.getElementById('rankingHistoryChart').getContext('2d');
     if (charts['rankingHistory']) charts['rankingHistory'].destroy();
 
-    const labels = chartData.history.labels;
+    // VISUELE FILTER: Sla de eerste maand over
+    const labels = chartData.history.labels.slice(1);
     const rankingData = [];
     const pointRadii = [];
 
     labels.forEach(monthKey => {
         const data = monthlyStats[monthKey];
-        let rank = 106; // Baseline buiten de kaart (val uit top 100)
+        let rank = 106; // Baseline buiten de kaart
 
         if (data) {
             if (type === 'artist') {
@@ -201,7 +216,6 @@ function renderRankingHistoryChart(name, type, artist = null) {
         }
         
         rankingData.push(rank);
-        // Verberg de bolletjes als het item buiten de top 100 valt
         pointRadii.push(rank > 100 ? 0 : 4);
     });
 
@@ -223,7 +237,7 @@ function renderRankingHistoryChart(name, type, artist = null) {
                 pointHoverRadius: 6,
                 tension: 0.3,
                 fill: true,
-                spanGaps: true // Zorgt voor een doorgetrokken lijn naar de bodem
+                spanGaps: true
             }]
         },
         options: {
@@ -231,14 +245,14 @@ function renderRankingHistoryChart(name, type, artist = null) {
             maintainAspectRatio: false,
             scales: {
                 y: {
-                    reverse: true, // #1 bovenaan
+                    reverse: true,
                     min: 1,
-                    max: 105, // Ruimte voor de 'val' onderaan
+                    max: 105,
                     ticks: {
                         color: '#777',
                         stepSize: 10,
                         callback: function(value) { 
-                            if (value > 100) return ''; // Geen label voor de baseline
+                            if (value > 100) return '';
                             return '#' + value; 
                         }
                     },
@@ -269,8 +283,12 @@ function renderCharts() {
     const ctxHist = document.getElementById('listeningChart').getContext('2d');
     if (charts['history']) charts['history'].destroy();
     
-    const histLabels = chartData.history ? chartData.history.labels : chartData.labels;
-    const histValues = chartData.history ? chartData.history.values : chartData.values;
+    // VISUELE FILTER: Sla de eerste maand over in de Luistergeschiedenis
+    const rawLabels = chartData.history ? chartData.history.labels : chartData.labels;
+    const rawValues = chartData.history ? chartData.history.values : chartData.values;
+    
+    const histLabels = rawLabels.slice(1);
+    const histValues = rawValues.slice(1);
 
     charts['history'] = new Chart(ctxHist, {
         type: 'line',
