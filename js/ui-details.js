@@ -2,17 +2,32 @@
 // 4. DETAIL VIEWS (MODALS)
 // ==========================================
 
-// Berekent de top 3 liedjes op basis van de BESTE piekpositie ooit
+/**
+ * Helpt voorkomen dat de geschiedenis een oneindige loop wordt.
+ * Als de nieuwe pagina al in de geschiedenis staat, gaan we terug naar dat punt.
+ */
+function updateSmartHistory(type, args) {
+    const newEntryKey = JSON.stringify({ type, args });
+    const existingIndex = modalHistory.findIndex(entry => JSON.stringify(entry) === newEntryKey);
+
+    if (existingIndex !== -1) {
+        // De pagina bestaat al! Verwijder alles wat daarna kwam.
+        modalHistory = modalHistory.slice(0, existingIndex + 1);
+        return true; 
+    }
+    
+    modalHistory.push({ type, args });
+    return false;
+}
+
 function getArtistTopHits(artistName) {
     if (!artistName || artistName === "Onbekend") return [];
     let songPeaks = {}; 
-
     Object.values(monthlyStats).forEach(month => {
         month.top_songs.forEach((s, index) => {
             if (s[0] === artistName) {
                 const songTitle = s[1];
                 const currentRank = index + 1;
-
                 if (!songPeaks[songTitle]) {
                     songPeaks[songTitle] = { bestRank: currentRank, occurrences: 1 };
                 } else {
@@ -26,14 +41,9 @@ function getArtistTopHits(artistName) {
             }
         });
     });
-
     return Object.entries(songPeaks)
-        .sort((a, b) => {
-            if (a[1].bestRank !== b[1].bestRank) return a[1].bestRank - b[1].bestRank;
-            return b[1].occurrences - a[1].occurrences;
-        })
-        .slice(0, 3)
-        .map(entry => entry[0]);
+        .sort((a, b) => a[1].bestRank - b[1].bestRank || b[1].occurrences - a[1].occurrences)
+        .slice(0, 3).map(entry => entry[0]);
 }
 
 function calculatePeakStat(targetName, type, targetArtist = null) {
@@ -43,45 +53,26 @@ function calculatePeakStat(targetName, type, targetArtist = null) {
 
     Object.keys(monthlyStats).forEach(monthKey => {
         const data = monthlyStats[monthKey];
-        let currentRank = -1;
-        if (type === 'artist') {
-            currentRank = data.top_artists.findIndex(a => a[0] === targetName) + 1;
-        } else {
-            currentRank = data.top_songs.findIndex(s => s[1] === targetName && s[0] === targetArtist) + 1;
-        }
-
+        let currentRank = (type === 'artist') ? data.top_artists.findIndex(a => a[0] === targetName) + 1 : data.top_songs.findIndex(s => s[1] === targetName && s[0] === targetArtist) + 1;
         if (currentRank > 0 && currentRank <= 100) {
             if (currentRank < bestRank) {
                 bestRank = currentRank; occurrences = 1;
                 const [year, month] = monthKey.split('-');
                 bestMonthLabel = `${monthNames[parseInt(month) - 1]} '${year.substring(2)}`;
-            } else if (currentRank === bestRank) {
-                occurrences++;
-            }
+            } else if (currentRank === bestRank) { occurrences++; }
         }
     });
-
     if (bestRank > 100) return null;
     const rankClass = bestRank === 1 ? 'rank-1' : '';
-    const subText = occurrences > 1 ? `${occurrences}x behaald` : `in ${bestMonthLabel}`;
-
-    return `
-        <div class="peak-value-container">
-            <span class="peak-rank ${rankClass}">#${bestRank}</span>
-            <span class="peak-label">${subText}</span>
-        </div>
-    `;
+    return `<div class="peak-value-container"><span class="peak-rank ${rankClass}">#${bestRank}</span><span class="peak-label">${occurrences > 1 ? occurrences + 'x behaald' : 'in ' + bestMonthLabel}</span></div>`;
 }
 
-// Centrale klik-handler
 function handleListClick(name, type, poster, albumArtist, elementId) {
     if (name.includes("Onbekend")) return;
-    
     if (document.getElementById('modal').classList.contains('hidden')) {
         lastScrollPos = window.scrollY;
         modalHistory = [];
     }
-    
     if (mergeMode) {
         if (type === 'song' || type === 'album') toggleMergeSelection(name, type, poster, albumArtist, elementId);
         else alert("Je kan alleen liedjes of albums samenvoegen.");
@@ -92,24 +83,25 @@ function handleListClick(name, type, poster, albumArtist, elementId) {
     }
 }
 
-// BRUG FUNCTIE: Regelt of een album klik een Modal opent of een Selectie maakt voor Merge
 function handleAlbumClick(poster, artist, elementId) {
-    if (mergeMode) {
-        const albumName = `Album van ${artist}`;
-        toggleMergeSelection(albumName, 'album', poster, artist, elementId);
-    } else {
-        showAlbumDetails(poster, artist);
-    }
+    if (mergeMode) { toggleMergeSelection(`Album van ${artist}`, 'album', poster, artist, elementId); }
+    else { showAlbumDetails(poster, artist); }
 }
 
 function showAlbumDetails(posterUrl, artistName, isBack = false) {
-    if (!isBack) modalHistory.push({ type: 'album', args: [posterUrl, artistName] });
+    if (!isBack) updateSmartHistory('album', [posterUrl, artistName]);
+
     const key = getAlbumKey(posterUrl, artistName);
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = `Album van ${artistName}`;
     
+    // Voeg Back-button toe in de UI als er geschiedenis is
+    const backBtn = (modalHistory.length > 1) ? `<span onclick="closeModal()" style="cursor:pointer; position:absolute; left:20px; top:20px; font-size:1.2rem; opacity:0.6;">←</span>` : '';
+    const closeBtn = `<span onclick="closeEverything()" style="cursor:pointer; position:absolute; right:20px; top:15px; font-size:2rem; color:#777;">&times;</span>`;
+
     container.innerHTML = `
+        ${backBtn}
         <div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:140px;border-radius:20px;box-shadow:var(--shadow-lg);">
         <div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-top:10px;"></div></div>
         <div class="modal-list-wrapper">${albumSongs.map((s, idx) => {
@@ -124,37 +116,32 @@ function showAlbumDetails(posterUrl, artistName, isBack = false) {
 
 function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack = false) {
     if (artist === "Onbekend") return;
-    if (!isBack) modalHistory.push({ type: 'artist', args: [artist, overrideCount, monthKey] });
+    if (!isBack) updateSmartHistory('artist', [artist, overrideCount, monthKey]);
 
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = cleanArtist;
     
+    const backBtn = (modalHistory.length > 1) ? `<span onclick="closeModal()" style="cursor:pointer; position:absolute; left:20px; top:20px; font-size:1.2rem; opacity:0.6;">←</span>` : '';
+
     let songsToShow = (monthKey && monthlyStats[monthKey]?.artist_details[cleanArtist]) 
         ? monthlyStats[monthKey].artist_details[cleanArtist].map(i => { const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; })
         : statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count);
 
-    const sortedAlbums = Object.values(songsToShow.reduce((acc, s) => {
-        if (s.poster && s.poster !== "img/placeholder.png") {
-            const key = getAlbumKey(s.poster, s.artiest);
-            if (!acc[key]) acc[key] = { poster: s.poster, count: 0 };
-            acc[key].count += s.count;
-        }
-        return acc;
-    }, {})).sort((a,b) => b.count - a.count);
-
-    const topStreaks = getArtistStreaks(cleanArtist);
+    const sortedAlbums = Object.values(songsToShow.reduce((acc, s) => { if (s.poster && s.poster !== "img/placeholder.png") { const key = getAlbumKey(s.poster, s.artiest); if (!acc[key]) acc[key] = { poster: s.poster, count: 0 }; acc[key].count += s.count; } return acc; }, {})).sort((a,b) => b.count - a.count);
     const peakStat = calculatePeakStat(cleanArtist, 'artist');
     const topHits = getArtistTopHits(cleanArtist);
 
-    let html = (peakStat) ? `<div class="spotlight-stat-box" style="margin: 0 auto 15px; max-width: 200px; background: rgba(255,204,0,0.1); border-color: #ffcc00;">${peakStat}</div>` : '';
+    let html = `${backBtn}`;
+    if (peakStat) html += `<div class="spotlight-stat-box" style="margin: 0 auto 15px; max-width: 200px; background: rgba(255,204,0,0.1); border-color: #ffcc00;">${peakStat}</div>`;
     html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
 
     if (topHits.length > 0) {
         html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">🏆 Top 100 All-Time Hits</h3><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px;">`;
         topHits.forEach((hitTitle, idx) => {
             const info = statsData.find(s => s.artiest === cleanArtist && s.titel === hitTitle);
-            html += `<div onclick="showSongSpotlight('${escapeStr(hitTitle + ' - ' + cleanArtist)}')" style="cursor:pointer; text-align:center;"><div style="position:relative; width:100%; aspect-ratio:1/1;"><img src="${info?.poster || 'img/placeholder.png'}" style="width:100%; height:100%; border-radius:8px; object-fit:cover; border:1px solid var(--glass-border);"><span style="position:absolute; top:-5px; left:-5px; width:22px; height:22px; background:var(--spotify-green); color:black; border-radius:50%; font-size:0.7rem; font-weight:800; display:flex; align-items:center; justify-content:center;">${idx+1}</span></div><span style="display:block; font-size:0.65rem; font-weight:600; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hitTitle}</span></div>`;
+            const poster = (info && info.poster) ? info.poster : 'img/placeholder.png';
+            html += `<div onclick="showSongSpotlight('${escapeStr(hitTitle + ' - ' + cleanArtist)}')" style="cursor:pointer; text-align:center;"><div style="position:relative; width:100%; aspect-ratio:1/1;"><img src="${poster}" style="width:100%; height:100%; border-radius:8px; object-fit:cover; border:1px solid var(--glass-border);"><span style="position:absolute; top:-5px; left:-5px; width:22px; height:22px; background:var(--spotify-green); color:black; border-radius:50%; font-size:0.7rem; font-weight:800; display:flex; align-items:center; justify-content:center;">${idx+1}</span></div><span style="display:block; font-size:0.65rem; font-weight:600; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hitTitle}</span></div>`;
         });
         html += `</div>`;
     }
@@ -180,7 +167,7 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
 function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     if (songFull.includes("Onbekend")) return;
-    if (!isBack) modalHistory.push({ type: 'song', args: [songFull, overrideCount] });
+    if (!isBack) updateSmartHistory('song', [songFull, overrideCount]);
 
     let titel, artiest; 
     if (songFull.includes(' - ')) { 
@@ -190,10 +177,17 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     
     const s = statsData.find(x => x.titel === titel && x.artiest === artiest) || { poster: 'img/placeholder.png', artiest: artiest, count: 0 };
     const countToDisplay = overrideCount !== null ? overrideCount : s.count;
+    const artistSongs = statsData.filter(x => x.artiest === artiest).sort((a, b) => b.count - a.count);
+    const rank = artistSongs.findIndex(x => x.titel === titel) + 1;
+    const totalArtistPlays = artistSongs.reduce((sum, item) => sum + item.count, 0);
+    const percentage = totalArtistPlays > 0 ? ((s.count / totalArtistPlays) * 100).toFixed(1) + '%' : '0%';
+    const topStreaks = getSongStreaks(titel, artiest);
     const peakStat = calculatePeakStat(titel, 'song', artiest);
     
-    // De artiestennaam is nu klikbaar via de onclick-handler
+    const backBtn = (modalHistory.length > 1) ? `<span onclick="closeModal()" style="cursor:pointer; position:absolute; left:20px; top:20px; font-size:1.2rem; opacity:0.6;">←</span>` : '';
+
     document.getElementById('day-top-three-container').innerHTML = `
+        ${backBtn}
         <div class="vinyl-container">
             <div class="vinyl-record"></div>
             <img src="${s.poster}" class="vinyl-cover">
@@ -208,8 +202,20 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
         <div class="spotlight-stats-grid">
             <div class="spotlight-stat-box"><span class="spotlight-stat-val">${countToDisplay}x</span><span class="spotlight-stat-label">Plays</span></div>
             <div class="spotlight-stat-box">${peakStat ? peakStat : '<span class="spotlight-stat-val">-</span><span class="spotlight-stat-label">Piek</span>'}</div>
+            <div class="spotlight-stat-box"><span class="spotlight-stat-val">#${rank}</span><span class="spotlight-stat-label">Bij ${artiest}</span></div>
+            <div class="spotlight-stat-box"><span class="spotlight-stat-val">${percentage}</span><span class="spotlight-stat-label">Aandeel</span></div>
         </div>
     `;
+
+    if (topStreaks.length > 0) {
+        let html = `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:5px;">🔥 Beste Streaks</h3>`;
+        topStreaks.forEach(st => {
+            const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
+            const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
+            html += `<div class="streak-row" onclick="applyCalendarFilter('${escapeStr(artiest)}', '${st.start}', '${st.end}', '${escapeStr(titel)}')" style="cursor:pointer; display:flex; justify-content:space-between; padding:8px 0; font-size:0.9rem;"><span style="color:var(--spotify-green); font-weight:bold;">${st.count} dagen</span><span style="color:#777;">${d1} ➔ ${d2}</span></div>`;
+        });
+        document.getElementById('day-top-three-container').innerHTML += html;
+    }
 
     document.getElementById('modal-datum-titel').innerText = "Details"; 
     document.getElementById('modal').classList.remove('hidden');
@@ -224,28 +230,22 @@ async function fixSongCover(titel, artiest) {
 }
 
 function showTop100(category, isBack = false) {
-    if (!isBack) modalHistory.push({ type: 'list', args: [category] });
+    if (!isBack) updateSmartHistory('list', [category]);
     const container = document.getElementById('day-top-three-container');
     const titleEl = document.getElementById('modal-datum-titel');
     let items = [];
     
-    if (category === 'songs') { 
-        titleEl.innerText = "Top 100 Songs"; 
-        items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); 
-    }
-    else if (category === 'artists') { 
-        titleEl.innerText = "Top 100 Artiesten"; 
-        const artistMap = {}; 
-        statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); 
-        items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], statsData.find(s=>s.artiest===a[0])?.poster, 'artist']); 
-    }
+    if (category === 'songs') { titleEl.innerText = "Top 100 Songs"; items = [...statsData].sort((a, b) => b.count - a.count).slice(0, 100).map(s => [`${s.titel} - ${s.artiest}`, s.count, s.poster, 'song']); }
+    else if (category === 'artists') { titleEl.innerText = "Top 100 Artiesten"; const artistMap = {}; statsData.forEach(s => { artistMap[s.artiest] = (artistMap[s.artiest] || 0) + s.count; }); items = Object.entries(artistMap).sort((a,b) => b[1] - a[1]).slice(0, 100).map(a => [a[0], a[1], statsData.find(s=>s.artiest===a[0])?.poster, 'artist']); }
     else if (category.includes('albums')) {
         const albumMap = {}; statsData.forEach(s => { if (s.poster === "img/placeholder.png") return; const key = getAlbumKey(s.poster, s.artiest); if (!albumMap[key]) albumMap[key] = { poster: s.poster, artiest: s.artiest, total: 0 }; albumMap[key].total += s.count; });
         const albums = Object.values(albumMap);
         items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album', a.artiest]);
     }
     
-    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.filter(item => item[0] && !item[0].includes("Onbekend")).map(([name, val, poster, type, albumArtist], index) => {
+    const backBtn = (modalHistory.length > 1) ? `<span onclick="closeModal()" style="cursor:pointer; position:absolute; left:20px; top:20px; font-size:1.2rem; opacity:0.6;">←</span>` : '';
+
+    container.innerHTML = backBtn + `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.filter(item => item[0] && !item[0].includes("Onbekend")).map(([name, val, poster, type, albumArtist], index) => {
         const elementId = `top100-${index}`;
         return `<li id="${elementId}" onclick="handleListClick('${escapeStr(name)}', '${type}', '${poster}', '${escapeStr(albumArtist || '')}', '${elementId}')" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span><img src="${poster || 'img/placeholder.png'}" style="width:30px; height:30px; border-radius:${type==='artist'?'50%':'5px'}; margin-right:10px; object-fit:cover;"><div style="flex-grow:1; min-width:0; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span></div><span class="point-badge">${val}</span></li>`;
     }).join('') + `</ul>`;
