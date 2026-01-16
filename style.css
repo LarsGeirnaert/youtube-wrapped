@@ -478,3 +478,12 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
     transition: transform 0.2s ease;
     text-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
 }
+
+/* --- SILENCE FOCUS (Red) --- */
+.calendar-day.silence-focus { 
+    background: rgba(235, 64, 52, 0.25) !important; 
+    border: 2px solid #eb4034 !important; 
+    box-shadow: 0 0 15px rgba(235, 64, 52, 0.4); 
+    z-index: 100; 
+    transform: scale(1.05); 
+}

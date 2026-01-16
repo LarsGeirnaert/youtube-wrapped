@@ -11,6 +11,7 @@ let activeFilter = null, activeSongFilter = null, focusStreakRange = null;
 let mergeMode = false, selectedForMerge = [];
 let fileHandle = null, comparisonItems = [];
 let charts = {}, modalHistory = [];
+let isSilenceMode = false;
 
 const DB_NAME = 'MuziekDagboekDB';
 const STORE_NAME = 'Settings';
