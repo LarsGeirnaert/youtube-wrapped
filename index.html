@@ -145,6 +145,22 @@
                 </div>
             </div>
 
+            <div class="section-title">📉 Top 100 Historie</div>
+            <section class="stat-card" style="padding: 20px; margin-bottom: 30px;">
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Bekijk hoe de ranking van een song of artiest is verlopen door de tijd.</p>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <div style="flex:1; position:relative;">
+                        <input type="text" id="history-search" placeholder="🔍 Zoek song of artiest..." class="comp-input" oninput="handleHistorySearch()">
+                        <div id="history-search-results" class="search-dropdown hidden"></div>
+                    </div>
+                </div>
+                
+                <div id="history-chart-container" class="hidden">
+                    <h3 id="history-chart-title" style="margin-bottom:15px; text-align:center; color:white; font-size: 1rem;"></h3>
+                    <div style="height: 350px;"><canvas id="rankingHistoryChart"></canvas></div>
+                </div>
+            </section>
+
             <div class="section-title">🎤 Repertoire Analyse</div>
             <section class="stat-card" style="padding: 20px; margin-bottom: 30px;">
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Zoek een artiest om de groei en trends van hun top 5 nummers te zien.</p>
@@ -342,6 +358,7 @@
     <script src="js/ui-base.js"></script>
     <script src="js/ui-details.js"></script>
     <script src="js/features.js"></script>
+    <script src="js/ui_interaction.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/calendar.js"></script>
     <script src="js/main.js"></script>

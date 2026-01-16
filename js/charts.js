@@ -151,8 +151,6 @@ function renderRepertoireMonthlyChart(artistName) {
             backgroundColor: colors[i % colors.length] + '22',
             borderWidth: 2,
             tension: 0.4,
-            pointRadius: 0,
-            pointHoverRadius: 4,
             fill: false
         };
     });
@@ -171,6 +169,98 @@ function renderRepertoireMonthlyChart(artistName) {
                 x: { grid: { display: false }, ticks: { color: '#777', maxTicksLimit: 10 } }
             },
             interaction: { mode: 'index', intersect: false }
+        }
+    });
+}
+
+function renderRankingHistoryChart(name, type, artist = null) {
+    document.getElementById('history-search-results').classList.add('hidden');
+    document.getElementById('history-search').value = "";
+    document.getElementById('history-chart-container').classList.remove('hidden');
+    document.getElementById('history-chart-title').innerText = type === 'artist' ? `Ranking verloop: ${name}` : `Ranking verloop: ${name} (${artist})`;
+
+    const ctx = document.getElementById('rankingHistoryChart').getContext('2d');
+    if (charts['rankingHistory']) charts['rankingHistory'].destroy();
+
+    const labels = chartData.history.labels;
+    const rankingData = [];
+    const pointRadii = [];
+
+    labels.forEach(monthKey => {
+        const data = monthlyStats[monthKey];
+        let rank = 106; // Baseline buiten de kaart (val uit top 100)
+
+        if (data) {
+            if (type === 'artist') {
+                const idx = data.top_artists.findIndex(a => a[0] === name);
+                if (idx !== -1) rank = idx + 1;
+            } else {
+                const idx = data.top_songs.findIndex(s => s[1] === name && s[0] === artist);
+                if (idx !== -1) rank = idx + 1;
+            }
+        }
+        
+        rankingData.push(rank);
+        // Verberg de bolletjes als het item buiten de top 100 valt
+        pointRadii.push(rank > 100 ? 0 : 4);
+    });
+
+    charts['rankingHistory'] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.map(l => {
+                const [y, m] = l.split('-');
+                return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m - 1));
+            }),
+            datasets: [{
+                label: 'Positie',
+                data: rankingData,
+                borderColor: '#1db954',
+                backgroundColor: 'rgba(29, 185, 84, 0.1)',
+                borderWidth: 3,
+                pointBackgroundColor: '#1db954',
+                pointRadius: pointRadii,
+                pointHoverRadius: 6,
+                tension: 0.3,
+                fill: true,
+                spanGaps: true // Zorgt voor een doorgetrokken lijn naar de bodem
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    reverse: true, // #1 bovenaan
+                    min: 1,
+                    max: 105, // Ruimte voor de 'val' onderaan
+                    ticks: {
+                        color: '#777',
+                        stepSize: 10,
+                        callback: function(value) { 
+                            if (value > 100) return ''; // Geen label voor de baseline
+                            return '#' + value; 
+                        }
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                },
+                x: {
+                    ticks: { color: '#777' },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const val = context.parsed.y;
+                            if (val > 100) return 'Status: Buiten Top 100';
+                            return `Positie: #${val}`;
+                        }
+                    }
+                }
+            }
         }
     });
 }
