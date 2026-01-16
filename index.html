@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muziek Dagboek 2.0</title>
+    <title>Music Stats</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:,">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🎧</text></svg>">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         #btn-merge-mode:hover { background: rgba(255,165,0,0.4) !important; }
         .merge-selected { border: 2px solid orange !important; background: rgba(255, 165, 0, 0.1) !important; }
@@ -47,12 +48,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>Mijn Muziek <span>Dagboek</span></h1>
+            <h1><span class="logo-icon">🎧</span>Music <span>Stats</span></h1>
             <nav class="tab-nav">
                 <button onclick="switchTab('calendar')" id="btn-calendar" class="active">📅 Kalender</button>
-                <button onclick="switchTab('recap')" id="btn-recap">⏪ Maandoverzicht</button>
-                <button onclick="switchTab('stats')" id="btn-stats">📊 Statistieken</button>
-                <button onclick="switchTab('graphs')" id="btn-graphs">📈 Grafieken</button>
+                <button onclick="switchTab('recap')" id="btn-recap">📊 Maandoverzicht</button>
+                <button onclick="switchTab('stats')" id="btn-stats">📈 Statistieken</button>
+                <button onclick="switchTab('graphs')" id="btn-graphs">📉 Grafieken</button>
             </nav>
         </header>
 
@@ -109,15 +110,15 @@
                             <span class="stat-value"><span id="wrapped-total-minutes">0</span> minuten</span>
                         </div>
                         <div class="footer-brand">
-                            <span class="brand-logo">🎧 Muziek Dagboek</span>
-                            <span class="brand-url">muziek-dagboek.local</span>
+                            <span class="brand-logo">🎧 Music Stats</span>
+                            <span class="brand-url">music-stats.local</span>
                         </div>
                     </div>
                 </div>
 
-                <div style="text-align:center; margin-top: 30px;">
-                    <button onclick="downloadWrapped()" class="apply-btn" style="width: auto; background: var(--spotify-green); color: black;">
-                        📸 Download als Afbeelding
+                <div style="text-align:center; margin-top: 40px;">
+                    <button onclick="downloadWrapped()" class="btn-download-wrapped">
+                        <span class="btn-icon">📸</span> Download Recap Image
                     </button>
                 </div>
             </div>
@@ -127,7 +128,7 @@
             <div class="section-title">📊 Fun Stats</div>
             <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 20px;">
                 <div class="stat-card tiny">
-                    <h4 style="color:#aaa; font-size:0.75rem;">⏳ Totaal Geluisterd</h4>
+                    <h4 style="color:#aaa; font-size:0.75rem;">🕒 Totaal Geluisterd</h4>
                     <div id="fun-total-days" class="big-number" style="font-size:1.8rem; color:white;">0</div>
                     <p id="fun-total-hours" style="font-size:0.8rem; color:#777;">uur</p>
                 </div>
@@ -137,7 +138,7 @@
                     <p id="fun-busiest-date" style="font-size:0.8rem; color:#777;">-</p>
                 </div>
                 <div class="stat-card tiny">
-                    <h4 style="color:#aaa; font-size:0.75rem;">🧭 Ontdekking</h4>
+                    <h4 style="color:#aaa; font-size:0.75rem;">💡 Ontdekking</h4>
                     <div id="fun-discovery" class="big-number" style="font-size:1.8rem; color:var(--accent-blue);">0</div>
                     <p style="font-size:0.8rem; color:#777;">nieuwe artiesten/mnd</p>
                 </div>
@@ -162,7 +163,7 @@
                 </div>
             </section>
 
-            <div class="section-title">🎤 Repertoire Analyse</div>
+            <div class="section-title">🎵 Repertoire Analyse</div>
             <section class="stat-card" style="padding: 20px; margin-bottom: 30px;">
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Zoek een artiest om de groei en trends van hun top 5 nummers te zien.</p>
                 <div style="position:relative; margin-bottom:20px;">
@@ -184,7 +185,7 @@
                 </div>
             </section>
 
-            <div class="section-title">⚔️ Vergelijk Songs & Artiesten</div>
+            <div class="section-title">⚖️ Vergelijk Songs & Artiesten</div>
             <section class="stat-card" style="padding:20px;">
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
                     <div style="flex:1; position:relative;">
@@ -198,37 +199,37 @@
                 </div>
                 <div id="selected-chips" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px;"></div>
                 
-                <h3 style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">🏁 Totaal (Race)</h3>
+                <h3 style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">🏆 Totaal (Race)</h3>
                 <div style="height: 250px; margin-bottom: 25px;"><canvas id="comparisonChart"></canvas></div>
                 
                 <h3 style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">📅 Per Maand (Trend)</h3>
                 <div style="height: 250px;"><canvas id="comparisonMonthlyChart"></canvas></div>
             </section>
 
-            <div class="section-title">🥧 Verdeling Top 10</div>
+            <div class="section-title">🍕 Verdeling Top 10</div>
             <div class="charts-grid" style="margin-bottom: 30px;">
                 <section class="stat-card">
-                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎤 Artiesten</h3>
+                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎵 Artiesten</h3>
                     <div style="height: 250px; position: relative;">
                         <canvas id="artistPieChart"></canvas>
                     </div>
                 </section>
                 <section class="stat-card">
-                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎵 Songs</h3>
+                    <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🎶 Songs</h3>
                     <div style="height: 250px; position: relative;">
                         <canvas id="songPieChart"></canvas>
                     </div>
                 </section>
             </div>
 
-            <div class="section-title">📉 Algemene Trends</div>
+            <div class="section-title">📈 Algemene Trends</div>
             <section class="stat-card" style="padding: 20px;">
                 <h3 style="font-size: 0.9rem; color: #aaa; margin-bottom: 15px;">Luistergeschiedenis (Totaal)</h3>
                 <div style="height: 250px;"><canvas id="listeningChart"></canvas></div>
                 
                 <div class="charts-grid two-columns">
                     <div style="height: 200px;">
-                        <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">🕒 Luistermomenten</h3>
+                        <h3 style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom:10px;">⏰ Luistermomenten</h3>
                         <canvas id="hoursChart"></canvas>
                     </div>
                     <div style="height: 200px;">
@@ -243,11 +244,11 @@
             <section id="monthly-highlights" class="stat-card" style="margin-bottom: 20px; border-color: rgba(29, 185, 84, 0.2);">
                 <div class="highlights-grid">
                     <div class="highlight-item">
-                        <span class="label clickable-header" onclick="showTop100('songs')">Top Songs ➔</span>
+                        <span class="label clickable-header" onclick="showTop100('songs')">Top Songs ✨</span>
                         <ul id="top-songs-list-small" class="ranking-list small-list"></ul>
                     </div>
                     <div class="highlight-item">
-                        <span class="label clickable-header" onclick="showTop100('artists')">Top Artiesten ➔</span>
+                        <span class="label clickable-header" onclick="showTop100('artists')">Top Artiesten ✨</span>
                         <ul id="top-artists-list-small" class="ranking-list small-list"></ul>
                     </div>
                     <div class="highlight-item total-circle">
@@ -265,7 +266,7 @@
                         <span id="file-status" style="font-size:0.75rem; color:#aaa; border:1px solid #333; padding:2px 8px; border-radius:4px;">💾 Opslaan: Handmatig</span>
                     </div>
                     <div style="display:flex; gap:10px;">
-                        <button id="btn-link-file" onclick="linkFile()" class="apply-btn" style="width: auto; padding: 8px 15px; background: #333; border: 1px solid #555; font-size: 0.8rem;">📂 Koppel corrections.json</button>
+                        <button id="btn-link-file" onclick="linkFile()" class="apply-btn" style="width: auto; padding: 8px 15px; background: #333; border: 1px solid #555; font-size: 0.8rem;">🔗 Koppel corrections.json</button>
                         <button id="btn-merge-mode" onclick="toggleMergeMode()" class="apply-btn" style="width: auto; padding: 8px 15px; background: rgba(255,165,0,0.2); color: orange; border: 1px solid orange; font-size: 0.8rem;">Start Merge Mode</button>
                     </div>
                 </div>
@@ -280,41 +281,41 @@
                 <div id="search-results" class="search-results-list"></div>
             </section>
 
-            <div class="section-title">🏆 Mijn Favorieten</div>
+            <div class="section-title">🏅 Mijn Favorieten</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('songs')">Meest Beluisterde Songs ➔</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('artists')">Grootste Artiesten ➔</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('songs')">Meest Beluisterde Songs ✨</h3><ol id="top-songs-list" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('artists')">Grootste Artiesten ✨</h3><ol id="top-artists-list" class="ranking-list"></ol></div>
             </div>
 
             <div class="section-title">🔥 Song Streaks</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-current')">Nu Actief (Liedjes) ➔</h3><ol id="current-song-streaks" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-top')">All-time Records ➔</h3><ol id="top-song-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-current')">Nu Actief (Liedjes) ✨</h3><ol id="current-song-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-songs-top')">All-time Records ✨</h3><ol id="top-song-streaks" class="ranking-list"></ol></div>
             </div>
 
-            <div class="section-title">🌟 Artiest Streaks</div>
+            <div class="section-title">💃 Artiest Streaks</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-current')">Nu Actief (Artiest) ➔</h3><ol id="current-artist-streaks" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-top')">All-time Records ➔</h3><ol id="top-artist-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-current')">Nu Actief (Artiest) ✨</h3><ol id="current-artist-streaks" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('streaks-artists-top')">All-time Records ✨</h3><ol id="top-artist-streaks" class="ranking-list"></ol></div>
             </div>
 
             <div class="section-title">💿 Album Collectie</div>
             <div class="stats-grid">
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-listens')">Top Albums (Beurten) ➔</h3><ol id="top-albums-listens" class="ranking-list"></ol></div>
-                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-variety')">Meest Diverse Albums ➔</h3><ol id="top-albums-variety" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-listens')">Top Albums (Beurten) ✨</h3><ol id="top-albums-listens" class="ranking-list"></ol></div>
+                <div class="stat-card"><h3 class="clickable-header" onclick="showTop100('albums-variety')">Meest Diverse Albums ✨</h3><ol id="top-albums-variety" class="ranking-list"></ol></div>
             </div>
 
-            <div class="section-title">🧭 Slimme Inzichten</div>
+            <div class="section-title">💡 Slimme Inzichten</div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3 class="clickable-header" onclick="showTop100('obsessions')">💎 De Obsessies ➔</h3>
+                    <h3 class="clickable-header" onclick="showTop100('obsessions')">💎 De Obsessies ✨</h3>
                     <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
                         Songs die je grijs draait van een artiest die je verder amper kent.
                     </p>
                     <ul id="obsessions-list" class="ranking-list"></ul>
                 </div>
                 <div class="stat-card">
-                    <h3 class="clickable-header" onclick="showTop100('explorers')">🧭 Ontdekkingsreizigers ➔</h3>
+                    <h3 class="clickable-header" onclick="showTop100('explorers')">💡 Ontdekkingsreizigers ✨</h3>
                     <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">
                         Artiesten waarvan je de meeste unieke nummers hebt ontdekt.
                     </p>
@@ -322,7 +323,7 @@
                 </div>
             </div>
 
-            <div class="section-title">🕰️ Nostalgie & Terugblik</div>
+            <div class="section-title">⏳ Nostalgie & Terugblik</div>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3 style="font-size: 0.75rem; color: var(--spotify-green); margin-bottom: 10px; letter-spacing: 1.5px; text-transform: uppercase;">

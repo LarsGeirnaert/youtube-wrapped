@@ -42,8 +42,30 @@ body {
 
 /* --- HEADER & NAVIGATIE --- */
 header { margin-bottom: 50px; text-align: center; }
-h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 30px; }
+
+h1 { 
+    font-size: 2.8rem; 
+    font-weight: 800; 
+    letter-spacing: -1.5px; 
+    margin-bottom: 30px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
 h1 span { color: var(--spotify-green); text-shadow: 0 0 25px rgba(29, 185, 84, 0.3); }
+
+/* Logo Animatie */
+.logo-icon {
+    filter: drop-shadow(0 0 10px rgba(29, 185, 84, 0.5));
+    animation: pulse-logo 2s infinite ease-in-out;
+    display: inline-block;
+}
+
+@keyframes pulse-logo {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
 
 .tab-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
 .tab-nav button {
@@ -292,4 +314,37 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
 #day-top-three-container div::-webkit-scrollbar-thumb {
     background: var(--glass-border);
     border-radius: 10px;
+}
+
+/* --- DOWNLOAD KNOP STYLING --- */
+.btn-download-wrapped {
+    background: var(--spotify-green);
+    color: #000;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-download-wrapped:hover {
+    transform: scale(1.05) translateY(-2px);
+    background: #1ed760; /* Iets lichtere groen */
+    box-shadow: 0 8px 25px rgba(29, 185, 84, 0.5);
+}
+
+.btn-download-wrapped:active {
+    transform: scale(0.98);
+}
+
+.btn-download-wrapped .btn-icon {
+    font-size: 1.2rem;
 }
