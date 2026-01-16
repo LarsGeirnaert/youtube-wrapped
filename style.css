@@ -472,3 +472,9 @@ li.merge-selected, div.search-item.merge-selected { border: 2px solid orange !im
     font-size: 0.8rem;
     color: #888;
 }
+
+#streak-count:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+    text-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+}

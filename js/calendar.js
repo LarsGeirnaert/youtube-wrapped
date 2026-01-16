@@ -12,15 +12,17 @@ function renderCalendar() {
     for (let i = 0; i < offset; i++) { grid.appendChild(document.createElement('div')); }
     
     const checkDateHasListen = (y, m, d) => {
-        if (!activeFilter) return false;
         const checkStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        const entry = calendarIndex[checkStr] && calendarIndex[checkStr][activeFilter];
-        if (!entry) return false;
-        
-        if (activeSongFilter) {
-            return entry.songs.some(s => (typeof s === 'object' ? s.titel : s) === activeSongFilter);
+        if (activeFilter) {
+            const entry = calendarIndex[checkStr] && calendarIndex[checkStr][activeFilter];
+            if (!entry) return false;
+            if (activeSongFilter) {
+                return entry.songs.some(s => (typeof s === 'object' ? s.titel : s) === activeSongFilter);
+            }
+            return true;
+        } else {
+            return musicData.some(d => d.datum === checkStr);
         }
-        return true;
     };
 
     for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
@@ -29,6 +31,15 @@ function renderCalendar() {
         let hasListen = false;
         let poster = "";
         let clickData = [];
+
+        // Controleer of deze dag binnen de gemarkeerde streak valt
+        let isFocus = false;
+        if (focusStreakRange) {
+            const d = new Date(dateStr); d.setHours(0,0,0,0);
+            const s = new Date(focusStreakRange.start); s.setHours(0,0,0,0);
+            const e = new Date(focusStreakRange.end); e.setHours(0,0,0,0);
+            if (d >= s && d <= e) isFocus = true;
+        }
 
         if (activeFilter) {
             if (calendarIndex[dateStr] && calendarIndex[dateStr][activeFilter]) {
@@ -48,8 +59,6 @@ function renderCalendar() {
                         hasListen = true;
                         poster = specificSong.poster; 
                         clickData = [specificSong];
-                    } else {
-                        hasListen = false; 
                     }
                 } else {
                     hasListen = true;
@@ -61,14 +70,6 @@ function renderCalendar() {
                     const tomorrow = new Date(year, month, day + 1);
                     const hadYesterday = checkDateHasListen(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
                     const hasTomorrow = checkDateHasListen(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-
-                    let isFocus = false;
-                    if (focusStreakRange) {
-                        const d = new Date(dateStr); d.setHours(0,0,0,0);
-                        const s = new Date(focusStreakRange.start); s.setHours(0,0,0,0);
-                        const e = new Date(focusStreakRange.end); e.setHours(0,0,0,0);
-                        if (d >= s && d <= e) isFocus = true;
-                    }
 
                     if (hadYesterday && hasTomorrow) cell.classList.add('streak-middle');
                     else if (hasTomorrow) cell.classList.add('streak-start');
@@ -83,6 +84,9 @@ function renderCalendar() {
                 hasListen = true;
                 poster = songs[0].poster;
                 clickData = songs;
+                
+                // Pas de focus-highlight toe op de algemene kalender weergave
+                if (isFocus) cell.classList.add('streak-focus');
             }
         }
 
@@ -98,11 +102,19 @@ function renderCalendar() {
     }
 }
 
-function openDagDetails(date, songs) { const container = document.getElementById('day-top-three-container'); document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }); container.innerHTML = songs.slice(0, 5).map((s, i) => `<div class="search-item" onclick="showSongSpotlight('${escapeStr(s.titel)} - ${escapeStr(s.artiest)}') " style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:8px; cursor:pointer;"><span style="font-weight:800; color:var(--spotify-green); margin-right:15px; width:15px;">${i+1}</span><img src="${s.poster}" style="width:45px; height:45px; border-radius:8px; margin-right:15px;"><div class="search-item-info"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div></div>`).join(''); document.getElementById('modal').classList.remove('hidden'); }
+function openDagDetails(date, songs) { 
+    const container = document.getElementById('day-top-three-container'); 
+    document.getElementById('modal-datum-titel').innerText = new Date(date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }); 
+    container.innerHTML = songs.slice(0, 5).map((s, i) => `
+        <div class="search-item" onclick="showSongSpotlight('${escapeStr(s.titel)} - ${escapeStr(s.artiest)}')" style="display:flex; align-items:center; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; margin-bottom:8px; cursor:pointer;">
+            <span style="font-weight:800; color:var(--spotify-green); margin-right:15px; width:15px;">${i+1}</span>
+            <img src="${s.poster}" style="width:45px; height:45px; border-radius:8px; margin-right:15px;">
+            <div class="search-item-info"><b>${s.titel}</b><br><small style="color:var(--text-muted);">${s.artiest}</small></div>
+        </div>`).join(''); 
+    document.getElementById('modal').classList.remove('hidden'); 
+}
 
 function applyCalendarFilter(artist, startDate, endDate, songTitle = null) { 
-    console.log(`[DEBUG] Filter: ${artist}, Song: ${songTitle}, Start: ${startDate}`);
-    
     activeFilter = artist; 
     activeSongFilter = songTitle; 
 
@@ -112,11 +124,13 @@ function applyCalendarFilter(artist, startDate, endDate, songTitle = null) {
         currentViewDate.setDate(1); 
     } else {
         focusStreakRange = null;
-        const allDates = Object.keys(calendarIndex).sort().reverse();
-        const lastListenDate = allDates.find(date => calendarIndex[date][artist]);
-        if (lastListenDate) {
-            currentViewDate = new Date(lastListenDate);
-            currentViewDate.setDate(1); 
+        if (artist) {
+            const allDates = Object.keys(calendarIndex).sort().reverse();
+            const lastListenDate = allDates.find(date => calendarIndex[date][artist]);
+            if (lastListenDate) {
+                currentViewDate = new Date(lastListenDate);
+                currentViewDate.setDate(1); 
+            }
         }
     }
 

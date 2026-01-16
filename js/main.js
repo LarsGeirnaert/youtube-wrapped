@@ -4,34 +4,54 @@
 
 function calculateStreak() {
     const dates = [...new Set(musicData.map(item => item.datum))].sort().reverse(); 
+    const el = document.getElementById('streak-count');
+    if (!el) return;
 
     if (dates.length === 0) {
-        const el = document.getElementById('streak-count');
-        if(el) el.innerText = 0;
+        el.innerText = 0;
         return;
     }
 
-    let streak = 1; 
-    const oneDay = 86400000;
+    // Controleer of de streak nog actief is (vandaag of gisteren geluisterd)
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const lastListenDate = new Date(dates[0]);
+    lastListenDate.setHours(0,0,0,0);
+    const diffToToday = (today - lastListenDate) / 86400000;
 
-    for (let i = 0; i < dates.length - 1; i++) { 
-        const currentDate = new Date(dates[i]); 
-        const prevDate = new Date(dates[i+1]);  
-        
-        const currentUTC = Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-        const prevUTC = Date.UTC(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate());
-
-        const diffDays = (currentUTC - prevUTC) / oneDay;
-        
-        if (diffDays === 1) {
-            streak++; 
-        } else {
-            break; 
-        } 
+    if (diffToToday > 1) {
+        el.innerText = 0;
+        el.style.cursor = 'default';
+        el.onclick = null;
+        return;
     }
 
-    const el = document.getElementById('streak-count');
-    if(el) el.innerText = streak;
+    let streak = 1;
+    const oneDay = 86400000;
+    for (let i = 0; i < dates.length - 1; i++) {
+        const d1 = new Date(dates[i]);
+        const d2 = new Date(dates[i+1]);
+        const c1 = Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate());
+        const c2 = Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate());
+        
+        if ((c1 - c2) / oneDay === 1) {
+            streak++;
+        } else {
+            break;
+        }
+    }
+
+    el.innerText = streak;
+    el.style.cursor = 'pointer';
+    el.title = "Klik om streak op de kalender te zien";
+    
+    // Maak het getal klikbaar om de streak op de kalender te tonen
+    el.onclick = () => {
+        const startDate = dates[streak - 1];
+        const endDate = dates[0];
+        // We sturen 'null' als artiest omdat dit een globale streak is
+        applyCalendarFilter(null, startDate, endDate);
+    };
 }
 
 function renderStatsDashboard() {
@@ -135,7 +155,7 @@ async function loadMusic() {
         const savedHandle = await getHandleFromDB();
         if (savedHandle) {
             fileHandle = savedHandle;
-            console.log("📂 Bestandskoppeling hersteld.");
+            console.log("💾 Bestandskoppeling hersteld.");
             updateFileStatus(true);
             try {
                 if ((await fileHandle.queryPermission({ mode: 'read' })) === 'granted') {
