@@ -35,10 +35,19 @@ function handleHistorySearch() {
         const artInfo = statsData.find(s => s.artiest === a);
         const poster = (artInfo && artInfo.poster && artInfo.poster !== 'img/placeholder.png') ? artInfo.poster : 'img/placeholder.png';
         
+        // OPTIE 1: De artiest zelf
         html += `<div class="comp-result-item" onclick="renderRankingHistoryChart('${escapeStr(a)}', 'artist')">
                     <img src="${poster}" style="width:30px; height:30px; border-radius:50%; margin-right:10px; object-fit:cover; vertical-align:middle;">
                     <div style="display:inline-block; vertical-align:middle;">
-                        <b>🎤 ${a}</b><br><small>Toon Ranking Historie</small>
+                        <b>🎤 ${a} (Artiest)</b><br><small>Verloop van algemene positie</small>
+                    </div>
+                </div>`;
+        
+        // OPTIE 2: Alle liedjes van de artiest
+        html += `<div class="comp-result-item" onclick="renderRankingHistoryChart('${escapeStr(a)}', 'artist-all-songs')">
+                    <img src="${poster}" style="width:30px; height:30px; border-radius:50%; margin-right:10px; object-fit:cover; vertical-align:middle; border: 2px solid var(--spotify-green);">
+                    <div style="display:inline-block; vertical-align:middle;">
+                        <b>🎵 ${a} (Alle Songs)</b><br><small>Verloop van alle Top 100 hits</small>
                     </div>
                 </div>`;
     });

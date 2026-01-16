@@ -204,37 +204,102 @@ function renderRankingHistoryChart(name, type, artist = null) {
     document.getElementById('history-search').value = "";
     document.getElementById('history-chart-container').classList.remove('hidden');
     
-    document.getElementById('history-chart-title').innerText = type === 'artist' ? `Ranking verloop: ${name}` : `Ranking verloop: ${name} (${artist})`;
-    
+    const labelEl = document.getElementById('history-chart-title');
     const coverEl = document.getElementById('history-chart-cover');
-    const info = (type === 'artist') ? statsData.find(s => s.artiest === name) : statsData.find(s => s.titel === name && s.artiest === artist);
-    coverEl.src = (info && info.poster && info.poster !== 'img/placeholder.png') ? info.poster : 'img/placeholder.png';
-    coverEl.style.borderRadius = (type === 'artist') ? '50%' : '10px';
-
     const ctx = document.getElementById('rankingHistoryChart').getContext('2d');
+
     if (charts['rankingHistory']) charts['rankingHistory'].destroy();
 
-    const labels = chartData.history.labels.slice(1);
-    const rankingData = [];
-    const pointRadii = [];
+    const rawLabels = chartData.history ? chartData.history.labels : chartData.labels;
+    const labels = rawLabels.slice(1); // Sla de eerste maand over
+    let datasets = [];
 
-    labels.forEach(monthKey => {
-        const data = monthlyStats[monthKey];
-        let rank = 106; 
+    if (type === 'artist-all-songs') {
+        // --- LOGICA VOOR ALLE LIEDJES VAN EEN ARTIEST ---
+        labelEl.innerText = `Top 100 Verloop: Alle songs van ${name}`;
+        const artInfo = statsData.find(s => s.artiest === name);
+        coverEl.src = (artInfo && artInfo.poster) ? artInfo.poster : 'img/placeholder.png';
+        coverEl.style.borderRadius = '50%';
 
-        if (data) {
-            if (type === 'artist') {
-                const idx = data.top_artists.findIndex(a => a[0] === name);
-                if (idx !== -1) rank = idx + 1;
-            } else {
-                const idx = data.top_songs.findIndex(s => s[1] === name && s[0] === artist);
-                if (idx !== -1) rank = idx + 1;
+        // 1. Zoek alle unieke songs van deze artiest die OOIT in de top 100 stonden
+        let uniqueSongs = new Set();
+        Object.values(monthlyStats).forEach(month => {
+            month.top_songs.forEach(s => {
+                if (s[0] === name) uniqueSongs.add(s[1]);
+            });
+        });
+
+        // 2. Maak een dataset per song
+        const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b'];
+        let colorIdx = 0;
+
+        uniqueSongs.forEach(songTitle => {
+            const rankingData = [];
+            const pointRadii = [];
+            
+            labels.forEach(monthKey => {
+                const data = monthlyStats[monthKey];
+                let rank = 106;
+                if (data) {
+                    const idx = data.top_songs.findIndex(s => s[1] === songTitle && s[0] === name);
+                    if (idx !== -1) rank = idx + 1;
+                }
+                rankingData.push(rank);
+                pointRadii.push(rank > 100 ? 0 : 3);
+            });
+
+            datasets.push({
+                label: songTitle,
+                data: rankingData,
+                borderColor: colors[colorIdx % colors.length],
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                pointRadius: pointRadii,
+                tension: 0.3,
+                spanGaps: true
+            });
+            colorIdx++;
+        });
+
+    } else {
+        // --- STANDAARD LOGICA (ÉÉN ARTIEST OF ÉÉN LIEDJE) ---
+        labelEl.innerText = type === 'artist' ? `Ranking verloop: ${name}` : `Ranking verloop: ${name} (${artist})`;
+        const info = (type === 'artist') ? statsData.find(s => s.artiest === name) : statsData.find(s => s.titel === name && s.artiest === artist);
+        coverEl.src = (info && info.poster && info.poster !== 'img/placeholder.png') ? info.poster : 'img/placeholder.png';
+        coverEl.style.borderRadius = (type === 'artist') ? '50%' : '10px';
+
+        const rankingData = [];
+        const pointRadii = [];
+
+        labels.forEach(monthKey => {
+            const data = monthlyStats[monthKey];
+            let rank = 106; 
+            if (data) {
+                if (type === 'artist') {
+                    const idx = data.top_artists.findIndex(a => a[0] === name);
+                    if (idx !== -1) rank = idx + 1;
+                } else {
+                    const idx = data.top_songs.findIndex(s => s[1] === name && s[0] === artist);
+                    if (idx !== -1) rank = idx + 1;
+                }
             }
-        }
-        
-        rankingData.push(rank);
-        pointRadii.push(rank > 100 ? 0 : 4);
-    });
+            rankingData.push(rank);
+            pointRadii.push(rank > 100 ? 0 : 4);
+        });
+
+        datasets.push({
+            label: 'Positie',
+            data: rankingData,
+            borderColor: '#1db954',
+            backgroundColor: 'rgba(29, 185, 84, 0.1)',
+            borderWidth: 3,
+            pointBackgroundColor: '#1db954',
+            pointRadius: pointRadii,
+            tension: 0.3,
+            fill: true,
+            spanGaps: true
+        });
+    }
 
     charts['rankingHistory'] = new Chart(ctx, {
         type: 'line',
@@ -243,19 +308,7 @@ function renderRankingHistoryChart(name, type, artist = null) {
                 const [y, m] = l.split('-');
                 return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m - 1));
             }),
-            datasets: [{
-                label: 'Positie',
-                data: rankingData,
-                borderColor: '#1db954',
-                backgroundColor: 'rgba(29, 185, 84, 0.1)',
-                borderWidth: 3,
-                pointBackgroundColor: '#1db954',
-                pointRadius: pointRadii,
-                pointHoverRadius: 6,
-                tension: 0.3,
-                fill: true,
-                spanGaps: true
-            }]
+            datasets: datasets
         },
         options: {
             responsive: true,
@@ -268,26 +321,24 @@ function renderRankingHistoryChart(name, type, artist = null) {
                     ticks: {
                         color: '#777',
                         stepSize: 10,
-                        callback: function(value) { 
-                            if (value > 100) return '';
-                            return '#' + value; 
-                        }
+                        callback: function(value) { return value > 100 ? '' : '#' + value; }
                     },
                     grid: { color: 'rgba(255,255,255,0.05)' }
                 },
-                x: {
-                    ticks: { color: '#777' },
-                    grid: { display: false }
-                }
+                x: { ticks: { color: '#777' }, grid: { display: false } }
             },
             plugins: {
-                legend: { display: false },
+                legend: { 
+                    display: type === 'artist-all-songs', 
+                    position: 'bottom',
+                    labels: { color: '#ccc', font: { size: 10 }, boxWidth: 12 }
+                },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             const val = context.parsed.y;
-                            if (val > 100) return 'Status: Buiten Top 100';
-                            return `Positie: #${val}`;
+                            if (val > 100) return `${context.dataset.label}: Buiten Top 100`;
+                            return `${context.dataset.label}: #${val}`;
                         }
                     }
                 }
@@ -295,7 +346,6 @@ function renderRankingHistoryChart(name, type, artist = null) {
         }
     });
 }
-
 function renderCharts() {
     const ctxHist = document.getElementById('listeningChart').getContext('2d');
     if (charts['history']) charts['history'].destroy();
