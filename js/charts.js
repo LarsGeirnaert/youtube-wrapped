@@ -9,8 +9,8 @@ function updateComparisonChart() {
     if (charts['comparison']) charts['comparison'].destroy();
     if (charts['comparisonMonthly']) charts['comparisonMonthly'].destroy();
 
-    // VISUELE FILTER: Sla de eerste maand over
-    const labels = chartData.history.labels.slice(1); 
+    const rawLabels = chartData.history ? chartData.history.labels : chartData.labels;
+    const labels = rawLabels.slice(1); 
     const datasetsCumulative = [];
     const datasetsMonthly = [];
 
@@ -20,9 +20,7 @@ function updateComparisonChart() {
         let dataPointsMonthly = [];
         let runningTotal = 0;
 
-        // Bereken de cumulatieve waarde over ALLE data (voor correcte stats)
-        // Maar we tonen alleen vanaf de tweede maand
-        chartData.history.labels.forEach((month, index) => {
+        rawLabels.forEach((month, index) => {
             let count = 0;
             if (monthlyStats[month]) {
                 if (item.type === 'artist') {
@@ -37,7 +35,6 @@ function updateComparisonChart() {
             }
             runningTotal += count;
             
-            // Alleen toevoegen aan grafiek-data vanaf index 1
             if (index > 0) {
                 dataPointsMonthly.push(count);
                 dataPointsCumulative.push(runningTotal);
@@ -94,15 +91,15 @@ function renderRepertoireGrowthChart(artistName) {
                             .sort((a, b) => b.count - a.count)
                             .slice(0, 5);
 
-    // VISUELE FILTER: Sla de eerste maand over
-    const labels = chartData.history.labels.slice(1);
+    const rawLabels = chartData.history.labels;
+    const labels = rawLabels.slice(1);
     const colors = ['#1db954', '#2196f3', '#ff9800', '#e91e63', '#9c27b0', '#00bcd4', '#ffeb3b', '#cddc39', '#f44336', '#795548'];
 
     const datasets = songs.map((song, i) => {
         let dataPoints = [];
         let runningTotal = 0;
         
-        chartData.history.labels.forEach((month, index) => {
+        rawLabels.forEach((month, index) => {
             let count = 0;
             const key = `${song.titel}|${song.artiest}`;
             if (monthlyStats[month] && monthlyStats[month].song_counts) {
@@ -141,7 +138,6 @@ function renderRepertoireMonthlyChart(artistName) {
                             .sort((a, b) => b.count - a.count)
                             .slice(0, 5);
 
-    // VISUELE FILTER: Sla de eerste maand over
     const labels = chartData.history.labels.slice(1).map(l => {
         const [y, m] = l.split('-'); 
         return new Intl.DateTimeFormat('nl-NL', { month: 'short', year: '2-digit' }).format(new Date(y, m-1));
@@ -187,23 +183,44 @@ function renderRepertoireMonthlyChart(artistName) {
     });
 }
 
+function showRepertoireChart(artistName, poster) {
+    document.getElementById('repertoire-search').value = '';
+    document.getElementById('repertoire-results').classList.add('hidden');
+    document.getElementById('repertoire-chart-container').classList.remove('hidden');
+    
+    // Update Titel
+    document.getElementById('repertoire-title').innerText = `Top 5 van ${artistName}`;
+    
+    // Update Cover
+    const coverEl = document.getElementById('repertoire-chart-cover');
+    coverEl.src = poster || 'img/placeholder.png';
+
+    renderRepertoireGrowthChart(artistName);
+    renderRepertoireMonthlyChart(artistName);
+}
+
 function renderRankingHistoryChart(name, type, artist = null) {
     document.getElementById('history-search-results').classList.add('hidden');
     document.getElementById('history-search').value = "";
     document.getElementById('history-chart-container').classList.remove('hidden');
+    
     document.getElementById('history-chart-title').innerText = type === 'artist' ? `Ranking verloop: ${name}` : `Ranking verloop: ${name} (${artist})`;
+    
+    const coverEl = document.getElementById('history-chart-cover');
+    const info = (type === 'artist') ? statsData.find(s => s.artiest === name) : statsData.find(s => s.titel === name && s.artiest === artist);
+    coverEl.src = (info && info.poster && info.poster !== 'img/placeholder.png') ? info.poster : 'img/placeholder.png';
+    coverEl.style.borderRadius = (type === 'artist') ? '50%' : '10px';
 
     const ctx = document.getElementById('rankingHistoryChart').getContext('2d');
     if (charts['rankingHistory']) charts['rankingHistory'].destroy();
 
-    // VISUELE FILTER: Sla de eerste maand over
     const labels = chartData.history.labels.slice(1);
     const rankingData = [];
     const pointRadii = [];
 
     labels.forEach(monthKey => {
         const data = monthlyStats[monthKey];
-        let rank = 106; // Baseline buiten de kaart
+        let rank = 106; 
 
         if (data) {
             if (type === 'artist') {
@@ -283,7 +300,6 @@ function renderCharts() {
     const ctxHist = document.getElementById('listeningChart').getContext('2d');
     if (charts['history']) charts['history'].destroy();
     
-    // VISUELE FILTER: Sla de eerste maand over in de Luistergeschiedenis
     const rawLabels = chartData.history ? chartData.history.labels : chartData.labels;
     const rawValues = chartData.history ? chartData.history.values : chartData.values;
     
