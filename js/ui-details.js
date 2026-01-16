@@ -2,13 +2,13 @@
 // 4. DETAIL VIEWS (MODALS)
 // ==========================================
 
-// Aangepast: Berekent de top 3 liedjes op basis van de BESTE piekpositie ooit
+// Berekent de top 3 liedjes op basis van de BESTE piekpositie ooit
 function getArtistTopHits(artistName) {
-    let songPeaks = {}; // Formaat: { "Song Titel": { bestRank: X, occurrences: Y } }
+    if (!artistName || artistName === "Onbekend") return [];
+    let songPeaks = {}; 
 
     Object.values(monthlyStats).forEach(month => {
         month.top_songs.forEach((s, index) => {
-            // s[0] = Artiest, s[1] = Titel
             if (s[0] === artistName) {
                 const songTitle = s[1];
                 const currentRank = index + 1;
@@ -17,11 +17,9 @@ function getArtistTopHits(artistName) {
                     songPeaks[songTitle] = { bestRank: currentRank, occurrences: 1 };
                 } else {
                     if (currentRank < songPeaks[songTitle].bestRank) {
-                        // Nieuwe absolute piek gevonden
                         songPeaks[songTitle].bestRank = currentRank;
                         songPeaks[songTitle].occurrences = 1;
                     } else if (currentRank === songPeaks[songTitle].bestRank) {
-                        // Piek opnieuw behaald
                         songPeaks[songTitle].occurrences++;
                     }
                 }
@@ -29,13 +27,9 @@ function getArtistTopHits(artistName) {
         });
     });
 
-    // Sorteer op bestRank (laagste getal is beter)
-    // Bij gelijke rank: sorteer op hoe vaak die rank behaald is
     return Object.entries(songPeaks)
         .sort((a, b) => {
-            if (a[1].bestRank !== b[1].bestRank) {
-                return a[1].bestRank - b[1].bestRank;
-            }
+            if (a[1].bestRank !== b[1].bestRank) return a[1].bestRank - b[1].bestRank;
             return b[1].occurrences - a[1].occurrences;
         })
         .slice(0, 3)
@@ -43,6 +37,7 @@ function getArtistTopHits(artistName) {
 }
 
 function calculatePeakStat(targetName, type, targetArtist = null) {
+    if (targetName === "Onbekend") return null;
     let bestRank = 101;
     let occurrences = 0;
     let bestMonthLabel = "";
@@ -80,8 +75,15 @@ function calculatePeakStat(targetName, type, targetArtist = null) {
     `;
 }
 
+// Centrale klik-handler
 function handleListClick(name, type, poster, albumArtist, elementId) {
-    if (document.getElementById('modal').classList.contains('hidden')) modalHistory = [];
+    if (name.includes("Onbekend")) return;
+    
+    if (document.getElementById('modal').classList.contains('hidden')) {
+        lastScrollPos = window.scrollY;
+        modalHistory = [];
+    }
+    
     if (mergeMode) {
         if (type === 'song' || type === 'album') toggleMergeSelection(name, type, poster, albumArtist, elementId);
         else alert("Je kan alleen liedjes of albums samenvoegen.");
@@ -92,25 +94,50 @@ function handleListClick(name, type, poster, albumArtist, elementId) {
     }
 }
 
+// BRUG FUNCTIE: Regelt of een album klik een Modal opent of een Selectie maakt voor Merge
+function handleAlbumClick(poster, artist, elementId) {
+    if (mergeMode) {
+        const albumName = `Album van ${artist}`;
+        toggleMergeSelection(albumName, 'album', poster, artist, elementId);
+    } else {
+        showAlbumDetails(poster, artist);
+    }
+}
+
 function showAlbumDetails(posterUrl, artistName, isBack = false) {
     if (!isBack) addToHistory('album', arguments);
     const key = getAlbumKey(posterUrl, artistName);
+    
+    // Filter alle nummers die bij dit specifieke album horen (gebaseerd op cover en artiest)
     const albumSongs = statsData.filter(s => getAlbumKey(s.poster, s.artiest) === key).sort((a,b) => b.count - a.count);
+    
     const container = document.getElementById('day-top-three-container');
     document.getElementById('modal-datum-titel').innerText = `Album van ${artistName}`;
+    
     container.innerHTML = `
-        <div style="text-align:center;margin-bottom:20px;"><img src="${posterUrl}" style="width:140px;border-radius:20px;box-shadow:var(--shadow-lg);">
-        <div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-top:10px;"></div></div>
-        <div class="modal-list-wrapper">${albumSongs.map((s, idx) => {
-            const escapedName = escapeStr(`${s.titel} - ${s.artiest}`);
-            const elementId = `album-det-${idx}`;
-            return `<div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;"><div style="flex-grow:1;"><b>${s.titel}</b></div><span class="point-badge">${s.count}x</span></div>`;
-        }).join('')}</div>`;
+        <div style="text-align:center;margin-bottom:20px;">
+            <img src="${posterUrl}" style="width:140px;border-radius:20px;box-shadow:var(--shadow-lg);">
+            <div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-top:10px;"></div>
+        </div>
+        <div class="modal-list-wrapper">
+            ${albumSongs.map((s, idx) => {
+                const fullSongName = `${s.titel} - ${s.artiest}`;
+                const escapedName = escapeStr(fullSongName);
+                const elementId = `album-det-${idx}`;
+                return `
+                    <div id="${elementId}" class="search-item" onclick="handleListClick('${escapedName}', 'song', '${s.poster}', '', '${elementId}')" style="display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; cursor:pointer;">
+                        <div style="flex-grow:1;"><b>${s.titel}</b></div>
+                        <span class="point-badge">${s.count}x</span>
+                    </div>`;
+            }).join('')}
+        </div>`;
+    
     document.getElementById('modal').classList.remove('hidden');
     updateModalMergeButton();
 }
 
 function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack = false) {
+    if (artist === "Onbekend") return;
     if (!isBack) addToHistory('artist', arguments);
     let cleanArtist = artist.includes('(') ? artist.split('(')[1].replace(')', '') : artist;
     const container = document.getElementById('day-top-three-container');
@@ -118,9 +145,14 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
     
     let songsToShow = []; let label = "totaal";
     if (monthKey && monthlyStats[monthKey] && monthlyStats[monthKey].artist_details[cleanArtist]) {
-        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; });
+        songsToShow = monthlyStats[monthKey].artist_details[cleanArtist].map(i => { 
+            const info = statsData.find(x => x.artiest === cleanArtist && x.titel === i[0]); 
+            return { titel: i[0], count: i[1], poster: info ? info.poster : 'img/placeholder.png', artiest: cleanArtist }; 
+        });
         label = "deze maand";
-    } else { songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); }
+    } else { 
+        songsToShow = statsData.filter(s => s.artiest === cleanArtist.trim()).sort((a,b) => b.count - a.count); 
+    }
 
     const sortedAlbums = Object.values(songsToShow.reduce((acc, s) => {
         if (s.poster && s.poster !== "img/placeholder.png") {
@@ -141,7 +173,6 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
     html += `<div id="modal-action-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;"></div>`;
 
-    // TOP 3 LIEDJES (Geselecteerd op beste piekpositie ooit)
     if (topHits.length > 0) {
         html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">🏆 Top 100 All-Time Hits</h3>`;
         html += `<div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px;">`;
@@ -155,8 +186,7 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
                         <span style="position:absolute; top:-5px; left:-5px; width:22px; height:22px; background:var(--spotify-green); color:black; border-radius:50%; font-size:0.7rem; font-weight:800; display:flex; align-items:center; justify-content:center;">${idx+1}</span>
                     </div>
                     <span style="display:block; font-size:0.65rem; font-weight:600; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hitTitle}</span>
-                </div>
-            `;
+                </div>`;
         });
         html += `</div>`;
     }
@@ -173,8 +203,9 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 
     if (sortedAlbums.length > 0) {
         html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase;">Albums</h3><div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; margin-bottom:10px;">`;
-        sortedAlbums.forEach(alb => {
-            html += `<div onclick="handleAlbumClick('${alb.poster}', '${escapeStr(cleanArtist)}', '')" style="flex-shrink:0; cursor:pointer;"><img src="${alb.poster}" style="width:70px; height:70px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>`;
+        sortedAlbums.forEach((alb, idx) => {
+            const elementId = `artist-alb-${idx}`;
+            html += `<div id="${elementId}" onclick="handleAlbumClick('${alb.poster}', '${escapeStr(cleanArtist)}', '${elementId}')" style="flex-shrink:0; cursor:pointer;"><img src="${alb.poster}" style="width:70px; height:70px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>`;
         });
         html += `</div>`;
     }
@@ -191,6 +222,7 @@ function showArtistDetails(artist, overrideCount = null, monthKey = null, isBack
 }
 
 function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
+    if (songFull.includes("Onbekend")) return;
     if (!isBack) addToHistory('song', arguments);
     let titel, artiest; 
     if (songFull.includes(' - ')) { 
@@ -207,13 +239,17 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     const topStreaks = getSongStreaks(titel, artiest);
     const peakStat = calculatePeakStat(titel, 'song', artiest);
     
-    let html = `
+    document.getElementById('day-top-three-container').innerHTML = `
         <div class="vinyl-container">
             <div class="vinyl-record"></div>
             <img src="${s.poster}" class="vinyl-cover">
         </div>
         <h2 style="text-align:center; font-size:1.4rem; line-height:1.2; margin-bottom:2px;">${titel}</h2>
-        <p style="text-align:center; color:var(--spotify-green); font-weight:bold; margin-bottom:20px;">${artiest}</p>
+        <p style="text-align:center; color:var(--spotify-green); font-weight:bold; margin-bottom:10px;">${artiest}</p>
+
+        <div style="text-align:center; margin-bottom:20px;">
+            <button onclick="fixSongCover('${escapeStr(titel)}', '${escapeStr(artiest)}')" style="background:none; border:1px solid #444; color:#777; padding:4px 10px; border-radius:20px; font-size:0.7rem; cursor:pointer;">🖊️ Fix Cover URL</button>
+        </div>
 
         <div class="spotlight-stats-grid">
             <div class="spotlight-stat-box"><span class="spotlight-stat-val">${countToDisplay}x</span><span class="spotlight-stat-label">Plays</span></div>
@@ -224,17 +260,42 @@ function showSongSpotlight(songFull, overrideCount = null, isBack = false) {
     `;
 
     if (topStreaks.length > 0) {
-        html += `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:5px;">🔥 Beste Streaks</h3>`;
+        html = `<h3 style="font-size:0.8rem; color:#aaa; margin-bottom:10px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:5px;">🔥 Beste Streaks</h3>`;
         topStreaks.forEach(st => {
             const d1 = new Date(st.start).toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
             const d2 = new Date(st.end).toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
             html += `<div class="streak-row" onclick="applyCalendarFilter('${escapeStr(artiest)}', '${st.start}', '${st.end}', '${escapeStr(titel)}')" style="cursor:pointer; display:flex; justify-content:space-between; padding:8px 0; font-size:0.9rem;"><span style="color:var(--spotify-green); font-weight:bold;">${st.count} dagen</span><span style="color:#777;">${d1} ➔ ${d2}</span></div>`;
         });
+        document.getElementById('day-top-three-container').innerHTML += html;
     }
 
-    document.getElementById('day-top-three-container').innerHTML = html;
     document.getElementById('modal-datum-titel').innerText = "Details"; 
     document.getElementById('modal').classList.remove('hidden');
+}
+
+// Functie om handmatig een cover URL op te slaan in corrections.json
+async function fixSongCover(titel, artiest) {
+    const newUrl = prompt(`Plak hier de nieuwe afbeeldings-URL voor:\n${titel} - ${artiest}`);
+    if (!newUrl || !newUrl.startsWith('http')) {
+        if (newUrl !== null) alert("Ongeldige URL. Zorg dat de link begint met http:// of https://");
+        return;
+    }
+
+    const correction = {
+        original: { titel: titel, artiest: artiest },
+        target: { titel: titel, artiest: artiest, poster: newUrl }
+    };
+
+    if (typeof existingCorrections !== 'undefined') {
+        existingCorrections.push(correction);
+        if (typeof saveCorrections === 'function') {
+            const isAuto = await saveCorrections();
+            let msg = "Cover opgeslagen in corrections.json!";
+            if (!isAuto) msg += "\n\nDownload het nieuwe bestand en vervang corrections.json.";
+            msg += "\n\nDraai daarna generate_smart_top5.py.";
+            alert(msg);
+        }
+    }
 }
 
 function showTop100(category, isBack = false) {
@@ -253,43 +314,11 @@ function showTop100(category, isBack = false) {
         if (category === 'albums-listens') { titleEl.innerText = "Top 100 Albums (Luisterbeurten)"; items = albums.sort((a,b) => b.total - a.total).slice(0, 100).map(a => [`Album van ${a.artiest}`, a.total, a.poster, 'album']); }
         else { titleEl.innerText = "Top 100 Albums (Variatie)"; const sorted = albums.sort((a,b) => b.unique.size - a.unique.size); const filtered = []; const counts = {}; for (const alb of sorted) { if (filtered.length >= 100) break; const art = alb.artiest; counts[art] = (counts[art] || 0) + 1; if (counts[art] <= 2) filtered.push(alb); } items = filtered.map(a => [`Album van ${a.artiest}`, a.unique.size, a.poster, 'album']); }
     }
-    else if (category.includes('streaks')) { 
-        const key = category.split('streaks-')[1].replace('-', '_'); 
-        items = streakData[key].map(s => [
-            s.titel ? `${s.titel} - ${s.artiest}` : s.naam, s.streak, 
-            statsData.find(x => x.titel === s.titel)?.poster, s.titel ? 'song' : 'artist', 
-            null, s.period, s.start, s.end
-        ]); 
-    }
-    else if (category === 'month-songs') { titleEl.innerText = "Top Songs Deze Maand"; items = mData ? mData.top_songs.map(s => [`${s[1]} - ${s[0]}`, s[2], statsData.find(x => x.titel === s[1] && x.artiest === s[0])?.poster, 'song']) : []; }
-    else if (category === 'month-artists') { titleEl.innerText = "Top Artiesten Deze Maand"; items = mData ? mData.top_artists.map(a => [a[0], a[1], null, 'artist']) : []; }
-    else if (category === 'obsessions') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length === 1 && songs[0].count > 50).sort((a, b) => b[1][0].count - a[1][0].count).slice(0, 100).map(([a, songs]) => [`${songs[0].titel} - ${a}`, songs[0].count, songs[0].poster, 'song']); }
-    else if (category === 'explorers') { const artistGroups = {}; statsData.forEach(s => { if (!artistGroups[s.artiest]) artistGroups[s.artiest] = []; artistGroups[s.artiest].push(s); }); items = Object.entries(artistGroups).filter(([a, songs]) => songs.length >= 10).sort((a, b) => b[1].length - a[1].length).slice(0, 100).map(([a, songs]) => [a, songs.length, null, 'artist']); }
-
-    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.map(([name, val, poster, type, unit, period, start, end], index) => {
+    
+    container.innerHTML = `<ul class="ranking-list" style="max-height: 500px; overflow-y: auto;">` + items.filter(item => !item[0].includes("Onbekend")).map(([name, val, poster, type], index) => {
         const escapedName = escapeStr(name);
         const elementId = `top100-${index}`;
-        let actualType = type; let albumArtist = '';
-        if (name.startsWith('Album van ')) { actualType = 'album'; albumArtist = name.replace('Album van ', ''); } 
-        const clickAction = `handleListClick('${escapedName}', '${actualType}', '${poster}', '${escapeStr(albumArtist)}', '${elementId}')`;
-        const img = poster ? `<img src="${poster}" style="width:30px; height:30px; border-radius:5px; margin-right:10px; flex-shrink:0;">` : '';
-        const sub = period ? `<br><small style="font-size:0.6rem; color:var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${period}</small>` : '';
-        
-        let badgeAttr = '';
-        let badgeStyle = 'flex-shrink:0;';
-        if (unit && unit.trim() === 'd') {
-             let artistArg = actualType === 'song' ? name.split(' - ').pop() : name;
-             let songArg = null;
-             if(actualType === 'song') {
-                 const parts = name.split(' - ');
-                 songArg = parts.slice(0, parts.length - 1).join(' - ');
-             }
-             if (start && end) {
-                 badgeAttr = `onclick="event.stopPropagation(); applyCalendarFilter('${escapeStr(artistArg)}', '${start}', '${end}', '${escapeStr(songArg||'')}')"`;
-                 badgeStyle += ' cursor:pointer; border:1px solid var(--spotify-green); background:rgba(29,185,84,0.15); transition:0.2s;';
-             }
-        }
-        return `<li id="${elementId}" onclick="${clickAction}" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span>${img}<div style="flex-grow:1; min-width:0; overflow:hidden; margin-right:10px;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span>${sub}</div><span class="point-badge" ${badgeAttr} style="${badgeStyle}" onmouseover="this.style.background='var(--spotify-green)';this.style.color='black'" onmouseout="this.style.background='rgba(29,185,84,0.15)';this.style.color='var(--spotify-green)'">${val}${unit||' d'}</span></li>`;
+        return `<li id="${elementId}" onclick="handleListClick('${escapedName}', '${type}', '${poster}', '', '${elementId}')" style="display:flex; align-items:center; padding: 12px 15px; overflow:hidden;"><span style="width: 25px; flex-shrink:0; font-size: 0.75rem; font-weight: 800; color: var(--spotify-green); opacity: 0.5;">${index + 1}</span><img src="${poster || 'img/placeholder.png'}" style="width:30px; height:30px; border-radius:5px; margin-right:10px;"><div style="flex-grow:1; min-width:0; overflow:hidden;"><span style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;">${name}</span></div><span class="point-badge">${val}</span></li>`;
     }).join('') + `</ul>`;
     document.getElementById('modal').classList.remove('hidden');
 }
